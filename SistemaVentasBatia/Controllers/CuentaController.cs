@@ -10,20 +10,20 @@ namespace SistemaVentasBatia.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuarioController : ControllerBase
+    public class CuentaController : ControllerBase
     {
-        private readonly IUsuarioService _logic;
+        private readonly ICuentaService _logic;
 
-        public UsuarioController(IUsuarioService logic)
+        public CuentaController(ICuentaService logic)
         {
             _logic = logic;
         }
 
-        [HttpPost("[action]")]
-        public async Task<ActionResult<UsuarioDTO>> Login(AccesoDTO dto)
-        {
-            return await _logic.Login(dto);
-        }
+        //[HttpGet("[action]")]
+        //public async Task<ActionResult<UsuarioDTO>> Login(AccesoDTO dto)
+        //{
+        //    return await _logic.Login(dto);
+        //}
 
 
 

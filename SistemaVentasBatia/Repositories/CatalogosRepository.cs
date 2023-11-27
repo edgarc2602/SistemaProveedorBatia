@@ -15,10 +15,6 @@ namespace SistemaVentasBatia.Repositories
         Task<List<Catalogo>> ObtenerServicios();
         Task<List<Catalogo>> ObtenerMunicipios(int idMunicipio);
         Task<List<Catalogo>> ObtenerTiposInmueble();
-        Task<List<MaterialPuesto>> ObtenerMaterialDefaultPorPuesto(int idPuesto);
-        Task<IEnumerable<MaterialPuesto>> ObtenerHerramientaDefaultPorPuesto(int idPuesto);
-        Task<IEnumerable<MaterialPuesto>> ObtenerEquipoDefaultPorPuesto(int idPuesto);
-        Task<IEnumerable<MaterialPuesto>> ObtenerUniformeDefaultPorPuesto(int idPuesto);
         Task<List<Catalogo>> ObtenerCatalogoPuestos();
         Task<List<Catalogo>> ObtenerCatalogoServicios();
         Task<List<Catalogo>> ObtenerCatalogoTurnos();
@@ -243,28 +239,7 @@ FROM tb_clase";
 
             return direcciones;
         }
-        public async Task<List<MaterialPuesto>> ObtenerMaterialDefaultPorPuesto(int idPuesto)
-        {
-            var query = @"SELECT  id_material_puesto IdMaterialPuesto, clave_producto ClaveProducto, id_puesto IdPuesto, cantidad Cantidad, id_frecuencia IdFrecuencia
-                          FROM tb_material_puesto
-                          WHERE id_puesto = @idPuesto";
-
-            var materialPuesto = new List<MaterialPuesto>();
-
-            try
-            {
-                using (var connection = ctx.CreateConnection())
-                {
-                    materialPuesto = (await connection.QueryAsync<MaterialPuesto>(query, new { idPuesto })).ToList();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return materialPuesto;
-        }
+        
 
         public async Task<List<Catalogo>> ObtenerCatalogoDireccionesCotizacion(int idCotizacion)
         {
@@ -362,73 +337,5 @@ FROM tb_clase";
             return puestosCotizacion;
         }
 
-        public async Task<IEnumerable<MaterialPuesto>> ObtenerHerramientaDefaultPorPuesto(int idPuesto)
-        {
-            var query = @"SELECT id_herramienta_puesto IdMaterialPuesto, clave ClaveProducto, id_puesto IdPuesto, cantidad Cantidad, id_frecuencia IdFrecuencia
-                        FROM tb_herramienta_puesto
-                        WHERE id_puesto = @idPuesto";
-
-            var materialPuesto = new List<MaterialPuesto>();
-
-            try
-            {
-                using (var connection = ctx.CreateConnection())
-                {
-                    materialPuesto = (await connection.QueryAsync<MaterialPuesto>(query, new { idPuesto })).ToList();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return materialPuesto;
-        }
-
-        public async Task<IEnumerable<MaterialPuesto>> ObtenerEquipoDefaultPorPuesto(int idPuesto)
-        {
-            var query = @"SELECT id_equipo_puesto IdMaterialPuesto, clave ClaveProducto, id_puesto IdPuesto, cantidad Cantidad, id_frecuencia IdFrecuencia
-                        FROM tb_equipo_puesto
-                        WHERE id_puesto = @idPuesto";
-
-            var materialPuesto = new List<MaterialPuesto>();
-
-            try
-            {
-                using (var connection = ctx.CreateConnection())
-                {
-                    materialPuesto = (await connection.QueryAsync<MaterialPuesto>(query, new { idPuesto })).ToList();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return materialPuesto;
-        }
-
-        public async Task<IEnumerable<MaterialPuesto>> ObtenerUniformeDefaultPorPuesto(int idPuesto)
-        {
-            var query = @"SELECT id_uniforme_puesto IdMaterialPuesto, clave ClaveProducto, id_puesto IdPuesto, cantidad Cantidad, id_frecuencia IdFrecuencia
-                        FROM tb_uniforme_puesto
-                        WHERE id_puesto = @idPuesto";
-
-            var materialPuesto = new List<MaterialPuesto>();
-
-            try
-            {
-                using (var connection = ctx.CreateConnection())
-                {
-                    materialPuesto = (await connection.QueryAsync<MaterialPuesto>(query, new { idPuesto })).ToList();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return materialPuesto;
-        }
     }
 }

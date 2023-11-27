@@ -83,12 +83,6 @@ namespace SistemaVentasBatia.Controllers
             return await logic.ObtenerCatalogoProductos(servicio);
         }
 
-        [HttpGet("[action]/{servicio}/{grupo}")]
-        public async Task<IEnumerable<CatalogoDTO>> GetProductoByGrupo(Servicio servicio, string grupo)
-        {
-            return await logic.ObtenerCatalogoProductosGrupo(servicio, grupo);
-        }
-
         [HttpGet("[action]")]
         public IEnumerable<Item<int>> GetDia()
         {

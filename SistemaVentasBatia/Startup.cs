@@ -11,11 +11,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using SistemaVentasBatia.Context;
-using SistemaVentasBatia.Options;
 using SistemaVentasBatia.Services;
 using SistemaVentasBatia.Repositories;
 using SistemaVentasBatia.Converters;
 using SistemaVentasBatia.Middleware;
+using SistemaVentasBatia.Controllers;
+
 
 namespace SistemaVentasBatia
 {
@@ -35,8 +36,8 @@ namespace SistemaVentasBatia
             // Repository Context
             services.AddSingleton<DapperContext>();
 
-            // Configure Options
-            services.Configure<ProductoOption>(Configuration.GetSection("ProdOpt"));
+            //// Configure Options
+            //services.Configure<ProductoOption>(Configuration.GetSection("ProdOpt"));
 
             // Mapper
             var mapperConfig = new MapperConfiguration(mc =>
@@ -59,25 +60,23 @@ namespace SistemaVentasBatia
             });
 
             // Services
-            services.AddScoped<ICotizacionesService, CotizacionesService>();
-            services.AddScoped<IProspectosService, ProspectosService>();
             services.AddScoped<ICatalogosService, CatalogosService>();
             services.AddScoped<IProductoService, ProductoService>();
             services.AddScoped<IMaterialService, MaterialService>();
             services.AddScoped<IUsuarioService, UsuarioService>();
-            services.AddScoped<ITabuladorService, TabuladorService>();
-            services.AddScoped<ISalarioService, SalarioService>();
+            services.AddScoped<IEntregaService, EntregaService>();
+            services.AddScoped<IFacturaService, FacturaService>();
+            services.AddScoped<ICuentaService, CuentaService>();
 
             // Repositories
-            services.AddScoped<ICotizacionesRepository, CotizacionesRepository>();
-            services.AddScoped<IProspectosRepository, ProspectosRepository>();
             services.AddScoped<ICatalogosRepository, CatalogosRepository>();
             services.AddScoped<IProductoRepository, ProductoRepository>();
             services.AddScoped<IMaterialRepository, MaterialRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            services.AddScoped<ITabuladorRepository, TabuladorRepository>();
-            services.AddScoped<ISalarioRepository, SalarioRepository>();
-            services.AddScoped<IServicioRepository, ServicioRepository>();
+            services.AddScoped<IEntregaRepository, EntregaRepository>();
+            services.AddScoped<IFacturaRepository, FacturaRepository>();
+            services.AddScoped<ICuentaRepository, CuentaRepository>();
+
 
         }
 

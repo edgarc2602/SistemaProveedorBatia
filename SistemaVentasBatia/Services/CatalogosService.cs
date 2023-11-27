@@ -7,8 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SistemaVentasBatia.Enums;
-using SistemaVentasBatia.Options;
 using Microsoft.Extensions.Options;
+using SistemaProveedoresBatia.Controllers;
 
 namespace SistemaVentasBatia.Services
 {
@@ -26,20 +26,17 @@ namespace SistemaVentasBatia.Services
         Task<List<CatalogoDTO>> ObtenerCatalogoProductos(Servicio servicio);
         Task<List<CatalogoDTO>> ObtenerCatalogoJornada();
         Task<List<CatalogoDTO>> ObtenerCatalogoClase();
-        Task<IEnumerable<CatalogoDTO>> ObtenerCatalogoProductosGrupo(Servicio servicio, string grupo);
     }
 
     public class CatalogosService : ICatalogosService
     {
         private readonly ICatalogosRepository catalogosRepo;
         private readonly IMapper mapper;
-        private readonly ProductoOption _option;
 
-        public CatalogosService(ICatalogosRepository catalogosRepo, IMapper mapper, IOptions<ProductoOption> options)
+        public CatalogosService(ICatalogosRepository catalogosRepo, IMapper mapper)
         {
             this.catalogosRepo = catalogosRepo;
             this.mapper = mapper;
-            _option = options.Value;
         }
 
         public async Task<List<CatalogoDTO>> ObtenerEstados()
@@ -121,48 +118,6 @@ namespace SistemaVentasBatia.Services
             var productos = mapper.Map<List<CatalogoDTO>>(await catalogosRepo.ObtenerCatalogoProductos(servicio));
 
             return productos;
-        }
-
-        public async Task<IEnumerable<CatalogoDTO>> ObtenerCatalogoProductosGrupo(Servicio servicio, string grupo)
-        {
-            int[] fams;
-            switch (grupo.ToLower())
-            {
-                case "material":
-                    fams = _option.Material;
-                    break;
-                case "uniforme":
-                    fams = _option.Uniforme;
-                    break;
-                case "equipo":
-                    fams = _option.Equipo;
-                    break;
-                case "herramienta":
-                    fams = _option.Herramienta;
-                    break;
-                case "servicio":
-                    fams = _option.Servicio;
-                    break;
-                case "materialope":
-                    fams = _option.MaterialOpe;
-                    break;
-                case "uniformeope":
-                    fams = _option.UniformeOpe;
-                    break;
-                case "equipoope":
-                    fams = _option.EquipoOpe;
-                    break;
-                case "herramientaope":
-                    fams = _option.HerramientaOpe;
-                    break;
-                case "servicioope":
-                    fams = _option.ServicioOpe;
-                    break;
-                default:
-                    fams = new int[] {};
-                    break;
-            }
-            return mapper.Map<IEnumerable<CatalogoDTO>>(await catalogosRepo.ObtenerCatalogoProductosByFamilia(servicio, fams));
         }
     }
 }

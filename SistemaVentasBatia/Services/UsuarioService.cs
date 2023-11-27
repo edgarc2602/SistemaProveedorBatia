@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.IIS;
+using SistemaProveedoresBatia.Controllers;
 using SistemaVentasBatia.DTOs;
 using SistemaVentasBatia.Models;
 using SistemaVentasBatia.Repositories;
@@ -16,9 +17,7 @@ namespace SistemaVentasBatia.Services
         Task<UsuarioDTO> Login(AccesoDTO dto);
         Task<bool> Existe(AccesoDTO dto);
 
-        Task<bool> InsertarUsuario(UsuarioRegistro usuario);
-        Task<List<UsuarioGrafica>> ObtenerCotizacionesUsuarios();
-        Task<List<UsuarioGraficaMensual>> ObtenerCotizacionesMensuales();
+        //Task<bool> InsertarUsuario(UsuarioRegistro usuario);
     }
     public class UsuarioService : IUsuarioService
     {
@@ -75,30 +74,21 @@ namespace SistemaVentasBatia.Services
             return usu;
         }
 
-        public async Task<bool> InsertarUsuario(UsuarioRegistro usuario)
-        {
-            bool existe = false;
-            bool result = false;
-            existe = await _repo.ConsultarUsuario(usuario.IdPersonal, usuario.Nombres);
-            if ( existe == true)
-            {
-                result = await _repo.InsertarUsuario(usuario);
+        //public async Task<bool> InsertarUsuario(UsuarioRegistro usuario)
+        //{
+        //    bool existe = false;
+        //    bool result = false;
+        //    existe = await _repo.ConsultarUsuario(usuario.IdPersonal, usuario.Nombres);
+        //    if ( existe == true)
+        //    {
+        //        result = await _repo.InsertarUsuario(usuario);
 
-            }
-            else
-            {
-                result = false;
-            }
-            return result;
-        }
-
-        public async Task<List<UsuarioGrafica>> ObtenerCotizacionesUsuarios()
-        {
-            return await _repo.ObtenerCotizacionesUsuarios();
-        }
-        public async Task<List<UsuarioGraficaMensual>> ObtenerCotizacionesMensuales()
-        {
-            return await _repo.ObtenerCotizacionesMensuales();
-        }
+        //    }
+        //    else
+        //    {
+        //        result = false;
+        //    }
+        //    return result;
+        //}
     }
 }

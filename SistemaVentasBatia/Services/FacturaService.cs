@@ -10,19 +10,19 @@ using System.Threading.Tasks;
 
 namespace SistemaVentasBatia.Services
 {
-    public interface IMaterialService
+    public interface IFacturaService
     {
         //Task<ServicioCotizacionDTO> ServicioGetById(int id);
     }
 
-    public class MaterialService : IMaterialService
+    public class FacturaService : IFacturaService
     {
-        private readonly IMaterialRepository _materialRepo;
+        private readonly IFacturaRepository _FacturaRepo;
         private readonly IMapper _mapper;
 
-        public MaterialService(IMaterialRepository materialRepo, IMapper mapper)
+        public FacturaService(IFacturaRepository FacturaRepo, IMapper mapper)
         {
-            _materialRepo = materialRepo;
+            _FacturaRepo = FacturaRepo;
             _mapper = mapper;
         }
         //public async Task ActualizarMaterialCotizacion(MaterialCotizacionDTO materialVM)

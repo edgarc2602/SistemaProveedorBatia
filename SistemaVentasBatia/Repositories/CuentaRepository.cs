@@ -11,16 +11,16 @@ using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace SistemaVentasBatia.Repositories
 {
-    public interface IMaterialRepository
+    public interface ICuentaRepository
     {
         //Task<decimal> ObtenerPrecioProductoPorClave(string clave);
     }
 
-    public class MaterialRepository : IMaterialRepository
+    public class CuentaRepository : ICuentaRepository
     {
         private readonly DapperContext _ctx;
 
-        public MaterialRepository(DapperContext context)
+        public CuentaRepository(DapperContext context)
         {
             _ctx = context;
         }

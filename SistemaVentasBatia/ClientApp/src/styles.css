@@ -193,3 +193,8 @@ body {
 .logo .logo-lg {
     display: block
 }
+.btn-bottom-right {
+    position: absolute;
+    bottom: 80px;
+    right: 30px;
+}

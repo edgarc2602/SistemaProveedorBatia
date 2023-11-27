@@ -13,6 +13,7 @@ import { fadeInOut } from 'src/app/fade-in-out';
     selector: 'login-comp',
     templateUrl: './login.component.html',
     animations: [fadeInOut],
+    styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
     model: Acceso = { usuario: '', contrasena: '' };
