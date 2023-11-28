@@ -1,12 +1,9 @@
 ﻿import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Catalogo } from 'src/app/models/catalogo';
-
 import { fadeInOut } from 'src/app/fade-in-out';
-
-
 import { StoreUser } from 'src/app/stores/StoreUser';
-
+import { ListadoOrdenCompra } from 'src/app/models/listadoordencompra';
 @Component({
     selector: 'factura-comp',
     templateUrl: './factura.component.html',
@@ -14,26 +11,54 @@ import { StoreUser } from 'src/app/stores/StoreUser';
 })
 export class FacturaComponent {
     /*@ViewChild(UsuarioAddWidget, { static: false }) addUsu: UsuarioAddWidget;*/
+    model: ListadoOrdenCompra = {
+        ordenes: [], numPaginas: 0, pagina: 1, rows: 0
+    }
+    idProveedor: number = 35;
+    fechaInicio: string = '';
+    fechaFin: string = '';
+    //1667
 
-    //pues: Catalogo[] = [];
-    //selPuesto: number = 0;
+
 
     constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {
-        //http.get<Catalogo[]>(`${url}api/catalogo/getpuesto`).subscribe(response => {
-        //    this.pues = response;
-        //}, err => console.log(err));
-        //http.get<Catalogo[]>(`${url}api/catalogo/getpuesto`).subscribe(response => {
-        //    this.pues = response;
-        //}, err => console.log(err));
-
+        //this.http.get<ListadoOrdenCompra>(`${this.url}api/factura/obtenerordenescompra/${this.idProveedor}/${this.fechaInicio}/${this.fechaFin}/${this.model.pagina}`).subscribe(response => {
+        //    this.model = response;
+        //})
     }
-    chgServicio() {
-
+    ngOnInit() {
+        this.getDias();
+        this.obtenerOrdenes();
+    }   
+    obtenerOrdenes() {
+        this.http.get<ListadoOrdenCompra>(`${this.url}api/factura/ObtenerOrdenesCompra/${this.idProveedor}/${this.model.pagina}/${this.fechaInicio}/${this.fechaFin}`).subscribe(response => {
+            this.model = response;
+        })
     }
     goBack() {
         window.history.back();
     }
+    muevePagina(event) {
+        this.model.pagina = event;
+        this.obtenerOrdenes();
+    }
 
-    
+    obtenerPrimerDiaDelMes(): string {
+        const hoy = new Date();
+        const primerDiaDelMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+        return primerDiaDelMes.toISOString().slice(0, 10);
+    }
+
+    obtenerDiaActual(): string {
+        const diaActual = new Date();
+        return diaActual.toISOString().slice(0, 10);
+    }
+
+    getDias() {
+        this.fechaInicio = this.obtenerPrimerDiaDelMes();
+        this.fechaFin = this.obtenerDiaActual();
+    }
+
+
 }
 

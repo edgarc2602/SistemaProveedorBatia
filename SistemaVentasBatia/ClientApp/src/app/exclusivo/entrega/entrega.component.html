@@ -6,10 +6,27 @@
         </div>
     </div>
 
+    <div>
+        <div class="row">
+            <div class="col-md-3 col-7 mb-3">
+                <div class="form-floating">
+                    <input type="text" class="form-control" [(ngModel)]="anio" id="Anio" placeholder="Escriba un año" (input)="obtenerListados()">
+                    <label asp-for="anio">Año</label>
+                </div>
+            </div>
+            <div class="col-md-3 col-5 mb-3">
+                <div class="form-floating">
+                    <select class="form-select" [(ngModel)]="mes" (change)="obtenerListados()" id="ddlmes">
+                        <option value="0">Seleccione ...</option>
+                        <option *ngFor="let m of meses" [ngValue]="m.id">{{ m.descripcion }}</option>
+                    </select>
+                    <label asp-for="ddlmes">Mes</label>
 
-    <a class="btn btn-sm text-black" (click)="obtenerListados()" data-bs-toggle="tooltip" title="Buscar" >
-        <i class="fa-solid fa-pencil fa-2x" style="color: #ccc;"></i>
-    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div class="row" style="border-radius: 10px; overflow-x: hidden;">
         <table class="table table-borderless table-striped table-responsive text-center">
@@ -36,11 +53,11 @@
                                 <span class="badge text-dark">Listado:</span>
                                 <div class="ms-2">{{ listado.idListado }}</div>
                             </div>
-                            <div class="col-md-1 col-sm-6 col-5">
+                            <div class="col-md-2 col-sm-6 col-5">
                                 <span class="badge text-dark">Tipo:</span>
                                 <div class="ms-2">{{ listado.tipo }}</div>
                             </div>
-                            <div class="col-md-2 col-sm-6 col-5">
+                            <div class="col-md-1 col-sm-6 col-5">
                                 <span class="badge text-dark">Estatus:</span>
                                 <div class="ms-2">{{ listado.estatus }}</div>
                             </div>
@@ -55,15 +72,18 @@
                         </div>
                     </td>
                     <td class="text-center">
-                        <!--<button type="button" class="btn btn-sm text-primary" [routerLink]="['/exclusivo/resumen/' + cot.idCotizacion]" data-bs-toggle="tooltip" title="Detalle">
-                            <i class="fa-solid fa-search-dollar fa-2x"></i>
+                        <button type="button" class="btn btn-lg text-primary" (Onclick)="ObtenerListado(listado.idListado)" data-bs-toggle="tooltip" title="Ver lista">
+                            <i class="fa-solid fa-list"></i>
                         </button>
-                        <a *ngIf="cot.total == 0" class="btn btn-sm text-success" (click)="editar(cot.idCotizacion, cot.nombreComercial,cot.servicio)" data-bs-toggle="tooltip" title="Editar">
-                            <i class="fa-solid fa-pencil fa-2x"></i>
-                        </a>
-                        <a *ngIf="cot.total !== 0" class="btn btn-sm text-white" data-bs-toggle="tooltip" title="Editar" disabled>
-                            <i class="fa-solid fa-pencil fa-2x" style="color: #ccc;"></i>
-                        </a>-->
+                        <button type="button" class="btn btn-lg text-secondary" data-bs-toggle="tooltip" title="Ver lista">
+                            <i class="fa-solid fa-file-circle-check"></i>
+                        </button>
+                        <!--<a *ngIf="cot.total == 0" class="btn btn-sm text-success" (click)="editar(cot.idCotizacion, cot.nombreComercial,cot.servicio)" data-bs-toggle="tooltip" title="Editar">
+        <i class="fa-solid fa-pencil fa-2x"></i>
+    </a>
+    <a *ngIf="cot.total !== 0" class="btn btn-sm text-white" data-bs-toggle="tooltip" title="Editar" disabled>
+        <i class="fa-solid fa-pencil fa-2x" style="color: #ccc;"></i>
+    </a>-->
 
                     </td>
                 </tr>

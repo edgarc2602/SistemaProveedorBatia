@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SistemaVentasBatia.Enums;
+using Microsoft.AspNetCore.Server.IIS.Core;
 
 namespace SistemaVentasBatia.Repositories
 {
@@ -24,6 +25,7 @@ namespace SistemaVentasBatia.Repositories
         Task<List<Catalogo>> ObtenerCatalogoPuestosCotizacion(int idCotizacion);
         Task<List<Catalogo>> ObtenerCatalogoProductos(Servicio idServicio);
         Task<IEnumerable<Catalogo>> ObtenerCatalogoProductosByFamilia(Servicio idServicio, int[] familia);
+        Task<List<Catalogo>> ObtenerMeses();
     }
 
     public class CatalogosRepository : ICatalogosRepository
@@ -59,7 +61,7 @@ namespace SistemaVentasBatia.Repositories
         public async Task<List<Catalogo>> ObtenerServicios()
         {
             var query = @"SELECT id_servicioextra Id, descripcion Descripcion  FROM tb_servicioextra";
-                          
+
 
             var servicios = new List<Catalogo>();
 
@@ -94,7 +96,7 @@ WHERE es.id_estado = @idEstado ORDER BY m.Municipio";
             {
                 using (var connection = ctx.CreateConnection())
                 {
-                    municipios = (await connection.QueryAsync<Catalogo>(query, new { idEstado})).ToList();
+                    municipios = (await connection.QueryAsync<Catalogo>(query, new { idEstado })).ToList();
                 }
             }
             catch (Exception ex)
@@ -132,7 +134,7 @@ WHERE es.id_estado = @idEstado ORDER BY m.Municipio";
                           WHERE id_status = 1 AND cotizador = 1 ORDER BY Descripcion";
 
             var puestos = new List<Catalogo>();
-                
+
             try
             {
                 using (var connection = ctx.CreateConnection())
@@ -239,7 +241,7 @@ FROM tb_clase";
 
             return direcciones;
         }
-        
+
 
         public async Task<List<Catalogo>> ObtenerCatalogoDireccionesCotizacion(int idCotizacion)
         {
@@ -337,5 +339,50 @@ FROM tb_clase";
             return puestosCotizacion;
         }
 
+        public async Task<List<Catalogo>> ObtenerMeses()
+        {
+            var query = @"
+SELECT 
+id_mes Id,
+descripcion Descripcion
+From tb_mes
+";
+            var meses = new List<Catalogo>();
+            try
+            {
+                using (var connection = ctx.CreateConnection())
+                {
+                    meses = (await connection.QueryAsync<Catalogo>(query)).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return meses;
+        }
+
+        public async Task<List<Catalogo>> ObtenerTipoListado()
+        {
+            var query = @"
+SELECT 
+id_tipo Id,
+descripcion Descripcion
+FROM tb_tipolistado 
+";
+            var tipoListados = new List<Catalogo>();
+            try
+            {
+                using (var connection = ctx.CreateConnection())
+                {
+                    tipoListados = (await connection.QueryAsync<Catalogo>(query)).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return tipoListados;
+        }
     }
 }

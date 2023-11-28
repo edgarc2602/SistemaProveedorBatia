@@ -16,7 +16,7 @@ namespace SistemaVentasBatia.Services
     public interface IEntregaService
     {
         
-        Task<ListadoMaterialDTO> ObtenerListados(ListadoMaterialDTO listados, int mes, int anio, int idCliente, int idEstado, int tipo);
+        Task<ListadoMaterialDTO> ObtenerListados(ListadoMaterialDTO listados, int mes, int anio, int idProveedor, int idEstado, int tipo);
     }
 
     public class EntregaService : IEntregaService
@@ -29,9 +29,9 @@ namespace SistemaVentasBatia.Services
             this._entregaRepo = entregaRepo;
             this._mapper = mapper;
         }
-        public async Task<ListadoMaterialDTO> ObtenerListados(ListadoMaterialDTO listados, int mes, int anio, int idCliente, int idEstado, int tipo)
+        public async Task<ListadoMaterialDTO> ObtenerListados(ListadoMaterialDTO listados, int mes, int anio, int idProveedor, int idEstado, int tipo)
         {
-            listados.Rows = await _entregaRepo.ContarListados(mes, anio, idCliente, idEstado, tipo);
+            listados.Rows = await _entregaRepo.ContarListados(mes, anio, idProveedor, idEstado, tipo);
             if (listados.Rows > 0)
             {
                 listados.NumPaginas = (listados.Rows / 10);
@@ -40,7 +40,7 @@ namespace SistemaVentasBatia.Services
                 {
                     listados.NumPaginas++;
                 }
-                listados.Listas = _mapper.Map<List<ListadosDTO>>(await _entregaRepo.ObtenerListados(mes, anio, idCliente, idEstado, tipo, listados.Pagina));
+                listados.Listas = _mapper.Map<List<ListadosDTO>>(await _entregaRepo.ObtenerListados(mes, anio, idProveedor, idEstado, tipo, listados.Pagina));
             }
             else
             {

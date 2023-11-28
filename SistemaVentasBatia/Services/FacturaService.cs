@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SistemaProveedoresBatia.Controllers;
+using SistemaProveedoresBatia.DTOs;
 using SistemaVentasBatia.DTOs;
 using SistemaVentasBatia.Models;
 using SistemaVentasBatia.Repositories;
@@ -12,7 +13,7 @@ namespace SistemaVentasBatia.Services
 {
     public interface IFacturaService
     {
-        //Task<ServicioCotizacionDTO> ServicioGetById(int id);
+        Task<ListadoOrdenCompraDTO> ObtenerOrdenesCompra(ListadoOrdenCompraDTO ordenescompra, int idProveedor, string fechaInicio, string fechaFin);
     }
 
     public class FacturaService : IFacturaService
@@ -25,13 +26,25 @@ namespace SistemaVentasBatia.Services
             _FacturaRepo = FacturaRepo;
             _mapper = mapper;
         }
-        //public async Task ActualizarMaterialCotizacion(MaterialCotizacionDTO materialVM)
-        //{
-        //    var material = _mapper.Map<MaterialCotizacion>(materialVM);
 
-        //    material.Total = (material.PrecioUnitario * material.Cantidad) / (int)material.IdFrecuencia;
+        public async Task<ListadoOrdenCompraDTO> ObtenerOrdenesCompra(ListadoOrdenCompraDTO ordenescompra, int idProveedor, string fechaInicio, string fechaFin)
+        {
+            ordenescompra.Rows = await _FacturaRepo.ContarOrdenesCompra(idProveedor, fechaInicio, fechaFin);
+            if (ordenescompra.Rows > 0)
+            {
+                ordenescompra.NumPaginas = (ordenescompra.Rows / 10);
 
-        //    await _materialRepo.ActualizarMaterialCotizacion(material);
-        //}
+                if (ordenescompra.Rows % 10 > 0)
+                {
+                    ordenescompra.NumPaginas++;
+                }
+                ordenescompra.Ordenes = _mapper.Map<List<OrdenCompraDTO>>(await _FacturaRepo.ObtenerOrdenesCompra(idProveedor, fechaInicio, fechaFin, ordenescompra.Pagina));
+            }
+            else
+            {
+                ordenescompra.Ordenes = new List<OrdenCompraDTO>();
+            }
+            return ordenescompra;
+        }
     }
 }

@@ -9,11 +9,20 @@ export class PaginaWidget implements OnChanges {
     @Input() numPaginas: number = 0;
     @Input() rows: number = 0;
     @Output('chgEvent') changeEvent = new EventEmitter<number>();
+    bloqueActual: number = 1;
 
     constructor() {}
 
-    makePages(num: number) {
-        return new Array(num);
+    makePages(): number[] {
+        const paginas = [];
+        const inicioBloque = (this.bloqueActual - 1) * 10 + 1;
+        const finBloque = Math.min(this.bloqueActual * 10, this.numPaginas);
+
+        for (let i = inicioBloque; i <= finBloque; i++) {
+            paginas.push(i);
+        }
+
+        return paginas;
     }
 
     toPrev() {
@@ -29,5 +38,19 @@ export class PaginaWidget implements OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
+    }
+
+
+    toPrevBlock() {
+        if (this.bloqueActual > 1) {
+            this.bloqueActual--;
+        }
+    }
+
+    toNextBlock() {
+        const ultimaPaginaBloque = this.bloqueActual * 10;
+        if (ultimaPaginaBloque <= this.numPaginas) {
+            this.bloqueActual++;
+        }
     }
 }

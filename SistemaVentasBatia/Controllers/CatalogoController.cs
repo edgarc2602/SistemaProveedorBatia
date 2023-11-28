@@ -132,5 +132,11 @@ namespace SistemaVentasBatia.Controllers
         {
             return await logic.ObtenerCatalogoClase();
         }
+
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<CatalogoDTO>> ObtenerMeses()
+        {
+            return await logic.ObtenerMeses();
+        }
     }
 }

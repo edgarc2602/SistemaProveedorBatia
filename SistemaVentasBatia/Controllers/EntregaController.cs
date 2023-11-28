@@ -20,12 +20,12 @@ namespace SistemaProveedoresBatia.Controllers
             _logic = logic;
         }
 
-        [HttpGet("[action]/{mes}/{anio}/{idPersonal}/{idEstado}/{tipo}/{pagina}")]
-        public async Task<ActionResult<ListadoMaterialDTO>> ObtenerListados(int mes, int anio, int idPersonal, int idEstado, int tipo, int pagina = 1)
+        [HttpGet("[action]/{mes}/{anio}/{idProveedor}/{idEstado}/{tipo}/{pagina}")]
+        public async Task<ActionResult<ListadoMaterialDTO>> ObtenerListados(int mes, int anio, int idProveedor, int idEstado, int tipo, int pagina = 1)
         {
             ListadoMaterialDTO listados = new ListadoMaterialDTO();
             listados.Pagina = pagina;
-            return await _logic.ObtenerListados(listados,mes,anio,idPersonal,idEstado,tipo);
+            return await _logic.ObtenerListados(listados,mes,anio,idProveedor,idEstado,tipo);
         }
     }
 }
