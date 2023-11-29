@@ -34,9 +34,9 @@ namespace SistemaVentasBatia.Services
             listados.Rows = await _entregaRepo.ContarListados(mes, anio, idProveedor, idEstado, tipo);
             if (listados.Rows > 0)
             {
-                listados.NumPaginas = (listados.Rows / 10);
+                listados.NumPaginas = (listados.Rows / 40);
 
-                if (listados.Rows % 10 > 0)
+                if (listados.Rows % 40 > 0)
                 {
                     listados.NumPaginas++;
                 }

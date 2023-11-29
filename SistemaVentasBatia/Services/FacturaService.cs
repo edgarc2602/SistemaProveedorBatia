@@ -32,9 +32,9 @@ namespace SistemaVentasBatia.Services
             ordenescompra.Rows = await _FacturaRepo.ContarOrdenesCompra(idProveedor, fechaInicio, fechaFin);
             if (ordenescompra.Rows > 0)
             {
-                ordenescompra.NumPaginas = (ordenescompra.Rows / 10);
+                ordenescompra.NumPaginas = (ordenescompra.Rows / 40);
 
-                if (ordenescompra.Rows % 10 > 0)
+                if (ordenescompra.Rows % 40 > 0)
                 {
                     ordenescompra.NumPaginas++;
                 }

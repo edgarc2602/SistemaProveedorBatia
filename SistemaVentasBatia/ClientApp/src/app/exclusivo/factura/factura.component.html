@@ -5,108 +5,112 @@
             <h1 class="h2">Facturas</h1>
         </div>
     </div>
-        <div>
-            <div class="row">
-                <div class="col-md-3 col-7 mb-3">
-                    <div class="form-floating">
-                        <input type="date" class="form-control" [(ngModel)]="fechaInicio" id="fechaInicio" (input)="obtenerOrdenes()">
-                        <label asp-for="fechaInicio">F.Inicio</label>
-                    </div>
+    <div>
+        <div class="row">
+            <div class="col-md-3 col-7 mb-3">
+                <div class="form-floating">
+                    <input type="date" class="form-control" [(ngModel)]="fechaInicio" id="fechaInicio" (input)="obtenerOrdenes()">
+                    <label asp-for="fechaInicio">F.Inicio</label>
                 </div>
-                <div class="col-md-3 col-7 mb-3">
-                    <div class="form-floating">
-                        <input type="date" class="form-control" [(ngModel)]="fechaFin" id="fechaFin" (input)="obtenerOrdenes()">
-                        <label asp-for="fechaFin">F.Fin</label>
-                    </div>
+            </div>
+            <div class="col-md-3 col-7 mb-3">
+                <div class="form-floating">
+                    <input type="date" class="form-control" [(ngModel)]="fechaFin" id="fechaFin" (input)="obtenerOrdenes()">
+                    <label asp-for="fechaFin">F.Fin</label>
                 </div>
-                <!--<div class="col-md-3 col-5 mb-3">
-        <div class="form-floating">
-            <select class="form-select" [(ngModel)]="mes" (change)="obtenerListados()" id="ddlmes">
-                <option value="0">Seleccione ...</option>
-                <option *ngFor="let m of meses" [ngValue]="m.id">{{ m.descripcion }}</option>
-            </select>
-            <label asp-for="ddlmes">Mes</label>
+            </div>
+            <!--<div class="col-md-3 col-5 mb-3">
+                <div class="form-floating">
+                    <select class="form-select" [(ngModel)]="mes" (change)="obtenerListados()" id="ddlmes">
+                        <option value="0">Seleccione ...</option>
+                        <option *ngFor="let m of meses" [ngValue]="m.id">{{ m.descripcion }}</option>
+                    </select>
+                    <label asp-for="ddlmes">Mes</label>
 
+                </div>
+            </div>-->
         </div>
-    </div>-->
+    </div>
+
+
+    <div class="row" style="border-radius: 10px; overflow-x: hidden;">
+        <div style="max-height: 600px; overflow-y: auto;">
+            <div class="row" style="border-radius: 10px; overflow-x: hidden;">
+                <table class="table table-borderless table-striped table-responsive text-start">
+                    <thead>
+                        <tr class="bg-primary bg-opacity-75 text-white">
+                            <th class="ps-2 text-start">Ordenes de compra</th>
+                            <th class="col-md-2">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let orden of model.ordenes">
+                            <td>
+                                <div class="row mb-2">
+                                    <div class="col-md-1 col-sm-6 col-1">
+                                        <span class="badge text-dark">Id:</span>
+                                        <div class="ms-2">{{ orden.idOrden }}</div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6 col-5">
+                                        <span class="badge text-dark">Empresa:</span>
+                                        <div class="ms-2">{{ orden.empresa }}</div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-5">
+                                        <span class="badge text-dark">Cliente:</span>
+                                        <div class="ms-2">{{ orden.cliente }}</div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-5">
+                                        <span class="badge text-dark">Tipo:</span>
+                                        <div class="ms-2">{{ orden.tipo }}</div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-5">
+                                        <span class="badge text-dark">Estatus:</span>
+                                        <div class="ms-2">{{ orden.estatus }}</div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-5">
+                                        <span class="badge text-dark">F.Alta:</span>
+                                        <div class="ms-2">{{ orden.fechaAlta }}</div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6 col-5">
+                                        <span class="badge text-dark">Elabora:</span>
+                                        <div class="ms-2">{{ orden.elabora }}</div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-5">
+                                        <span class="badge text-dark">Total:</span>
+                                        <div class="ms-2">{{ orden.total }}</div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-5">
+                                        <span class="badge text-dark">Observación:</span>
+                                        <div class="ms-2">{{ orden.observacion }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-lg text-primary" (Onclick)="ObtenerListado(orden.idOrden)" data-bs-toggle="tooltip" title="Ver lista">
+                                    <i class="fa-solid fa-list"></i>
+                                </button>
+                                <button type="button" class="btn btn-lg text-secondary" data-bs-toggle="tooltip" title="Ver lista">
+                                    <i class="fa-solid fa-file-circle-check"></i>
+                                </button>
+                                <!--<a *ngIf="cot.total == 0" class="btn btn-sm text-success" (click)="editar(cot.idCotizacion, cot.nombreComercial,cot.servicio)" data-bs-toggle="tooltip" title="Editar">
+                                    <i class="fa-solid fa-pencil fa-2x"></i>
+                                </a>
+                                <a *ngIf="cot.total !== 0" class="btn btn-sm text-white" data-bs-toggle="tooltip" title="Editar" disabled>
+                                    <i class="fa-solid fa-pencil fa-2x" style="color: #ccc;"></i>
+                                </a>-->
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-
-
-        <div class="row" style="border-radius: 10px; overflow-x: hidden;">
-            <table class="table table-borderless table-striped table-responsive text-start">
-                <thead>
-                    <tr class="bg-primary bg-opacity-75 text-white">
-                        <th class="ps-2 text-start">Ordenes de compra</th>
-                        <th class="col-md-2">
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let orden of model.ordenes">
-                        <td>
-                            <div class="row mb-2">
-                                <div class="col-md-1 col-sm-6 col-1">
-                                    <span class="badge text-dark">Id:</span>
-                                    <div class="ms-2">{{ orden.idOrden }}</div>
-                                </div>
-                                <div class="col-md-3 col-sm-6 col-5">
-                                    <span class="badge text-dark">Empresa:</span>
-                                    <div class="ms-2">{{ orden.empresa }}</div>
-                                </div>
-                                <div class="col-md-2 col-sm-6 col-5">
-                                    <span class="badge text-dark">Cliente:</span>
-                                    <div class="ms-2">{{ orden.cliente }}</div>
-                                </div>
-                                <div class="col-md-2 col-sm-6 col-5">
-                                    <span class="badge text-dark">Tipo:</span>
-                                    <div class="ms-2">{{ orden.tipo }}</div>
-                                </div>
-                                <div class="col-md-2 col-sm-6 col-5">
-                                    <span class="badge text-dark">Estatus:</span>
-                                    <div class="ms-2">{{ orden.estatus }}</div>
-                                </div>
-                                <div class="col-md-2 col-sm-6 col-5">
-                                    <span class="badge text-dark">F.Alta:</span>
-                                    <div class="ms-2">{{ orden.fechaAlta }}</div>
-                                </div>
-                                <div class="col-md-4 col-sm-6 col-5">
-                                    <span class="badge text-dark">Elabora:</span>
-                                    <div class="ms-2">{{ orden.elabora }}</div>
-                                </div>
-                                <div class="col-md-2 col-sm-6 col-5">
-                                    <span class="badge text-dark">Total:</span>
-                                    <div class="ms-2">{{ orden.total }}</div>
-                                </div>
-                                <div class="col-md-6 col-sm-6 col-5">
-                                    <span class="badge text-dark">Observación:</span>
-                                    <div class="ms-2">{{ orden.observacion }}</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="text-center">
-                            <button type="button" class="btn btn-lg text-primary" (Onclick)="ObtenerListado(orden.idOrden)" data-bs-toggle="tooltip" title="Ver lista">
-                                <i class="fa-solid fa-list"></i>
-                            </button>
-                            <button type="button" class="btn btn-lg text-secondary" data-bs-toggle="tooltip" title="Ver lista">
-                                <i class="fa-solid fa-file-circle-check"></i>
-                            </button>
-                            <!--<a *ngIf="cot.total == 0" class="btn btn-sm text-success" (click)="editar(cot.idCotizacion, cot.nombreComercial,cot.servicio)" data-bs-toggle="tooltip" title="Editar">
-                            <i class="fa-solid fa-pencil fa-2x"></i>
-                        </a>
-                        <a *ngIf="cot.total !== 0" class="btn btn-sm text-white" data-bs-toggle="tooltip" title="Editar" disabled>
-                            <i class="fa-solid fa-pencil fa-2x" style="color: #ccc;"></i>
-                        </a>-->
-
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <pagina-widget [pagina]="model.pagina" [numPaginas]="model.numPaginas" [rows]="model.rows" (chgEvent)="muevePagina($event)"></pagina-widget>
-        </div>
-        <br />
-        <br />
-        <br />
-        <br />
-        <button type="button" class="btn btn-primary btn-bottom-right box-shadow" (click)="goBack()">Volver</button>
+        <pagina-widget [pagina]="model.pagina" [numPaginas]="model.numPaginas" [rows]="model.rows" (chgEvent)="muevePagina($event)"></pagina-widget>
     </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <button type="button" class="btn btn-primary btn-bottom-right box-shadow" (click)="goBack()">Volver</button>
+</div>

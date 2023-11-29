@@ -29,66 +29,63 @@
 
 
     <div class="row" style="border-radius: 10px; overflow-x: hidden;">
-        <table class="table table-borderless table-striped table-responsive text-center">
-            <thead>
-                <tr class="bg-primary bg-opacity-75 text-white">
-                    <th class="ps-2 text-start">Listados de materiales</th>
-                    <th class="col-md-2">
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let listado of model.listas">
-                    <td>
-                        <div class="row mb-2">
-                            <div class="col-md-1 col-sm-6 col-1">
-                                <span class="badge text-dark">Id:</span>
-                                <div class="ms-2">{{ listado.idInmueble }}</div>
-                            </div>
-                            <div class="col-md-3 col-sm-6 col-5">
-                                <span class="badge text-dark">Sucursal:</span>
-                                <div class="ms-2">{{ listado.nombreSucursal }}</div>
-                            </div>
-                            <div class="col-md-1 col-sm-6 col-5">
-                                <span class="badge text-dark">Listado:</span>
-                                <div class="ms-2">{{ listado.idListado }}</div>
-                            </div>
-                            <div class="col-md-2 col-sm-6 col-5">
-                                <span class="badge text-dark">Tipo:</span>
-                                <div class="ms-2">{{ listado.tipo }}</div>
-                            </div>
-                            <div class="col-md-1 col-sm-6 col-5">
-                                <span class="badge text-dark">Estatus:</span>
-                                <div class="ms-2">{{ listado.estatus }}</div>
-                            </div>
-                            <div class="col-md-2 col-sm-6 col-5">
-                                <span class="badge text-dark">F.Creacion:</span>
-                                <div class="ms-2">{{ listado.fechaAlta }}</div>
-                            </div>
-                            <div class="col-md-2 col-sm-6 col-5">
-                                <span class="badge text-dark">F.Entrega:</span>
-                                <div class="ms-2">{{ listado.fechaEntrega }}</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="text-center">
-                        <button type="button" class="btn btn-lg text-primary" (Onclick)="ObtenerListado(listado.idListado)" data-bs-toggle="tooltip" title="Ver lista">
-                            <i class="fa-solid fa-list"></i>
-                        </button>
-                        <button type="button" class="btn btn-lg text-secondary" data-bs-toggle="tooltip" title="Ver lista">
-                            <i class="fa-solid fa-file-circle-check"></i>
-                        </button>
-                        <!--<a *ngIf="cot.total == 0" class="btn btn-sm text-success" (click)="editar(cot.idCotizacion, cot.nombreComercial,cot.servicio)" data-bs-toggle="tooltip" title="Editar">
-        <i class="fa-solid fa-pencil fa-2x"></i>
-    </a>
-    <a *ngIf="cot.total !== 0" class="btn btn-sm text-white" data-bs-toggle="tooltip" title="Editar" disabled>
-        <i class="fa-solid fa-pencil fa-2x" style="color: #ccc;"></i>
-    </a>-->
-
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div style="max-height: 600px; overflow-y: auto;">
+            <div class="row" style="border-radius: 10px; overflow-x: hidden;">
+                <table class="table table-borderless table-striped table-responsive text-center">
+                    <thead>
+                        <tr class="bg-primary bg-opacity-75 text-white">
+                            <th class="ps-2 text-start">Listados de materiales</th>
+                            <th class="col-md-2">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let listado of model.listas">
+                            <td>
+                                <div class="row mb-2">
+                                    <div class="col-md-1 col-sm-6 col-1">
+                                        <span class="badge text-dark">Id:</span>
+                                        <div class="ms-2">{{ listado.idInmueble }}</div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6 col-5">
+                                        <span class="badge text-dark">Sucursal:</span>
+                                        <div class="ms-2">{{ listado.nombreSucursal }}</div>
+                                    </div>
+                                    <div class="col-md-1 col-sm-6 col-5">
+                                        <span class="badge text-dark">Listado:</span>
+                                        <div class="ms-2">{{ listado.idListado }}</div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-5">
+                                        <span class="badge text-dark">Tipo:</span>
+                                        <div class="ms-2">{{ listado.tipo }}</div>
+                                    </div>
+                                    <div class="col-md-1 col-sm-6 col-5">
+                                        <span class="badge text-dark">Estatus:</span>
+                                        <div class="ms-2">{{ listado.estatus }}</div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-5">
+                                        <span class="badge text-dark">F.Creacion:</span>
+                                        <div class="ms-2">{{ listado.fechaAlta }}</div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-5">
+                                        <span class="badge text-dark">F.Entrega:</span>
+                                        <div class="ms-2">{{ listado.fechaEntrega }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-lg text-primary" (Onclick)="ObtenerListado(listado.idListado)" data-bs-toggle="tooltip" title="Ver lista">
+                                    <i class="fa-solid fa-list"></i>
+                                </button>
+                                <button type="button" class="btn btn-lg text-secondary" data-bs-toggle="tooltip" title="Ver lista">
+                                    <i class="fa-solid fa-file-circle-check"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <pagina-widget [pagina]="model.pagina" [numPaginas]="model.numPaginas" [rows]="model.rows" (chgEvent)="muevePagina($event)"></pagina-widget>
     </div>
     <br />

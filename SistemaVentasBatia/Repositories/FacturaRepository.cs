@@ -53,8 +53,8 @@ where a.id_proveedor = @idProveedor
 AND (@fechaInicio IS NULL OR @fechaFin IS NULL OR falta BETWEEN @fechaInicio AND @fechaFin)
 ) as Ordenes
 WHERE   
-  RowNum >= ((@pagina - 1) * 10) + 1
-  AND RowNum <= (@pagina * 10);
+  RowNum >= ((@pagina - 1) * 40) + 1
+  AND RowNum <= (@pagina * 40);
 ";
             var ordenes = new List<OrdenCompra>();
             try

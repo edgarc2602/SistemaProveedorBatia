@@ -34,7 +34,7 @@ namespace SistemaVentasBatia.Repositories
             string query = @"
 SELECT * FROM (
 SELECT 
-ROW_NUMBER() OVER ( ORDER BY a.nombre desc ) AS RowNum,
+ROW_NUMBER() OVER ( ORDER BY a.nombre ) AS RowNum,
 a.id_inmueble AS IdInmueble, 
 a.nombre AS NombreSucursal, 
 isnull(b.id_listado,0) AS IdListado, 
@@ -70,8 +70,8 @@ b.id_status,
 d.descripcion, 
 fentrega
 ) as Listado
-WHERE   RowNum >= ((@pagina - 1) * 10) + 1
-AND RowNum <= (@pagina * 10)
+WHERE   RowNum >= ((@pagina - 1) * 40) + 1
+AND RowNum <= (@pagina * 40)
 ORDER BY RowNum
 ";
             var listado = new List<Listados>();
@@ -96,7 +96,7 @@ ORDER BY RowNum
 SELECT COUNT(*) AS TotalRows
 FROM (
     SELECT 
-ROW_NUMBER() OVER ( ORDER BY a.nombre desc ) AS RowNum,
+ROW_NUMBER() OVER ( ORDER BY a.nombre ) AS RowNum,
 a.id_inmueble AS IdInmueble, 
 a.nombre AS NombreSucursal, 
 isnull(b.id_listado,0) AS IdListado, 
