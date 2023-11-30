@@ -24,6 +24,8 @@ namespace SistemaVentasBatia
             CreateMap<ListadosDTO, Listados>();
             CreateMap<OrdenCompraDTO, OrdenCompra>();
             CreateMap<OrdenCompra, OrdenCompraDTO>();
+            CreateMap<DetalleMaterial, DetalleMaterialDTO>();
+            CreateMap<DetalleMaterialDTO, DetalleMaterial>();
         }
     }
 }

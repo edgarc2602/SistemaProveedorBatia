@@ -13,8 +13,6 @@ import { LatMenuComponent } from './exclusivo/menu/latmenu.component';
 import { PaginaWidget } from './widgets/paginador/paginador.widget';
 import { ToastWidget } from './widgets/toast/toast.widget';
 import { EliminaWidget } from './widgets/elimina/elimina.widget';
-
-
 import { StoreUser } from './stores/StoreUser';
 import { CommonModule } from '@angular/common';
 
@@ -24,6 +22,8 @@ import { DashboardComponent } from './exclusivo/dashboard/dashboard.component';
 import { EstadoDeCuentaComponent } from './exclusivo/estadodecuenta/estadodecuenta.component';
 import { EntregaComponent } from './exclusivo/entrega/entrega.component';
 import { FacturaComponent } from './exclusivo/factura/factura.component';
+import { DetalleMaterialesListadoWidget } from './widgets/detallematerialeslistado/detallematerialeslistado.widget';
+import { CargarAcuseEntregaWidget } from './widgets/cargaracuseentrega/cargaracuseentrega.widget';
 
 @NgModule({
     declarations: [
@@ -38,11 +38,14 @@ import { FacturaComponent } from './exclusivo/factura/factura.component';
         PaginaWidget,
         ToastWidget,
         EliminaWidget,
+        DetalleMaterialesListadoWidget,
+        CargarAcuseEntregaWidget,
 
         DashboardComponent,
         EstadoDeCuentaComponent,
         EntregaComponent,
         FacturaComponent
+        
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

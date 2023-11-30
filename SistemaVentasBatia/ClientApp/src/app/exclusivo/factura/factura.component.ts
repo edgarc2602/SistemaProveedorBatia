@@ -58,7 +58,9 @@ export class FacturaComponent {
         this.fechaInicio = this.obtenerPrimerDiaDelMes();
         this.fechaFin = this.obtenerDiaActual();
     }
+    imprimirOrden(idOrden: number) {
 
+    }
 
 }
 

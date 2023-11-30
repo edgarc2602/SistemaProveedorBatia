@@ -2,10 +2,9 @@
     <br />
     <div class="row pt-1 mb-3">
         <div>
-            <h1 class="h2">Entregas</h1>
+            <h1 class="h2">Listados de materiales</h1>
         </div>
     </div>
-
     <div>
         <div class="row">
             <div class="col-md-3 col-7 mb-3">
@@ -17,7 +16,7 @@
             <div class="col-md-3 col-5 mb-3">
                 <div class="form-floating">
                     <select class="form-select" [(ngModel)]="mes" (change)="obtenerListados()" id="ddlmes">
-                        <option value="0">Seleccione ...</option>
+                        <!--<option value="0">Seleccione ...</option>-->
                         <option *ngFor="let m of meses" [ngValue]="m.id">{{ m.descripcion }}</option>
                     </select>
                     <label asp-for="ddlmes">Mes</label>
@@ -26,71 +25,109 @@
             </div>
         </div>
     </div>
-
-
     <div class="row" style="border-radius: 10px; overflow-x: hidden;">
-        <div style="max-height: 600px; overflow-y: auto;">
-            <div class="row" style="border-radius: 10px; overflow-x: hidden;">
+        <div style="max-height: 450px; overflow-y: auto;">
+            <div class="row">
                 <table class="table table-borderless table-striped table-responsive text-center">
-                    <thead>
-                        <tr class="bg-primary bg-opacity-75 text-white">
-                            <th class="ps-2 text-start">Listados de materiales</th>
-                            <th class="col-md-2">
-                            </th>
+                    <thead class="sticky-top text-white d-md-none" style="background-color: #4a92fe; color: #fff;">
+                        <tr class="text-start text-white sticky-top">
+                            <th>Listados</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <thead class="sticky-top text-white">
+                        <tr style="background-color: #4a92fe; color: #fff;">
+                            <td>
+                                <div class="row" style="font-weight: bold;">
+                                    <div class="col-md-1 col-sm-6 col-2">
+                                        <span class="text-white d-none d-md-block">Id</span>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-8">
+                                        <span class="text-white d-none d-md-block">Sucursal</span>
+                                    </div>
+                                    <div class="col-md-1 col-sm-6 col-2">
+                                        <span class="text-white d-none d-md-block">Listado</span>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-3">
+                                        <span class="text-white d-none d-md-block">Tipo</span>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-3">
+                                        <span class="text-white d-none d-md-block">Estatus</span>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-3">
+                                        <span class="text-white d-none d-md-block">F.Creación</span>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-3">
+                                        <span class="text-white d-none d-md-block">F.Entrega</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <div class="col-md-12 col-sm-12 col-12">
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let listado of model.listas">
                             <td>
-                                <div class="row mb-2">
-                                    <div class="col-md-1 col-sm-6 col-1">
-                                        <span class="badge text-dark">Id:</span>
+                                <div class="row">
+                                    <div class="col-md-1 col-sm-6 col-2">
+                                        <span class="badge text-dark d-md-none">Id:</span>
                                         <div class="ms-2">{{ listado.idInmueble }}</div>
                                     </div>
-                                    <div class="col-md-3 col-sm-6 col-5">
-                                        <span class="badge text-dark">Sucursal:</span>
+                                    <div class="col-md-2 col-sm-6 col-8">
+                                        <span class="badge text-dark d-md-none">Sucursal:</span>
                                         <div class="ms-2">{{ listado.nombreSucursal }}</div>
                                     </div>
-                                    <div class="col-md-1 col-sm-6 col-5">
-                                        <span class="badge text-dark">Listado:</span>
+                                    <div class="col-md-1 col-sm-6 col-2">
+                                        <span class="badge text-dark d-md-none">Listado:</span>
                                         <div class="ms-2">{{ listado.idListado }}</div>
                                     </div>
-                                    <div class="col-md-2 col-sm-6 col-5">
-                                        <span class="badge text-dark">Tipo:</span>
+                                    <div class="col-md-2 col-sm-6 col-3">
+                                        <span class="badge text-dark d-md-none">Tipo:</span>
                                         <div class="ms-2">{{ listado.tipo }}</div>
                                     </div>
-                                    <div class="col-md-1 col-sm-6 col-5">
-                                        <span class="badge text-dark">Estatus:</span>
+                                    <div class="col-md-2 col-sm-6 col-3">
+                                        <span class="badge text-dark d-md-none">Estatus:</span>
                                         <div class="ms-2">{{ listado.estatus }}</div>
                                     </div>
-                                    <div class="col-md-2 col-sm-6 col-5">
-                                        <span class="badge text-dark">F.Creacion:</span>
+                                    <div class="col-md-2 col-sm-6 col-3">
+                                        <span class="badge text-dark d-md-none">F.Creacion:</span>
                                         <div class="ms-2">{{ listado.fechaAlta }}</div>
                                     </div>
-                                    <div class="col-md-2 col-sm-6 col-5">
-                                        <span class="badge text-dark">F.Entrega:</span>
+                                    <div class="col-md-2 col-sm-6 col-3">
+                                        <span class="badge text-dark d-md-none">F.Entrega:</span>
                                         <div class="ms-2">{{ listado.fechaEntrega }}</div>
                                     </div>
                                 </div>
                             </td>
                             <td class="text-center">
-                                <button type="button" class="btn btn-lg text-primary" (Onclick)="ObtenerListado(listado.idListado)" data-bs-toggle="tooltip" title="Ver lista">
-                                    <i class="fa-solid fa-list"></i>
-                                </button>
-                                <button type="button" class="btn btn-lg text-secondary" data-bs-toggle="tooltip" title="Ver lista">
-                                    <i class="fa-solid fa-file-circle-check"></i>
-                                </button>
+                                <div>
+                                    <div class="col-12 col-md-12 col-sm-12">
+                                        <button type="button" class="btn btn-lg text-primary" (click)="obtenerMateriales(listado.idListado, listado.nombreSucursal, listado.tipo)" data-bs-toggle="tooltip" title="Ver lista">
+                                            <i class="fa-solid fa-list"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-lg text-secondary" (click)="verAcuses(listado.idListado, listado.nombreSucursal, listado.tipo)" data-bs-toggle="tooltip" title="Acuse">
+                                            <i class="fa-solid fa-file-circle-check"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        <pagina-widget [pagina]="model.pagina" [numPaginas]="model.numPaginas" [rows]="model.rows" (chgEvent)="muevePagina($event)"></pagina-widget>
     </div>
     <br />
+    <pagina-widget [pagina]="model.pagina" [numPaginas]="model.numPaginas" [rows]="model.rows" (chgEvent)="muevePagina($event)"></pagina-widget>
     <br />
     <br />
     <br />
     <button type="button" class="btn btn-primary btn-bottom-right box-shadow" (click)="goBack()">Volver</button>
 </div>
+<detallematerialeslistado-widget></detallematerialeslistado-widget>
+<cargaracuseentrega-widget></cargaracuseentrega-widget>

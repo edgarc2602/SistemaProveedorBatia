@@ -33,7 +33,7 @@ namespace SistemaVentasBatia.Repositories
             var query = @"
 SELECT * FROM (
 SELECT 
-ROW_NUMBER() over (order by a.falta DESC, b.nombre, c.nombre ) as rownum, 
+ROW_NUMBER() over (order by id_orden ) as rownum, 
 id_orden IdOrden,
 case when a.tipo = 1 then 'Materiales' else 'Servicios' end as Tipo,
 e.descripcion as Estatus, 
@@ -77,7 +77,7 @@ WHERE
 SELECT COUNT(*) AS TotalRows
 FROM (
 Select  
-ROW_NUMBER() over (order by a.falta, b.nombre, c.nombre ) as rownum, 
+ROW_NUMBER() over (order by id_orden ) as rownum, 
 id_orden IdOrden,
 case when a.tipo = 1 then 'Materiales' else 'Servicios' end as Tipo,
 e.descripcion as Estatus, 

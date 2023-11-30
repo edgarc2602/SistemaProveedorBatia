@@ -19,6 +19,7 @@ namespace SistemaVentasBatia.Repositories
     {
         Task<int> ContarListados(int mes, int anio, int idProveedor, int idEstado, int tipo);
         Task<List<Listados>> ObtenerListados(int mes, int anio, int idProveedor, int idEstado, int tipo, int pagina);
+        Task<List<DetalleMaterial>> ObtenerMaterialesListado(int idListado);
     }
 
     public class EntregaRepository : IEntregaRepository
@@ -29,12 +30,70 @@ namespace SistemaVentasBatia.Repositories
         {
             _ctx = context;
         }
+        public async Task<int> ContarListados(int mes, int anio, int idProveedor, int idEstado, int tipo)
+        {
+            var query = @"
+SELECT COUNT(*) AS TotalRows
+FROM (
+    SELECT 
+ROW_NUMBER() OVER ( ORDER BY b.id_listado) AS RowNum,
+a.id_inmueble AS IdInmueble, 
+a.nombre AS NombreSucursal, 
+isnull(b.id_listado,0) AS IdListado, 
+isnull(d.descripcion,'') AS Tipo, 
+case 
+when b.id_status = 1 Then 'Alta' 
+when b.id_status = 2 then 'Aprobado'
+when b.id_status = 3 then 'Despachado' 
+when b.id_status = 4 then 'Entregado' 
+when b.id_status = 5 then 'Cancelado' 
+else 'No existe' end AS Estatus,
+convert(varchar(12), b.falta, 103) AS FechaAlta,
+cast(isnull(SUM(c.cantidad * c.precio),0) as numeric(12,2)) AS Utilizado, 
+convert(varchar(12), fentrega, 103) AS FechaEntrega
+from tb_cliente_inmueble a 
+left outer join tb_listadomaterial b on a.id_inmueble = b.id_inmueble
+left outer join tb_listadomateriald c on b.id_listado = c.id_listado 
+left outer join tb_tipolistado d on b.tipo = d.id_tipo
+inner join tb_proveedorinmueble e ON e.id_inmueble = a.id_inmueble
+WHERE e.id_proveedor = @idProveedor and a.id_status = 1 and a.materiales = 0
+-- and
+--ISNULL(NULLIF(0,0), a.id_cliente) = a.id_cliente
+AND
+ISNULL(NULLIF(@idEstado,0), a.id_estado) = a.id_estado AND
+ISNULL(NULLIF(@tipo,0), d.id_tipo) = d.id_tipo AND
+ISNULL(NULLIF(@mes,0), b.mes) = b.mes AND
+ISNULL(NULLIF(@anio,0), b.anio) = b.anio
+group by 
+a.id_inmueble, 
+a.nombre, b.falta, 
+b.id_listado, 
+b.id_status, 
+d.descripcion, 
+fentrega
+) AS TotalRowCount;
+";
+            var rows = 0;
+            try
+            {
+                using (var connection = _ctx.CreateConnection())
+                {
+                    rows = await connection.QuerySingleAsync<int>(query, new { mes, anio, idProveedor, idEstado, tipo });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return rows;
+        }
+
         public async Task<List<Listados>> ObtenerListados(int mes, int anio, int idProveedor, int idEstado, int tipo, int pagina)
         {
             string query = @"
 SELECT * FROM (
 SELECT 
-ROW_NUMBER() OVER ( ORDER BY a.nombre ) AS RowNum,
+ROW_NUMBER() OVER ( ORDER BY b.id_listado ) AS RowNum,
 a.id_inmueble AS IdInmueble, 
 a.nombre AS NombreSucursal, 
 isnull(b.id_listado,0) AS IdListado, 
@@ -90,62 +149,37 @@ ORDER BY RowNum
             return listado;
         }
 
-        public async Task<int> ContarListados(int mes, int anio, int idProveedor, int idEstado, int tipo)
+        public async Task <List<DetalleMaterial>> ObtenerMaterialesListado(int idListado)
         {
-            var query = @"
-SELECT COUNT(*) AS TotalRows
-FROM (
-    SELECT 
-ROW_NUMBER() OVER ( ORDER BY a.nombre ) AS RowNum,
-a.id_inmueble AS IdInmueble, 
-a.nombre AS NombreSucursal, 
-isnull(b.id_listado,0) AS IdListado, 
-isnull(d.descripcion,'') AS Tipo, 
-case 
-when b.id_status = 1 Then 'Alta' 
-when b.id_status = 2 then 'Aprobado'
-when b.id_status = 3 then 'Despachado' 
-when b.id_status = 4 then 'Entregado' 
-when b.id_status = 5 then 'Cancelado' 
-else 'No existe' end AS Estatus,
-convert(varchar(12), b.falta, 103) AS FechaAlta,
-cast(isnull(SUM(c.cantidad * c.precio),0) as numeric(12,2)) AS Utilizado, 
-convert(varchar(12), fentrega, 103) AS FechaEntrega
-from tb_cliente_inmueble a 
-left outer join tb_listadomaterial b on a.id_inmueble = b.id_inmueble
-left outer join tb_listadomateriald c on b.id_listado = c.id_listado 
-left outer join tb_tipolistado d on b.tipo = d.id_tipo
-inner join tb_proveedorinmueble e ON e.id_inmueble = a.id_inmueble
-WHERE e.id_proveedor = @idProveedor and a.id_status = 1 and a.materiales = 0
--- and
---ISNULL(NULLIF(0,0), a.id_cliente) = a.id_cliente
-AND
-ISNULL(NULLIF(@idEstado,0), a.id_estado) = a.id_estado AND
-ISNULL(NULLIF(@tipo,0), d.id_tipo) = d.id_tipo AND
-ISNULL(NULLIF(@mes,0), b.mes) = b.mes AND
-ISNULL(NULLIF(@anio,0), b.anio) = b.anio
-group by 
-a.id_inmueble, 
-a.nombre, b.falta, 
-b.id_listado, 
-b.id_status, 
-d.descripcion, 
-fentrega
-) AS TotalRowCount;
+            string query = @"
+SELECT
+a.id_listado IdListado,
+a.clave Clave,
+b.descripcion Descripcion,
+c.descripcion Unidad,
+a.cantidad Cantidad,
+a.precio Precio,
+a.precio * a.cantidad AS Total
+FROM tb_listadomateriald a
+INNER JOIN tb_producto b ON a.clave = b.clave
+INNER JOIN tb_unidadmedida c ON b.id_unidad = c.id_unidad
+WHERE id_listado = @idListado
+ORDER BY b.descripcion
 ";
-            var rows = 0;
+            var materiales = new List<DetalleMaterial>();
             try
             {
                 using (var connection = _ctx.CreateConnection())
                 {
-                    rows = await connection.QuerySingleAsync<int>(query, new { mes, anio, idProveedor, idEstado, tipo });
+                    materiales = (await connection.QueryAsync<DetalleMaterial>(query, new { idListado })).ToList(); 
                 }
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            return rows;
+            return materiales;
         }
+
     }
 }

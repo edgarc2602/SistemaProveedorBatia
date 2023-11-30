@@ -1,32 +1,4 @@
-<nav *ngIf="numPaginas <= 10" aria-label="Page navigation example">
-    <ul class="pagination">
-        <li class="page-item" [ngClass]="{'disabled': pagina == 1}">
-            <a class="page-link" aria-label="Previous" (click)="toPrev()">
-                <i class="fa-solid fa-chevron-left"></i>
-            </a>
-        </li>
-        <li *ngFor="let i of makePages(10); let j = index" [ngClass]="{'active': pagina === (bloqueActual - 1) * 10 + j + 1}" class="page-item">
-            <a class="page-link" (click)="move((bloqueActual - 1) * 10 + j + 1)">
-                {{ (bloqueActual - 1) * 10 + j + 1 }}
-            </a>
-        </li>
-
-        <li [ngClass]="{'disabled': pagina == numPaginas}" class="page-item">
-            <a class="page-link" aria-label="Next" (click)="toNext()">
-                <i class="fa-solid fa-chevron-right"></i>
-            </a>
-        </li>
-        <li class="page-item">
-            <div class="page-link">{{ rows }} Registros</div>
-        </li>
-    </ul>
-    <!--<div>
-        <button class="btn btn-link" [disabled]="bloqueActual === 1" (click)="toPrevBlock()">Bloque Anterior</button>
-        <button class="btn btn-link" [disabled]="(bloqueActual * 10) >= numPaginas" (click)="toNextBlock()">Siguiente Bloque</button>
-    </div>-->
-</nav>
-
-<nav *ngIf="numPaginas > 10" aria-label="Page navigation example">
+<nav aria-label="Page navigation example">
     <ul class="pagination">
         <li class="page-item" [ngClass]="{'disabled': bloqueActual === 1}">
             <a class="page-link" aria-label="Previous" (click)="toPrevBlock()">
@@ -38,9 +10,9 @@
                 <i class="fa-solid fa-chevron-left"></i>
             </a>
         </li>
-        <li *ngFor="let i of makePages(10); let j = index" [ngClass]="{'active': pagina === (bloqueActual - 1) * 10 + j + 1}" class="page-item">
-            <a class="page-link" (click)="move((bloqueActual - 1) * 10 + j + 1)">
-                {{ (bloqueActual - 1) * 10 + j + 1 }}
+        <li *ngFor="let i of makePages(); let j = index" [ngClass]="{'active': pagina === (bloqueActual - 1) * 5 + j + 1}" class="page-item">
+            <a class="page-link" (click)="move((bloqueActual - 1) * 5 + j + 1)">
+                {{ (bloqueActual - 1) * 5 + j + 1 }}
             </a>
         </li>
 
@@ -49,7 +21,7 @@
                 <i class="fa-solid fa-chevron-right"></i>
             </a>
         </li>
-        <li class="page-item" [ngClass]="{'disabled': (bloqueActual * 10) >= numPaginas}">
+        <li class="page-item" [ngClass]="{'disabled': (bloqueActual * 5) >= numPaginas}">
             <a class="page-link" aria-label="Next" (click)="toNextBlock()">
                 <i class="fa-solid fa-angles-right"></i>
             </a>
@@ -60,6 +32,6 @@
     </ul>
     <!--<div>
         <button class="btn btn-outline-primary btn-sm" [disabled]="bloqueActual === 1" (click)="toPrevBlock()">Bloque Anterior</button>
-        <button class="btn btn-outline-primary btn-sm" [disabled]="(bloqueActual * 10) >= numPaginas" (click)="toNextBlock()">Siguiente Bloque</button>
+        <button class="btn btn-outline-primary btn-sm" [disabled]="(bloqueActual * 5) >= numPaginas" (click)="toNextBlock()">Siguiente Bloque</button>
     </div>-->
 </nav>

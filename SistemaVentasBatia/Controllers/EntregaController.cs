@@ -27,5 +27,11 @@ namespace SistemaProveedoresBatia.Controllers
             listados.Pagina = pagina;
             return await _logic.ObtenerListados(listados,mes,anio,idProveedor,idEstado,tipo);
         }
+
+        [HttpGet("[action]/{idListado}")]
+        public async Task <List<DetalleMaterialDTO>> ObtenerMaterialesListado(int idListado)
+        {
+            return await _logic.ObtenerMaterialesListado(idListado);
+        }
     }
 }

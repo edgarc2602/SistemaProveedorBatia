@@ -17,6 +17,7 @@ namespace SistemaVentasBatia.Services
     {
         
         Task<ListadoMaterialDTO> ObtenerListados(ListadoMaterialDTO listados, int mes, int anio, int idProveedor, int idEstado, int tipo);
+        Task<List<DetalleMaterialDTO>> ObtenerMaterialesListado(int idListado);
     }
 
     public class EntregaService : IEntregaService
@@ -47,6 +48,13 @@ namespace SistemaVentasBatia.Services
                 listados.Listas = new List<ListadosDTO>();
             }
             return listados;
+        }
+
+        public async Task<List<DetalleMaterialDTO>> ObtenerMaterialesListado(int idListado)
+        {
+            var materiales = new List<DetalleMaterialDTO>();
+            materiales = _mapper.Map<List<DetalleMaterialDTO>>(await _entregaRepo.ObtenerMaterialesListado(idListado));
+            return materiales;
         }
     }
 }

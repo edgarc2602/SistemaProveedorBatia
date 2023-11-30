@@ -15,8 +15,8 @@ export class PaginaWidget implements OnChanges {
 
     makePages(): number[] {
         const paginas = [];
-        const inicioBloque = (this.bloqueActual - 1) * 10 + 1;
-        const finBloque = Math.min(this.bloqueActual * 10, this.numPaginas);
+        const inicioBloque = (this.bloqueActual - 1) * 5 + 1;
+        const finBloque = Math.min(this.bloqueActual * 5, this.numPaginas);
 
         for (let i = inicioBloque; i <= finBloque; i++) {
             paginas.push(i);
@@ -48,7 +48,7 @@ export class PaginaWidget implements OnChanges {
     }
 
     toNextBlock() {
-        const ultimaPaginaBloque = this.bloqueActual * 10;
+        const ultimaPaginaBloque = this.bloqueActual * 5;
         if (ultimaPaginaBloque <= this.numPaginas) {
             this.bloqueActual++;
         }
