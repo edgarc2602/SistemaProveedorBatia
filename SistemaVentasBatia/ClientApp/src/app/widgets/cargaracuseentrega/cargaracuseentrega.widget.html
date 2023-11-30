@@ -6,9 +6,8 @@
             <meta charset="UTF-8">
 
             <!-- Modal Header -->
-            <div class="modal-header">
+            <div class="modal-header justify-content-center">
                 <h4 class="modal-title">Cargar acuse de entrega</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
             <!-- Modal body -->
@@ -17,38 +16,69 @@
                 <h6 class="modal-title">Punto de atención: {{sucursal}}</h6>
                 <h6 class="modal-title">Tipo: {{tipo}}</h6>
                 <br />
-                <!--<div class="row" style="border-radius: 10px; overflow-x: hidden;">
-                    <div style="max-height: 250px; overflow-y: auto;">
-                        <div class="row" style="border-radius: 10px; overflow-x: hidden;">
+                <div class="row" style="border-radius: 10px; overflow-x: hidden;">
+                    <div style="max-height: 250px; max-width:auto; overflow-y: auto; overflow-x: hidden">
+                        <div class="row">
                             <table class="table table-borderless table-striped table-responsive text-center">
-                                <thead>
-                                    <tr class="bg-primary bg-opacity-75 text-white col-1 text-center">
-                                        <th>Clave</th>
-                                        <th>Descripción</th>
-                                        <th>Unidad</th>
-                                        <th>Cantidad</th>
-                                        <th>Precio</th>
-                                        <th>Total</th>
+                                <thead class="sticky-top text-white" style="background-color: #4a92fe; color: #fff; border-radius: 10px; ">
+                                    <tr class="col-1 text-center">
+                                        <!--<th>Carpeta</th>-->
+                                        <th>Acuse</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let mat of model">
-                                        <td> {{mat.clave}}</td>
-                                        <td> {{mat.descripcion}}</td>
-                                        <td> {{mat.unidad}}</td>
-                                        <td> {{mat.cantidad}}</td>
-                                        <td> {{mat.precio}}</td>
-                                        <td> {{mat.total}}</td>
+                                    <tr *ngFor="let acu of model.acuses">
+                                        <!--<td> {{acu.carpeta}}</td>-->
+                                        <td> {{acu.archivo}}</td>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-12 col-md-12 col-sm-12">
+                                                    <button type="button" class="btn btn-lg text-primary" (click)="getImage(acu.archivo, acu.carpeta)" data-bs-toggle="tooltip" title="Ver">
+                                                        <i class="fa-solid fa-eye" style="color: #565658;"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-lg text-secondary" (click)="eliminaAcuse(acu.archivo)" data-bs-toggle="tooltip" title="Eliminar">
+                                                        <i class="fa-solid fa-trash" style="color: #ff0000;"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                </div>-->
+                </div>
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <input type="file" (change)="onFileSelected($event)" #fileInput style="display:none" accept="image/*, application/pdf, .doc, .docx, .txt">
+                        <button type="button" class="btn btn-outline-primary mb-2" (click)="fileInput.click()">
+                            <i class="fa-solid fa-magnifying-glass me-1"></i>
+                            Seleccionar acuse
+                        </button>
+                        <button type="button" class="btn bg-danger text-white" (click)="limpiarDocumento()">
+                            <i class="fa-regular fa-file-excel"></i>
+                            Eliminar acuse seleccionado
+                        </button>
+
+                    </div>
+                    <div class="col-md-4">
+                        <div *ngIf="selectedFileName" class="mt-2">
+                            Acuse seleccionado: {{ selectedFileName }}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-outline-success" (click)="guardarArchivo()">
+                            <i class="fa-solid fa-plus"></i>
+                            Agregar
+                        </button>
+                    </div>
+                </div>
             </div>
+
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-primary" (click)="concluirEntrega()" id="btnEliminarSbmt">ConcluirEntrega</button>
+                <!--<button type="button" class="btn btn-outline-primary" (click)="concluirEntrega()" id="btnEliminarSbmt">ConcluirEntrega</button>-->
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
 

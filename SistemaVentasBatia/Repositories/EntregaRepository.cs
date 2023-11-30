@@ -20,6 +20,7 @@ namespace SistemaVentasBatia.Repositories
         Task<int> ContarListados(int mes, int anio, int idProveedor, int idEstado, int tipo);
         Task<List<Listados>> ObtenerListados(int mes, int anio, int idProveedor, int idEstado, int tipo, int pagina);
         Task<List<DetalleMaterial>> ObtenerMaterialesListado(int idListado);
+        Task<List<AcuseEntrega>> ObtieneAcusesListado(int idListado);
     }
 
     public class EntregaRepository : IEntregaRepository
@@ -181,5 +182,30 @@ ORDER BY b.descripcion
             return materiales;
         }
 
+        public async Task<List<AcuseEntrega>> ObtieneAcusesListado(int idListado)
+        {
+            var query = @"
+SELECT 
+id_listado IdListado,
+carpeta Carpeta,
+archivo Archivo,
+tamano Tamano
+FROM tb_listadomateriala
+WHERE id_listado = @idListado
+";
+            var acuses = new List<AcuseEntrega>();
+            try
+            {
+                using (var connection = _ctx.CreateConnection())
+                {
+                    acuses = (await connection.QueryAsync<AcuseEntrega>(query, new { idListado })).ToList();    
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            return acuses;
+        }
     }
 }
