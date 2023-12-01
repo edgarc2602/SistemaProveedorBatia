@@ -19,6 +19,7 @@ namespace SistemaVentasBatia.Services
         Task<ListadoMaterialDTO> ObtenerListados(ListadoMaterialDTO listados, int mes, int anio, int idProveedor, int idEstado, int tipo);
         Task<List<DetalleMaterialDTO>> ObtenerMaterialesListado(int idListado);
         Task<ListadoAcuseEntregaDTO> ObtenerAcusesListado(int idListado);
+        Task<bool> InsertaAcuse(int idListado, string carpeta, string archivo);
     }
 
     public class EntregaService : IEntregaService
@@ -67,6 +68,11 @@ namespace SistemaVentasBatia.Services
             listadoAcuses.IdListado = idListado;
             listadoAcuses.Carpeta = acuses[0].Carpeta;
             return listadoAcuses;
+        }
+
+        public async Task<bool> InsertaAcuse(int idListado, string carpeta, string archivo)
+        {
+            return await _entregaRepo.InsertaAcuse(idListado, carpeta, archivo);
         }
     }
 }

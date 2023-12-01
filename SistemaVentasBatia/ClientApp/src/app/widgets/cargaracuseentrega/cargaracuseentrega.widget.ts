@@ -88,7 +88,7 @@ export class CargarAcuseEntregaWidget {
             const formData = new FormData();
             formData.append('file', this.selectedFile);
 
-            this.http.post<boolean>(`${this.url}api/entrega/guardaracuse`, formData).subscribe((response) => {
+            this.http.post<boolean>(`${this.url}api/entrega/guardaracuse/${this.model.idListado}/${this.selectedFileName}`, formData).subscribe((response) => {
                 console.log('Archivo guardado con éxito:', response);
             }, (error) => {
                 console.error('Error al guardar el archivo:', error);

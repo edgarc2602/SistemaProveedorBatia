@@ -42,34 +42,6 @@ namespace SistemaProveedoresBatia.Controllers
             return await _logic.ObtenerAcusesListado(idListado);
         }
 
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GuardarAcuse([FromBody] IFormFile formData)
-        {
-            try
-            {
-                if (formData == null || formData.Length == 0)
-                {
-                    return BadRequest("No se ha recibido ningún archivo.");
-                }
-
-                // Procesar el archivo, por ejemplo, guardarlo en el servidor
-                var filePath = Path.Combine("RUTA_DE_TU_CARPETA_DESTINO", formData.FileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await formData.CopyToAsync(stream);
-                }
-
-                // Realizar otras operaciones con el archivo si es necesario
-
-                return Ok("Archivo guardado con éxito.");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Error al guardar el archivo: {ex.Message}");
-            }
-            //return await _logic.GuardarAcuse(formData);
-        }
 
         private readonly string _imageFolderPath = "C:/Users/LAP_Sistemas5/Desktop/SINGA_NEW/Doctos/entrega/";
 
@@ -84,6 +56,65 @@ namespace SistemaProveedoresBatia.Controllers
             }
             var imageBytes = System.IO.File.ReadAllBytes(imagePath);
             return File(imageBytes, "image/jpeg"); // Asegúrate de que el tipo MIME sea correcto para tu imagen
+        }
+
+
+
+        [HttpPost("[action]/{idListado}/{selectedFileName}")]
+        public async Task<bool> GuardarAcuse(int idListado, string selectedFileName, IFormFile file)
+        {
+            string carpeta = "F" + DateTime.Now.ToString("yyyy_MM");
+            bool result;
+            string directorio = _imageFolderPath + '/' + carpeta;
+
+            if (Directory.Exists(directorio))
+            {
+                try
+                {
+                    if (file == null || file.Length == 0)
+                    {
+                        throw new Exception();
+                    }
+
+                    var filePath = Path.Combine(directorio, file.FileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                        result = await _logic.InsertaAcuse(idListado, carpeta, selectedFileName);
+                    }
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            else
+            {
+                Directory.CreateDirectory(directorio);
+                try
+                {
+                    if (file == null || file.Length == 0)
+                    {
+                        throw new Exception();
+                    }
+
+                    var filePath = Path.Combine(directorio, file.FileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                        result = await _logic.InsertaAcuse(idListado, carpeta, selectedFileName);
+                    }
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            
         }
     }
 }
