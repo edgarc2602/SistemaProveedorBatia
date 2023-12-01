@@ -1,7 +1,5 @@
-import { Component, OnChanges, Output, EventEmitter, SimpleChanges, Inject } from '@angular/core';
+import { Component, OnChanges, Output, EventEmitter, Inject, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { DetalleMaterial } from '../../models/detallematerial';
-import { AcuseEntrega } from '../../models/acuseentrega';
 import { ListadoAcuseEntrega } from '../../models/listadoacuseentrega';
 declare var bootstrap: any;
 
@@ -10,7 +8,9 @@ declare var bootstrap: any;
     templateUrl: './cargaracuseentrega.widget.html'
 })
 export class CargarAcuseEntregaWidget {
+    @ViewChild('fileInput', { static: false }) fileInput!: ElementRef;
     @Output('ansEvent') sendEvent = new EventEmitter<boolean>();
+
     model: ListadoAcuseEntrega = {
         acuses: [], carpeta: '', idListado: 0
     }
@@ -20,13 +20,16 @@ export class CargarAcuseEntregaWidget {
     selectedFileName: string | null = null;
     selectedFile: File | null = null;
     public imageUrl: string = '';
+    formato: string = '';
 
     constructor(@Inject('BASE_URL') private url: string, private http: HttpClient) { }
-
     nuevo() {
         this.model = {
             acuses: [], carpeta: '', idListado: 0
         }
+        this.selectedFileName = null;
+        this.selectedFile = null;
+        this.resetFileInput();
     }
 
     open(idListado: number, sucursal: string, tipo: string) {
@@ -72,6 +75,7 @@ export class CargarAcuseEntregaWidget {
 
     limpiarDocumento() {
         this.selectedFileName = null;
+        this.resetFileInput();
     }
 
     onFileSelected(event: any): void {
@@ -95,17 +99,54 @@ export class CargarAcuseEntregaWidget {
     }
 
 
+    openDocument(archivo: string, carpeta: string) {
+        this.getImage(archivo, carpeta);
+    }
+
     getImage(archivo: string, carpeta: string) {
         this.http.get(`${this.url}api/entrega/getimage/${archivo}/${carpeta}`, { responseType: 'blob' })
             .subscribe((data: Blob) => {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    this.imageUrl = reader.result as string;
-                };
-                reader.readAsDataURL(data);
+                const extension = this.obtenerExtension(archivo);
+                switch (extension) {
+                    case 'pdf':
+                        this.formato = 'application/pdf'
+                        break;
+                    case 'jpeg':
+                        this.formato = 'image/jpeg'
+                        break;
+                    case 'jpg':
+                        this.formato = 'image/jpg'
+                        break;
+                    case 'png':
+                        this.formato = 'image/png'
+                        break;
+                    default:
+                        break;
+                }
+                const file = new Blob([data], { type: this.formato });
+                const fileURL = URL.createObjectURL(file);
+                const width = 800;
+                const height = 550;
+                const left = window.innerWidth / 2 - width / 2;
+                const top = window.innerHeight / 2 - height / 2;
+                const newWindow = window.open(fileURL, '_blank', `width=${width}, height=${height}, top=${top}, left=${left}`);
+                if (newWindow) {
+                    newWindow.focus();
+                } else {
+                    alert('La ventana emergente ha sido bloqueada. Por favor, permite ventanas emergentes para este sitio.');
+                }
             }, error => {
-                console.error('Error al obtener la imagen', error);
+                console.error('Error al obtener el documento', error);
             });
+    }
+    obtenerExtension(archivo: string): string {
+        const partes = archivo.split('.');
+        const extension = partes[partes.length - 1];
+        return extension;
+    }
+
+    resetFileInput(): void {
+        this.fileInput.nativeElement.value = '';
     }
 }
 

@@ -49,6 +49,7 @@
                         </div>
                     </div>
                 </div>
+                <br />
                 <div class="row text-center">
                     <div class="col-md-4">
                         <input type="file" (change)="onFileSelected($event)" #fileInput style="display:none" accept="image/*, application/pdf, .doc, .docx, .txt">
@@ -56,15 +57,17 @@
                             <i class="fa-solid fa-magnifying-glass me-1"></i>
                             Seleccionar acuse
                         </button>
-                        <button type="button" class="btn bg-danger text-white" (click)="limpiarDocumento()">
-                            <i class="fa-regular fa-file-excel"></i>
-                            Eliminar acuse seleccionado
-                        </button>
-
                     </div>
-                    <div class="col-md-4">
-                        <div *ngIf="selectedFileName" class="mt-2">
-                            Acuse seleccionado: {{ selectedFileName }}
+                    <div class="col-md-3">
+                        <div *ngIf="selectedFileName" class="text-end">
+                            {{ selectedFileName }}
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div *ngIf="selectedFileName">
+                            <button *ngIf="selectedFileName" type="button" class="btn btn-outline-danger" (click)="limpiarDocumento()">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
                         </div>
                     </div>
                     <div class="col-md-4">

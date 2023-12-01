@@ -76,7 +76,7 @@ namespace SistemaProveedoresBatia.Controllers
         [HttpGet("getimage/{archivo}/{carpeta}")]
         public IActionResult GetImage(string archivo, string carpeta)
         {
-            var imagePath = Path.Combine(_imageFolderPath, carpeta, archivo);
+            string imagePath = _imageFolderPath + carpeta + '/' + archivo;
 
             if (!System.IO.File.Exists(imagePath))
             {
