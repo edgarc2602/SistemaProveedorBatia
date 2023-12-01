@@ -38,7 +38,7 @@ namespace SistemaProveedoresBatia.Controllers
 
         [HttpGet("[action]/{idListado}")]
         public async Task<ListadoAcuseEntregaDTO> ObtenerAcusesListado(int idListado)
-        {            
+        {
             return await _logic.ObtenerAcusesListado(idListado);
         }
 
@@ -55,7 +55,7 @@ namespace SistemaProveedoresBatia.Controllers
                 return NotFound();
             }
             var imageBytes = System.IO.File.ReadAllBytes(imagePath);
-            return File(imageBytes, "image/jpeg"); // Asegúrate de que el tipo MIME sea correcto para tu imagen
+            return File(imageBytes, "image/jpeg");
         }
 
 
@@ -114,7 +114,27 @@ namespace SistemaProveedoresBatia.Controllers
                     throw ex;
                 }
             }
+
+        }
+
+        [HttpDelete("[action]/{archivo}/{carpeta}/{idListado}")]
+        public async Task<bool> EliminaAcuse(string archivo, string carpeta,int idListado)
+        {
+            bool result;
+            string directorio = _imageFolderPath + '/' + carpeta;
+            string filePathToDelete = Path.Combine(directorio, archivo);
             
+            if (System.IO.File.Exists(filePathToDelete))
+            {
+                System.IO.File.Delete(filePathToDelete);
+                result = await _logic.EliminarAcuse(idListado, carpeta, archivo);
+                result = true;
+            }
+            else
+            {
+                result = false;
+            }
+            return result;
         }
     }
 }

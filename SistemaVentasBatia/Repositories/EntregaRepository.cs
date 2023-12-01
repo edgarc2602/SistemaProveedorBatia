@@ -22,6 +22,7 @@ namespace SistemaVentasBatia.Repositories
         Task<List<DetalleMaterial>> ObtenerMaterialesListado(int idListado);
         Task<List<AcuseEntrega>> ObtieneAcusesListado(int idListado);
         Task<bool> InsertaAcuse(int idListado, string carpeta, string archivo);
+        Task<bool> EliminarAcuse(int idListado, string carpeta, string archivo);
     }
 
     public class EntregaRepository : IEntregaRepository
@@ -239,6 +240,29 @@ VALUES
             catch (Exception)
             {
                 result = false;
+            }
+            return result;
+        }
+
+        public async Task <bool> EliminarAcuse(int idListado, string carpeta, string archivo)
+        {
+            string query = @"
+DELETE FROM tb_listadomateriala
+WHERE id_listado = @idListado AND carpeta = @carpeta AND archivo = @archivo
+";
+            bool result;
+            try
+            {
+                using (var connection = _ctx.CreateConnection())
+                {
+                    var rowsAffected = await connection.ExecuteAsync(query, new { archivo, carpeta, idListado });
+                    result = rowsAffected > 0;
+                }
+            }
+            catch(Exception ex)
+            {
+                result = false;
+                throw ex;
             }
             return result;
         }

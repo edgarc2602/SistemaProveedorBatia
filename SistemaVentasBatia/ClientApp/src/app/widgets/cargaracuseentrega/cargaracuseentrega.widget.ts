@@ -66,10 +66,33 @@ export class CargarAcuseEntregaWidget {
     concluirEntrega() {
 
     }
-    verAcuse(archivo: string) {
+    guardarArchivo(): void {
+        if (this.selectedFile) {
+            const formData = new FormData();
+            formData.append('file', this.selectedFile);
 
+            this.http.post<boolean>(`${this.url}api/entrega/guardaracuse/${this.model.idListado}/${this.selectedFileName}`, formData).subscribe((response) => {
+                console.log('Archivo guardado con éxito:', response);
+                this.selectedFileName = null;
+                this.selectedFile = null;
+                this.obtenerAcusesListado(this.idListado);
+                this.resetFileInput();
+            }, (error) => {
+                console.error('Error al guardar el archivo:', error);
+            });
+        } else {
+            console.error('No se ha seleccionado ningún archivo.');
+        }
     }
-    eliminaAcuse(archivo: string) {
+    eliminaAcuse(archivo: string, carpeta: string) {
+        this.http.delete<boolean>(`${this.url}api/entrega/eliminaacuse/${archivo}/${carpeta}/${this.idListado}`).subscribe(response => {
+            console.log('Archivo eliminado con éxito:', response);
+            this.selectedFileName = null;
+            this.selectedFile = null;
+            this.obtenerAcusesListado(this.idListado);
+        }, (error) => {
+            console.error('Error al eliminar el archivo:', error);
+        });
 
     }
 
@@ -83,20 +106,7 @@ export class CargarAcuseEntregaWidget {
         this.selectedFileName = this.selectedFile.name;
     }
 
-    guardarArchivo(): void {
-        if (this.selectedFile) {
-            const formData = new FormData();
-            formData.append('file', this.selectedFile);
-
-            this.http.post<boolean>(`${this.url}api/entrega/guardaracuse/${this.model.idListado}/${this.selectedFileName}`, formData).subscribe((response) => {
-                console.log('Archivo guardado con éxito:', response);
-            }, (error) => {
-                console.error('Error al guardar el archivo:', error);
-            });
-        } else {
-            console.error('No se ha seleccionado ningún archivo.');
-        }
-    }
+    
 
 
     openDocument(archivo: string, carpeta: string) {
