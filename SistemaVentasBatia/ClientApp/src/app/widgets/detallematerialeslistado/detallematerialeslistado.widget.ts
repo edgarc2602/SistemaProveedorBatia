@@ -14,12 +14,14 @@ export class DetalleMaterialesListadoWidget{
     sucursal: string;
     tipo: string;
     idListado: number;
+    prefijo: string = '';
     constructor(@Inject('BASE_URL') private url: string, private http: HttpClient) {}
 
-    open(idListado: number, sucursal: string, tipo: string) {
+    open(idListado: number, sucursal: string, tipo: string, prefijo: string) {
         this.idListado = idListado;
         this.sucursal = sucursal;
         this.tipo = tipo;
+        this.prefijo = prefijo;
         this.obtenerMaterialesListado(idListado);
         let docModal = document.getElementById('modalDetalleMaterialesListado');
         let myModal = bootstrap.Modal.getOrCreateInstance(docModal);
@@ -44,5 +46,14 @@ export class DetalleMaterialesListadoWidget{
         let docModal = document.getElementById('modalDetalleMaterialesListado');
         let myModal = bootstrap.Modal.getOrCreateInstance(docModal);
         myModal.hide();
+    }
+
+    obtenerReporte(idListado: number, prefijo: string) {
+        this.http.get<any>(`${this.url}api/entrega/generarreporte/${idListado}/${prefijo}`, { responseType: 'blob' as 'json' })
+            .subscribe(response => {
+                const file = new Blob([response], { type: 'application/pdf' }); // Cambia el tipo MIME si el reporte es de otro formato
+                const fileURL = URL.createObjectURL(file);
+                window.open(fileURL, '_blank');
+            });
     }
 }

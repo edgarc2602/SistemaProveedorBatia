@@ -9,6 +9,7 @@ namespace SistemaProveedoresBatia.DTOs
     {
         public int IdInmueble { get; set; }
         public string NombreSucursal { get; set; }
+        public string Prefijo { get; set; }
         public int IdListado { get; set; }
         public string Tipo { get; set; }
         public string Estatus { get; set; }

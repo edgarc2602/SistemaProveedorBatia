@@ -21,6 +21,7 @@ export class CargarAcuseEntregaWidget {
     selectedFile: File | null = null;
     public imageUrl: string = '';
     formato: string = '';
+    prefijo: string = '';
 
     constructor(@Inject('BASE_URL') private url: string, private http: HttpClient) { }
     nuevo() {
@@ -32,11 +33,12 @@ export class CargarAcuseEntregaWidget {
         this.resetFileInput();
     }
 
-    open(idListado: number, sucursal: string, tipo: string) {
+    open(idListado: number, sucursal: string, tipo: string, prefijo: string) {
         this.nuevo();
         this.idListado = idListado;
         this.sucursal = sucursal;
         this.tipo = tipo;
+        this.prefijo = prefijo;
         this.obtenerAcusesListado(idListado);
         let docModal = document.getElementById('modalCargarAcuseEntrega');
         let myModal = bootstrap.Modal.getOrCreateInstance(docModal);

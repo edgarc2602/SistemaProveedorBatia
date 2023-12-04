@@ -98,7 +98,8 @@ SELECT * FROM (
 SELECT 
 ROW_NUMBER() OVER ( ORDER BY b.id_listado ) AS RowNum,
 a.id_inmueble AS IdInmueble, 
-a.nombre AS NombreSucursal, 
+a.nombre AS NombreSucursal,
+a.prefijo AS Prefijo,
 isnull(b.id_listado,0) AS IdListado, 
 isnull(d.descripcion,'') AS Tipo, 
 case 
@@ -130,7 +131,8 @@ a.nombre, b.falta,
 b.id_listado, 
 b.id_status, 
 d.descripcion, 
-fentrega
+fentrega,
+a.prefijo
 ) as Listado
 WHERE   RowNum >= ((@pagina - 1) * 40) + 1
 AND RowNum <= (@pagina * 40)

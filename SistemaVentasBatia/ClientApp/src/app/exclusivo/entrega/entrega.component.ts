@@ -55,12 +55,12 @@ export class EntregaComponent {
         this.obtenerListados();
     }
 
-    obtenerMateriales(idListado: number, sucursal: string, tipo: string) {
-        this.matLis.open(idListado, sucursal, tipo);
+    obtenerMateriales(idListado: number, sucursal: string, tipo: string, prefijo: string) {
+        this.matLis.open(idListado, sucursal, tipo, prefijo);
     }
 
-    verAcuses(idListado: number, sucursal: string, tipo: string) {
-        this.acuse.open(idListado, sucursal, tipo);
+    verAcuses(idListado: number, sucursal: string, tipo: string, prefijo: string) {
+        this.acuse.open(idListado, sucursal, tipo, prefijo);
     }
 
 }

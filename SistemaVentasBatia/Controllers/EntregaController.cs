@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using CrystalDecisions.CrystalReports.Engine;
+using CrystalDecisions.Shared;
 
 namespace SistemaProveedoresBatia.Controllers
 {
@@ -136,5 +138,33 @@ namespace SistemaProveedoresBatia.Controllers
             }
             return result;
         }
+
+        //[HttpPost("[action]/{idListado}/{prefijo}")]
+        //public async Task<bool> ObtenerReporte(int idListado, string prefijo)
+        //{
+        //    bool result;
+
+
+        //    return result;
+        //}
+
+            [HttpGet("[action]/{idListado}/{prefijo}")]
+            public async Task<byte[]> GenerarReporte(int idListado, string prefijo)
+            {
+                ReportDocument report = new ReportDocument();
+                report.Load("C:/Users/LAP_Sistemas5/Desktop/listadoentrega.rpt");
+
+                // Configurar parámetros del reporte
+                report.SetParameterValue("idListado", idListado);
+
+                byte[] reportBytes;
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    report.ExportToStream(ExportFormatType.PortableDocFormat).CopyTo(stream);
+                    reportBytes = stream.ToArray();
+                }
+
+                return reportBytes;
+            }
     }
 }
