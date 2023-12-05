@@ -1,5 +1,5 @@
 <meta charset="UTF-8">
-<div class="modal fade modal-lg" id="modalCargarAcuseEntrega" data-bs-backdrop="static">
+<div class="modal fade modal-lg" id="modalCargarFactura" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
 
         <div class="modal-content">
@@ -7,7 +7,7 @@
 
             <!-- Modal Header -->
             <div class="modal-header justify-content-center">
-                <h4 class="modal-title">Cargar acuse de entrega</h4>
+                <h4 class="modal-title">Cargar factura</h4>
             </div>
 
             <!-- Modal body -->
@@ -16,20 +16,20 @@
                 <h6 class="modal-title">Punto de atención: {{sucursal}}</h6>
                 <h6 class="modal-title">Tipo: {{tipo}}</h6>
                 <br />
-                <div *ngIf="model.acuses[0] != null" class="row box-shadow" style="border-radius: 10px; overflow-x: hidden;">
+                <div class="row" style="border-radius: 10px; overflow-x: hidden;">
                     <div style="max-height: 250px; max-width:auto; overflow-y: auto; overflow-x: hidden">
                         <div class="row">
                             <table class="table table-borderless table-striped table-responsive text-center">
                                 <thead class="sticky-top text-white" style="background-color: #4a92fe; color: #fff; border-radius: 10px; ">
                                     <tr class="col-1 text-center">
-                                        <!--<th>Carpeta</th>-->
+                                        <th>Carpeta</th>
                                         <th>Acuse</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let acu of model.acuses">
-                                        <!--<td> {{acu.carpeta}}</td>-->
+                                        <td> {{acu.carpeta}}</td>
                                         <td> {{acu.archivo}}</td>
                                         <td>
                                             <div class="row">

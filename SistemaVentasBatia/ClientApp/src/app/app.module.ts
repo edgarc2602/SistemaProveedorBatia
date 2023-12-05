@@ -24,7 +24,8 @@ import { EntregaComponent } from './exclusivo/entrega/entrega.component';
 import { FacturaComponent } from './exclusivo/factura/factura.component';
 import { DetalleMaterialesListadoWidget } from './widgets/detallematerialeslistado/detallematerialeslistado.widget';
 import { CargarAcuseEntregaWidget } from './widgets/cargaracuseentrega/cargaracuseentrega.widget';
-
+import { CargarFacturaWidget } from './widgets/cargarfactura/cargarfactura.widget';
+ 
 
 @NgModule({
     declarations: [
@@ -41,11 +42,13 @@ import { CargarAcuseEntregaWidget } from './widgets/cargaracuseentrega/cargaracu
         EliminaWidget,
         DetalleMaterialesListadoWidget,
         CargarAcuseEntregaWidget,
+        CargarFacturaWidget,
 
         DashboardComponent,
         EstadoDeCuentaComponent,
         EntregaComponent,
-        FacturaComponent,        
+        FacturaComponent,   
+        
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

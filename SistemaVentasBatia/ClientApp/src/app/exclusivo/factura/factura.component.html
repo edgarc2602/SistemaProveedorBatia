@@ -7,13 +7,13 @@
     </div>
     <div>
         <div class="row">
-            <div class="col-md-3 col-7 mb-3">
+            <div class="col-md-3 col-6 mb-3">
                 <div class="form-floating">
                     <input type="date" class="form-control" [(ngModel)]="fechaInicio" id="fechaInicio" (input)="obtenerOrdenes()">
                     <label asp-for="fechaInicio">F.Inicio</label>
                 </div>
             </div>
-            <div class="col-md-3 col-7 mb-3">
+            <div class="col-md-3 col-6 mb-3">
                 <div class="form-floating">
                     <input type="date" class="form-control" [(ngModel)]="fechaFin" id="fechaFin" (input)="obtenerOrdenes()">
                     <label asp-for="fechaFin">F.Fin</label>
@@ -21,7 +21,7 @@
             </div>
         </div>
     </div>
-    <div class="row" style="border-radius: 10px; overflow-x: hidden;">
+    <div class="row box-shadow" style="border-radius: 10px; overflow-x: hidden;">
         <div style="max-height: 450px; overflow-y: auto;">
             <div class="row">
                 <table class="table table-borderless table-striped table-responsive text-start">
@@ -75,10 +75,10 @@
                                 </div>
                             </td>
                             <td class="text-center">
-                                <button type="button" class="btn btn-lg text-primary" (Onclick)="imprimirOrden(orden.idOrden)" data-bs-toggle="tooltip" title="Imprimir">
+                                <button type="button" class="btn btn-lg text-primary" (click)="imprimirOrden(orden.idOrden)" data-bs-toggle="tooltip" title="Imprimir orden">
                                     <i class="fa-solid fa-print" style="color: #0d6efd;"></i>
                                 </button>
-                                <button type="button" class="btn btn-lg text-secondary" data-bs-toggle="tooltip" title="Ver lista">
+                                <button type="button" class="btn btn-lg text-secondary" (click)="openCargarFacturas(orden.idOrden)" data-bs-toggle="tooltip" title="Facturas">
                                     <i class="fa-solid fa-file-circle-check"></i>
                                 </button>
                             </td>
@@ -95,3 +95,4 @@
     <br />
     <button type="button" class="btn btn-primary btn-bottom-right box-shadow" (click)="goBack()">Volver</button>
 </div>
+<cargarfactura-widget></cargarfactura-widget>

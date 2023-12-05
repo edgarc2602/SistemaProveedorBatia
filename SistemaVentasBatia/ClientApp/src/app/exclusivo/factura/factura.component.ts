@@ -4,12 +4,14 @@ import { Catalogo } from 'src/app/models/catalogo';
 import { fadeInOut } from 'src/app/fade-in-out';
 import { StoreUser } from 'src/app/stores/StoreUser';
 import { ListadoOrdenCompra } from 'src/app/models/listadoordencompra';
+import { CargarFacturaWidget } from 'src/app/widgets/cargarfactura/cargarfactura.widget';
 @Component({
     selector: 'factura-comp',
     templateUrl: './factura.component.html',
     animations: [fadeInOut],
 })
 export class FacturaComponent {
+    @ViewChild(CargarFacturaWidget, { static: false }) upfact: CargarFacturaWidget;
     /*@ViewChild(UsuarioAddWidget, { static: false }) addUsu: UsuarioAddWidget;*/
     model: ListadoOrdenCompra = {
         ordenes: [], numPaginas: 0, pagina: 1, rows: 0
@@ -17,9 +19,6 @@ export class FacturaComponent {
     idProveedor: number = 35;
     fechaInicio: string = '';
     fechaFin: string = '';
-    //1667
-
-
 
     constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {
         //this.http.get<ListadoOrdenCompra>(`${this.url}api/factura/obtenerordenescompra/${this.idProveedor}/${this.fechaInicio}/${this.fechaFin}/${this.model.pagina}`).subscribe(response => {
@@ -60,6 +59,10 @@ export class FacturaComponent {
     }
     imprimirOrden(idOrden: number) {
 
+    }
+
+    openCargarFacturas(idOrden: number) {
+        this.upfact.open(idOrden);
     }
 
 }

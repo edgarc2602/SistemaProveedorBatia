@@ -33,11 +33,11 @@ namespace SistemaVentasBatia.Repositories
             var query = @"
 SELECT * FROM (
 SELECT 
-ROW_NUMBER() over (order by id_orden ) as rownum, 
+ROW_NUMBER() over (order by id_orden desc ) as rownum, 
 id_orden IdOrden,
 case when a.tipo = 1 then 'Materiales' else 'Servicios' end as Tipo,
 e.descripcion as Estatus, 
-convert(varchar(12), falta,103) as FechaAlta , 
+convert(varchar(12), falta,103) as FechaAlta ,  
 b.nombre as Empresa	, 
 isnull(c.nombre,'') as Proveedor, 
 isnull(d.nombre,'') as Cliente,
@@ -75,7 +75,7 @@ WHERE
 SELECT COUNT(*) AS TotalRows
 FROM (
 Select  
-ROW_NUMBER() over (order by id_orden ) as rownum, 
+ROW_NUMBER() over (order by id_orden desc ) as rownum, 
 id_orden IdOrden,
 case when a.tipo = 1 then 'Materiales' else 'Servicios' end as Tipo,
 e.descripcion as Estatus, 

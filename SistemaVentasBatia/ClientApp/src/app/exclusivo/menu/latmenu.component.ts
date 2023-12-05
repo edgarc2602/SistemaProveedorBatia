@@ -16,4 +16,16 @@ export class LatMenuComponent implements OnInit {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         });
     }
+    const enlaces = document.querySelectorAll('.nav-link');
+
+enlaces.forEach(enlace => {
+        enlace.addEventListener('click', () => {
+            enlace.classList.add('hundimiento');
+
+            // Elimina la clase de hundimiento después de un cierto tiempo (500ms en este caso)
+            setTimeout(() => {
+                enlace.classList.remove('hundimiento');
+            }, 500);
+        });
+});
 }

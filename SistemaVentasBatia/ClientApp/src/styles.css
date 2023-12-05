@@ -194,14 +194,17 @@ body {
 .logo .logo-lg {
     display: block
 }
+
 .btn-bottom-right {
     position: absolute;
     bottom: 80px;
     right: 30px;
 }
+
 .table tbody td {
     vertical-align: middle;
 }
+
 thead.sticky-top {
     z-index: 100;
 }
@@ -210,3 +213,74 @@ align-middle {
     vertical-align: middle;
 }
 
+.modal.show::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    backdrop-filter: blur(5px);
+    animation: blurAnimation 0.8s;
+    z-index: -1;
+}
+
+@keyframes blurAnimation {
+    0% {
+        backdrop-filter: blur(0);
+    }
+
+    100% {
+        backdrop-filter: blur(5px);
+    }
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+    .btn:hover {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn:active {
+        transform: translateY(5px);
+        box-shadow: none;
+    }
+
+
+.form-control {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: box-shadow 0.3s ease;
+}
+
+    .form-control:focus {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        border-color: #999;
+    }
+
+.form-select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: box-shadow 0.3s ease;
+}
+
+    .form-select:focus {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        border-color: #999;
+    }
+
+tbody tr:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s ease;
+}
+
+.nav-link:active {
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    transform: translateY(4px);
+}

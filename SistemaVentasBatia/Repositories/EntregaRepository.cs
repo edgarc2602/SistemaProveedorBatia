@@ -39,7 +39,7 @@ namespace SistemaVentasBatia.Repositories
 SELECT COUNT(*) AS TotalRows
 FROM (
     SELECT 
-ROW_NUMBER() OVER ( ORDER BY b.id_listado) AS RowNum,
+ROW_NUMBER() OVER ( ORDER BY b.id_listado desc) AS RowNum,
 a.id_inmueble AS IdInmueble, 
 a.nombre AS NombreSucursal, 
 isnull(b.id_listado,0) AS IdListado, 
@@ -94,7 +94,7 @@ fentrega
             string query = @"
 SELECT * FROM (
 SELECT 
-ROW_NUMBER() OVER ( ORDER BY b.id_listado ) AS RowNum,
+ROW_NUMBER() OVER ( ORDER BY b.id_listado desc ) AS RowNum,
 a.id_inmueble AS IdInmueble, 
 a.nombre AS NombreSucursal,
 a.prefijo AS Prefijo,
