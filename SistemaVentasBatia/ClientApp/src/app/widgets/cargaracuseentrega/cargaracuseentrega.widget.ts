@@ -133,6 +133,18 @@ export class CargarAcuseEntregaWidget {
                     case 'png':
                         this.formato = 'image/png'
                         break;
+                    case 'PDF':
+                        this.formato = 'application/pdf'
+                        break;
+                    case 'JPEG':
+                        this.formato = 'image/jpeg'
+                        break;
+                    case 'JPG':
+                        this.formato = 'image/jpg'
+                        break;
+                    case 'PNG':
+                        this.formato = 'image/png'
+                        break;
                     default:
                         break;
                 }
