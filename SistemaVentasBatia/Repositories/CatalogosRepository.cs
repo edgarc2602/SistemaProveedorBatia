@@ -45,10 +45,8 @@ namespace SistemaVentasBatia.Repositories
 
             try
             {
-                using (var connection = ctx.CreateConnection())
-                {
-                    estados = (await connection.QueryAsync<Catalogo>(query)).ToList();
-                }
+                using var connection = ctx.CreateConnection();
+                estados = (await connection.QueryAsync<Catalogo>(query)).ToList();
             }
             catch (Exception ex)
             {
@@ -67,10 +65,8 @@ namespace SistemaVentasBatia.Repositories
 
             try
             {
-                using (var connection = ctx.CreateConnection())
-                {
-                    servicios = (await connection.QueryAsync<Catalogo>(query)).ToList();
-                }
+                using var connection = ctx.CreateConnection();
+                servicios = (await connection.QueryAsync<Catalogo>(query)).ToList();
             }
             catch (Exception ex)
             {
@@ -94,10 +90,8 @@ WHERE es.id_estado = @idEstado ORDER BY m.Municipio";
 
             try
             {
-                using (var connection = ctx.CreateConnection())
-                {
-                    municipios = (await connection.QueryAsync<Catalogo>(query, new { idEstado })).ToList();
-                }
+                using var connection = ctx.CreateConnection();
+                municipios = (await connection.QueryAsync<Catalogo>(query, new { idEstado })).ToList();
             }
             catch (Exception ex)
             {
@@ -114,10 +108,8 @@ WHERE es.id_estado = @idEstado ORDER BY m.Municipio";
 
             try
             {
-                using (var connection = ctx.CreateConnection())
-                {
-                    tiposInmueble = (await connection.QueryAsync<Catalogo>(query, new { idEstatus = EstatusTipoInmueble.Activo })).ToList();
-                }
+                using var connection = ctx.CreateConnection();
+                tiposInmueble = (await connection.QueryAsync<Catalogo>(query, new { idEstatus = EstatusTipoInmueble.Activo })).ToList();
             }
             catch (Exception ex)
             {
@@ -137,10 +129,8 @@ WHERE es.id_estado = @idEstado ORDER BY m.Municipio";
 
             try
             {
-                using (var connection = ctx.CreateConnection())
-                {
-                    puestos = (await connection.QueryAsync<Catalogo>(query)).ToList();
-                }
+                using var connection = ctx.CreateConnection();
+                puestos = (await connection.QueryAsync<Catalogo>(query)).ToList();
             }
             catch (Exception ex)
             {
@@ -158,10 +148,8 @@ WHERE es.id_estado = @idEstado ORDER BY m.Municipio";
 
             try
             {
-                using (var connection = ctx.CreateConnection())
-                {
-                    servicios = (await connection.QueryAsync<Catalogo>(query)).ToList();
-                }
+                using var connection = ctx.CreateConnection();
+                servicios = (await connection.QueryAsync<Catalogo>(query)).ToList();
             }
             catch (Exception ex)
             {
@@ -181,10 +169,8 @@ WHERE es.id_estado = @idEstado ORDER BY m.Municipio";
 
             try
             {
-                using (var connection = ctx.CreateConnection())
-                {
-                    direcciones = (await connection.QueryAsync<Catalogo>(query)).ToList();
-                }
+                using var connection = ctx.CreateConnection();
+                direcciones = (await connection.QueryAsync<Catalogo>(query)).ToList();
             }
             catch (Exception ex)
             {
@@ -205,10 +191,8 @@ FROM tb_jornada";
 
             try
             {
-                using (var connection = ctx.CreateConnection())
-                {
-                    direcciones = (await connection.QueryAsync<Catalogo>(query)).ToList();
-                }
+                using var connection = ctx.CreateConnection();
+                direcciones = (await connection.QueryAsync<Catalogo>(query)).ToList();
             }
             catch (Exception ex)
             {
@@ -229,10 +213,8 @@ FROM tb_clase";
 
             try
             {
-                using (var connection = ctx.CreateConnection())
-                {
-                    direcciones = (await connection.QueryAsync<Catalogo>(query)).ToList();
-                }
+                using var connection = ctx.CreateConnection();
+                direcciones = (await connection.QueryAsync<Catalogo>(query)).ToList();
             }
             catch (Exception ex)
             {
@@ -254,10 +236,8 @@ FROM tb_clase";
 
             try
             {
-                using (var connection = ctx.CreateConnection())
-                {
-                    direccionesCotizacion = (await connection.QueryAsync<Catalogo>(query, new { idCotizacion })).ToList();
-                }
+                using var connection = ctx.CreateConnection();
+                direccionesCotizacion = (await connection.QueryAsync<Catalogo>(query, new { idCotizacion })).ToList();
             }
             catch (Exception ex)
             {
@@ -279,10 +259,8 @@ FROM tb_clase";
 
             try
             {
-                using (var connection = ctx.CreateConnection())
-                {
-                    puestosCotizacion = (await connection.QueryAsync<Catalogo>(query, new { idCotizacion })).ToList();
-                }
+                using var connection = ctx.CreateConnection();
+                puestosCotizacion = (await connection.QueryAsync<Catalogo>(query, new { idCotizacion })).ToList();
             }
             catch (Exception ex)
             {
@@ -302,10 +280,8 @@ FROM tb_clase";
 
             try
             {
-                using (var connection = ctx.CreateConnection())
-                {
-                    puestosCotizacion = (await connection.QueryAsync<Catalogo>(query, new { idServicio })).ToList();
-                }
+                using var connection = ctx.CreateConnection();
+                puestosCotizacion = (await connection.QueryAsync<Catalogo>(query, new { idServicio })).ToList();
             }
             catch (Exception ex)
             {
@@ -326,10 +302,8 @@ FROM tb_clase";
 
             try
             {
-                using (var connection = ctx.CreateConnection())
-                {
-                    puestosCotizacion = (await connection.QueryAsync<Catalogo>(query, new { idServicio, familias = listFamilia })).ToList();
-                }
+                using var connection = ctx.CreateConnection();
+                puestosCotizacion = (await connection.QueryAsync<Catalogo>(query, new { idServicio, familias = listFamilia })).ToList();
             }
             catch (Exception ex)
             {
@@ -350,10 +324,8 @@ From tb_mes
             var meses = new List<Catalogo>();
             try
             {
-                using (var connection = ctx.CreateConnection())
-                {
-                    meses = (await connection.QueryAsync<Catalogo>(query)).ToList();
-                }
+                using var connection = ctx.CreateConnection();
+                meses = (await connection.QueryAsync<Catalogo>(query)).ToList();
             }
             catch (Exception ex)
             {
@@ -373,10 +345,8 @@ FROM tb_tipolistado
             var tipoListados = new List<Catalogo>();
             try
             {
-                using (var connection = ctx.CreateConnection())
-                {
-                    tipoListados = (await connection.QueryAsync<Catalogo>(query)).ToList();
-                }
+                using var connection = ctx.CreateConnection();
+                tipoListados = (await connection.QueryAsync<Catalogo>(query)).ToList();
             }
             catch (Exception ex)
             {

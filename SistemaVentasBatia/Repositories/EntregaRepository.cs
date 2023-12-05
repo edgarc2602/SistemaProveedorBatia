@@ -79,10 +79,8 @@ fentrega
             var rows = 0;
             try
             {
-                using (var connection = _ctx.CreateConnection())
-                {
-                    rows = await connection.QuerySingleAsync<int>(query, new { mes, anio, idProveedor, idEstado, tipo });
-                }
+                using var connection = _ctx.CreateConnection();
+                rows = await connection.QuerySingleAsync<int>(query, new { mes, anio, idProveedor, idEstado, tipo });
             }
             catch (Exception ex)
             {
@@ -142,10 +140,8 @@ ORDER BY RowNum
 
             try
             {
-                using (var connection = _ctx.CreateConnection())
-                {
-                    listado = (await connection.QueryAsync<Listados>(query, new { mes, anio, idProveedor, idEstado, tipo, pagina })).ToList();
-                }
+                using var connection = _ctx.CreateConnection();
+                listado = (await connection.QueryAsync<Listados>(query, new { mes, anio, idProveedor, idEstado, tipo, pagina })).ToList();
             }
             catch (Exception ex)
             {
@@ -174,10 +170,8 @@ ORDER BY b.descripcion
             var materiales = new List<DetalleMaterial>();
             try
             {
-                using (var connection = _ctx.CreateConnection())
-                {
-                    materiales = (await connection.QueryAsync<DetalleMaterial>(query, new { idListado })).ToList(); 
-                }
+                using var connection = _ctx.CreateConnection();
+                materiales = (await connection.QueryAsync<DetalleMaterial>(query, new { idListado })).ToList();
             }
             catch (Exception ex)
             {
@@ -200,10 +194,8 @@ WHERE id_listado = @idListado
             var acuses = new List<AcuseEntrega>();
             try
             {
-                using (var connection = _ctx.CreateConnection())
-                {
-                    acuses = (await connection.QueryAsync<AcuseEntrega>(query, new { idListado })).ToList();    
-                }
+                using var connection = _ctx.CreateConnection();
+                acuses = (await connection.QueryAsync<AcuseEntrega>(query, new { idListado })).ToList();
             }
             catch(Exception ex)
             {
@@ -233,11 +225,9 @@ VALUES
             bool result;
             try
             {
-                using (var connection = _ctx.CreateConnection())
-                {
-                    var rowsAffected = await connection.ExecuteAsync(query, new { idListado, carpeta, archivo });
-                    result = rowsAffected > 0;
-                }
+                using var connection = _ctx.CreateConnection();
+                var rowsAffected = await connection.ExecuteAsync(query, new { idListado, carpeta, archivo });
+                result = rowsAffected > 0;
             }
             catch (Exception)
             {
@@ -255,15 +245,12 @@ WHERE id_listado = @idListado AND carpeta = @carpeta AND archivo = @archivo
             bool result;
             try
             {
-                using (var connection = _ctx.CreateConnection())
-                {
-                    var rowsAffected = await connection.ExecuteAsync(query, new { archivo, carpeta, idListado });
-                    result = rowsAffected > 0;
-                }
+                using var connection = _ctx.CreateConnection();
+                var rowsAffected = await connection.ExecuteAsync(query, new { archivo, carpeta, idListado });
+                result = rowsAffected > 0;
             }
             catch(Exception ex)
             {
-                result = false;
                 throw ex;
             }
             return result;

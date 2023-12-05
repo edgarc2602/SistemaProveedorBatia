@@ -8,15 +8,19 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using CrystalDecisions.CrystalReports.Engine;
-using CrystalDecisions.Shared;
+using Microsoft.Extensions.Configuration;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace SistemaProveedoresBatia.Controllers
+
 {
     [Route("api/[controller]")]
     [ApiController]
     public class EntregaController : ControllerBase
     {
+        
+
         private readonly IEntregaService _logic;
 
         public EntregaController(IEntregaService logic)
@@ -27,8 +31,10 @@ namespace SistemaProveedoresBatia.Controllers
         [HttpGet("[action]/{mes}/{anio}/{idProveedor}/{idEstado}/{tipo}/{pagina}")]
         public async Task<ActionResult<ListadoMaterialDTO>> ObtenerListados(int mes, int anio, int idProveedor, int idEstado, int tipo, int pagina = 1)
         {
-            ListadoMaterialDTO listados = new ListadoMaterialDTO();
-            listados.Pagina = pagina;
+            ListadoMaterialDTO listados = new ListadoMaterialDTO
+            {
+                Pagina = pagina
+            };
             return await _logic.ObtenerListados(listados, mes, anio, idProveedor, idEstado, tipo);
         }
 
@@ -44,8 +50,8 @@ namespace SistemaProveedoresBatia.Controllers
             return await _logic.ObtenerAcusesListado(idListado);
         }
 
-
-        private readonly string _imageFolderPath = "C:/Users/LAP_Sistemas5/Desktop/SINGA_NEW/Doctos/entrega/";
+        //private readonly string _imageFolderPath = "C:/Users/LAP_Sistemas5/Desktop/SINGA_NEW/Doctos/entrega/"; // dev
+        private readonly string _imageFolderPath = "\\\\192.168.2.4\\c$\\inetpub\\wwwroot\\SINGA_APP\\Doctos\\entrega\\";
 
         [HttpGet("getimage/{archivo}/{carpeta}")]
         public IActionResult GetImage(string archivo, string carpeta)
@@ -129,7 +135,7 @@ namespace SistemaProveedoresBatia.Controllers
             if (System.IO.File.Exists(filePathToDelete))
             {
                 System.IO.File.Delete(filePathToDelete);
-                result = await _logic.EliminarAcuse(idListado, carpeta, archivo);
+                _ = await _logic.EliminarAcuse(idListado, carpeta, archivo);
                 result = true;
             }
             else
@@ -148,23 +154,23 @@ namespace SistemaProveedoresBatia.Controllers
         //    return result;
         //}
 
-            [HttpGet("[action]/{idListado}/{prefijo}")]
-            public async Task<byte[]> GenerarReporte(int idListado, string prefijo)
-            {
-                ReportDocument report = new ReportDocument();
-                report.Load("C:/Users/LAP_Sistemas5/Desktop/listadoentrega.rpt");
+        //[HttpGet("[action]/{idListado}/{prefijo}")]
+        //public async Task<byte[]> GenerarReporte(int idListado, string prefijo)
+        //{
+        //    ReportDocument report = new ReportDocument();
+        //    report.Load("C:/Users/LAP_Sistemas5/Desktop/listadoentrega.rpt");
 
-                // Configurar parámetros del reporte
-                report.SetParameterValue("idListado", idListado);
+        //    Configurar parámetros del reporte
+        //        report.SetParameterValue("idListado", idListado);
 
-                byte[] reportBytes;
-                using (MemoryStream stream = new MemoryStream())
-                {
-                    report.ExportToStream(ExportFormatType.PortableDocFormat).CopyTo(stream);
-                    reportBytes = stream.ToArray();
-                }
+        //    byte[] reportBytes;
+        //    using (MemoryStream stream = new MemoryStream())
+        //    {
+        //        report.ExportToStream(ExportFormatType.PortableDocFormat).CopyTo(stream);
+        //        reportBytes = stream.ToArray();
+        //    }
 
-                return reportBytes;
-            }
+        //    return reportBytes;
+        //}
     }
 }

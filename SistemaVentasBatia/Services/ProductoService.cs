@@ -13,23 +13,20 @@ namespace SistemaVentasBatia.Services
 {
     public interface IProductoService
     {
-        //Task<bool> AgregarServicio(string servicio, int idPersonal);
         
     }
 
     public class ProductoService : IProductoService
     {
-        private readonly IProductoRepository repo;
-        private readonly IMapper mapper;
+        //private readonly IProductoRepository repo;
+        //private readonly IMapper mapper;
 
-        public ProductoService(IProductoRepository repository, IMapper imapper)
-        {
-            repo = repository;
-            mapper = imapper;
-        }
-        //public async Task<bool> DeleteEquipo(int id)
+        //public ProductoService(IProductoRepository repository, IMapper imapper)
         //{
-        //    return await repo.EliminarEquipoPuesto(id);
+        //    repo = repository;
+        //    mapper = imapper;
         //}
+
+
     }
 }

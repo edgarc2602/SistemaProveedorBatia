@@ -59,10 +59,8 @@ WHERE
             var ordenes = new List<OrdenCompra>();
             try
             {
-                using (var connection = _ctx.CreateConnection())
-                {
-                    ordenes = (await connection.QueryAsync<OrdenCompra>(query, new { idProveedor, fechaInicio, fechaFin, pagina })).ToList();
-                }
+                using var connection = _ctx.CreateConnection();
+                ordenes = (await connection.QueryAsync<OrdenCompra>(query, new { idProveedor, fechaInicio, fechaFin, pagina })).ToList();
             }
             catch (Exception ex)
             {
@@ -101,10 +99,8 @@ AND (@fechaInicio IS NULL OR @fechaFin IS NULL OR falta BETWEEN @fechaInicio AND
             var rows = 0;
             try
             {
-                using (var connection = _ctx.CreateConnection())
-                {
-                    rows = await connection.QuerySingleAsync<int>(query, new { idProveedor, fechaInicio, fechaFin});
-                }
+                using var connection = _ctx.CreateConnection();
+                rows = await connection.QuerySingleAsync<int>(query, new { idProveedor, fechaInicio, fechaFin });
             }
             catch (Exception ex)
             {

@@ -12,26 +12,21 @@ namespace SistemaVentasBatia.Services
 {
     public interface ICuentaService
     {
-        //Task<ServicioCotizacionDTO> ServicioGetById(int id);
+
     }
 
     public class CuentaService : ICuentaService
     {
-        private readonly ICuentaRepository _CuentaRepo;
-        private readonly IMapper _mapper;
+        //private readonly ICuentaRepository _CuentaRepo;
+        //private readonly IMapper _mapper;
 
-        public CuentaService(ICuentaRepository CuentaRepo, IMapper mapper)
-        {
-            _CuentaRepo = CuentaRepo;
-            _mapper = mapper;
-        }
-        //public async Task ActualizarMaterialCotizacion(MaterialCotizacionDTO materialVM)
+        //public CuentaService(ICuentaRepository CuentaRepo, IMapper mapper)
         //{
-        //    var material = _mapper.Map<MaterialCotizacion>(materialVM);
-
-        //    material.Total = (material.PrecioUnitario * material.Cantidad) / (int)material.IdFrecuencia;
-
-        //    await _materialRepo.ActualizarMaterialCotizacion(material);
+        //    _CuentaRepo = CuentaRepo;
+        //    _mapper = mapper;
         //}
+
+
+
     }
 }

@@ -15,7 +15,7 @@ namespace SistemaVentasBatia.Services
 {
     public interface IEntregaService
     {
-        
+
         Task<ListadoMaterialDTO> ObtenerListados(ListadoMaterialDTO listados, int mes, int anio, int idProveedor, int idEstado, int tipo);
         Task<List<DetalleMaterialDTO>> ObtenerMaterialesListado(int idListado);
         Task<ListadoAcuseEntregaDTO> ObtenerAcusesListado(int idListado);
@@ -55,19 +55,26 @@ namespace SistemaVentasBatia.Services
 
         public async Task<List<DetalleMaterialDTO>> ObtenerMaterialesListado(int idListado)
         {
-            var materiales = new List<DetalleMaterialDTO>();
-            materiales = _mapper.Map<List<DetalleMaterialDTO>>(await _entregaRepo.ObtenerMaterialesListado(idListado));
+            _ = new List<DetalleMaterialDTO>();
+            List<DetalleMaterialDTO> materiales = _mapper.Map<List<DetalleMaterialDTO>>(await _entregaRepo.ObtenerMaterialesListado(idListado));
             return materiales;
         }
 
         public async Task<ListadoAcuseEntregaDTO> ObtenerAcusesListado(int idListado)
         {
             ListadoAcuseEntregaDTO listadoAcuses = new ListadoAcuseEntregaDTO();
-            var acuses = new List<AcuseEntregaDTO>();
-            acuses = _mapper.Map<List<AcuseEntregaDTO>>(await _entregaRepo.ObtieneAcusesListado(idListado));
+            _ = new List<AcuseEntregaDTO>();
+            List<AcuseEntregaDTO> acuses = _mapper.Map<List<AcuseEntregaDTO>>(await _entregaRepo.ObtieneAcusesListado(idListado));
             listadoAcuses.Acuses = acuses;
             listadoAcuses.IdListado = idListado;
-            listadoAcuses.Carpeta = acuses[0].Carpeta;
+            if (acuses.Count > 0)
+            {
+                listadoAcuses.Carpeta = acuses[0].Carpeta;
+            }
+            else
+            {
+                listadoAcuses.Carpeta = "null";
+            }
             return listadoAcuses;
         }
 

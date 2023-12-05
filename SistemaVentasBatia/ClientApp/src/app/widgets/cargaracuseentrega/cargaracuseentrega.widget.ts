@@ -73,7 +73,7 @@ export class CargarAcuseEntregaWidget {
             const formData = new FormData();
             formData.append('file', this.selectedFile);
 
-            this.http.post<boolean>(`${this.url}api/entrega/guardaracuse/${this.model.idListado}/${this.selectedFileName}`, formData).subscribe((response) => {
+            this.http.post<boolean>(`${this.url}api/entrega/guardaracuse/${this.idListado}/${this.selectedFileName}`, formData).subscribe((response) => {
                 console.log('Archivo guardado con éxito:', response);
                 this.selectedFileName = null;
                 this.selectedFile = null;
@@ -92,6 +92,7 @@ export class CargarAcuseEntregaWidget {
             this.selectedFileName = null;
             this.selectedFile = null;
             this.obtenerAcusesListado(this.idListado);
+            this.resetFileInput();
         }, (error) => {
             console.error('Error al eliminar el archivo:', error);
         });
