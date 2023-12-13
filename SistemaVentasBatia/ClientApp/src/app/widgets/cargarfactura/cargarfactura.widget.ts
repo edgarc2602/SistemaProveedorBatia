@@ -2,53 +2,51 @@ import { Component, OnChanges, Output, EventEmitter, Inject, ViewChild, ElementR
 import { HttpClient } from '@angular/common/http';
 import { ListadoAcuseEntrega } from '../../models/listadoacuseentrega';
 declare var bootstrap: any;
+import { Factura } from 'src/app/models/Factura'
+import { FacturaComponent } from '../../exclusivo/factura/factura.component';
 
 @Component({
     selector: 'cargarfactura-widget',
     templateUrl: './cargarfactura.widget.html'
 })
 export class CargarFacturaWidget {
-    @ViewChild('fileInput', { static: false }) fileInput!: ElementRef;
+    @ViewChild('pdfInput', { static: false }) pdfInput!: ElementRef;
+    @ViewChild('xmlInput', { static: false }) xmlInput!: ElementRef;
     @Output('ansEvent') sendEvent = new EventEmitter<boolean>();
-
     model: ListadoAcuseEntrega = {
         acuses: [], carpeta: '', idListado: 0
     }
     sucursal: string;
     tipo: string;
     idListado: number;
-    selectedFileName: string | null = null;
-    selectedFile: File | null = null;
     public imageUrl: string = '';
     formato: string = '';
     prefijo: string = '';
 
+    idOrden: number = 0;
+    empresa: string = '';
+    cliente: string = '';
+    selectedPdf: File | null = null;
+    selectedXml: File | null = null;
+    facturas: Factura = {} as Factura;
+
     constructor(@Inject('BASE_URL') private url: string, private http: HttpClient) { }
     nuevo() {
-        this.model = {
-            acuses: [], carpeta: '', idListado: 0
-        }
-        this.selectedFileName = null;
-        this.selectedFile = null;
         /*this.resetFileInput();*/
     }
 
-    open(idOrden: number) {
+    open(idOrden: number, empresa: string, cliente: string) {
         this.nuevo();
-        //this.idListado = idListado;
-        //this.sucursal = sucursal;
-        //this.tipo = tipo;
-        //this.prefijo = prefijo;
-        /*this.obtenerAcusesListado(idListado);*/
+        this.idOrden = idOrden;
+        this.empresa = empresa;
+        this.cliente = cliente;
+        this.selectedPdf = null;
+        this.selectedXml = null;
+        this.obtenerListadoFacturas();
         let docModal = document.getElementById('modalCargarFactura');
         let myModal = bootstrap.Modal.getOrCreateInstance(docModal);
         myModal.show();
     }
-    //obtenerAcusesListado(idListado: number) {
-    //    this.http.get<ListadoAcuseEntrega>(`${this.url}api/entrega/obteneracuseslistado/${idListado}`).subscribe(response => {
-    //        this.model = response;
-    //    })
-    //}
 
     acepta() {
         this.sendEvent.emit(true);
@@ -68,54 +66,43 @@ export class CargarFacturaWidget {
     concluirEntrega() {
 
     }
-    guardarArchivo(): void {
-        if (this.selectedFile) {
-            const formData = new FormData();
-            formData.append('file', this.selectedFile);
+    guardarArchivos() {
+        //if (this.selectedFile) {
+        //    const formData = new FormData();
+        //    formData.append('file', this.selectedFile);
 
-            this.http.post<boolean>(`${this.url}api/entrega/guardaracuse/${this.idListado}/${this.selectedFileName}`, formData).subscribe((response) => {
-                console.log('Archivo guardado con éxito:', response);
-                this.selectedFileName = null;
-                this.selectedFile = null;
-                //this.obtenerAcusesListado(this.idListado);
-                this.resetFileInput();
-            }, (error) => {
-                console.error('Error al guardar el archivo:', error);
-            });
-        } else {
-            console.error('No se ha seleccionado ningún archivo.');
-        }
+        //    this.http.post<boolean>(`${this.url}api/entrega/guardaracuse/${this.idListado}/${this.selectedFileName}`, formData).subscribe((response) => {
+        //        console.log('Archivo guardado con éxito:', response);
+        //        this.selectedFileName = null;
+        //        this.selectedFile = null;
+        //        //this.obtenerAcusesListado(this.idListado);
+        //        this.resetFileInput();
+        //    }, (error) => {
+        //        console.error('Error al guardar el archivo:', error);
+        //    });
+        //} else {
+        //    console.error('No se ha seleccionado ningún archivo.');
+        //}
+        this.quitarFocoDeElementos();
     }
     eliminaAcuse(archivo: string, carpeta: string) {
-        this.http.delete<boolean>(`${this.url}api/entrega/eliminaacuse/${archivo}/${carpeta}/${this.idListado}`).subscribe(response => {
-            console.log('Archivo eliminado con éxito:', response);
-            this.selectedFileName = null;
-            this.selectedFile = null;
-            //this.obtenerAcusesListado(this.idListado);
-            this.resetFileInput();
-        }, (error) => {
-            console.error('Error al eliminar el archivo:', error);
-        });
+        //this.http.delete<boolean>(`${this.url}api/entrega/eliminaacuse/${archivo}/${carpeta}/${this.idListado}`).subscribe(response => {
+        //    console.log('Archivo eliminado con éxito:', response);
+        //    this.selectedFileName = null;
+        //    this.selectedFile = null;
+        //    //this.obtenerAcusesListado(this.idListado);
+        //    this.resetFileInput();
+        //}, (error) => {
+        //    console.error('Error al eliminar el archivo:', error);
+        //});
 
-    }
-
-    limpiarDocumento() {
-        this.selectedFileName = null;
-        this.resetFileInput();
-    }
-
-    onFileSelected(event: any): void {
-        this.selectedFile = event.target.files[0];
-        this.selectedFileName = this.selectedFile.name;
     }
 
     
 
-
     openDocument(archivo: string, carpeta: string) {
         this.getImage(archivo, carpeta);
     }
-
     getImage(archivo: string, carpeta: string) {
         this.http.get(`${this.url}api/entrega/getimage/${archivo}/${carpeta}`, { responseType: 'blob' })
             .subscribe((data: Blob) => {
@@ -170,8 +157,51 @@ export class CargarFacturaWidget {
         return extension;
     }
 
-    resetFileInput(): void {
-        this.fileInput.nativeElement.value = '';
+    
+    //enviar facturas al Backend
+    subirFacturas() {
+        if (this.selectedPdf && this.selectedXml) {
+            const formData = new FormData();
+            formData.append('xml', this.selectedXml);
+            formData.append('pdf', this.selectedPdf);
+            this.http.post<boolean>(`${this.url}api/factura/insertarfacturas/${this.idOrden}`, formData).subscribe(response => {
+                
+            })
+        }
+    }
+    //apartado para seleccionar documentacion
+
+    onPdfSelected(event: any) {
+        this.selectedPdf = event.target.files[0];
+        this.quitarFocoDeElementos();
+    }
+
+    onXmlSelected(event: any) {
+        this.selectedXml = event.target.files[0];
+        this.quitarFocoDeElementos();
+    }
+
+    quitarFocoDeElementos(): void {
+        const elementos = document.querySelectorAll('button, input[type="text"]');
+
+        elementos.forEach((elemento: HTMLElement) => {
+            elemento.blur();
+        });
+    }
+
+    obtenerListadoFacturas() {
+         this.http.get<Factura>(`${this.url}api/factura/obtenerfacturas/${this.idOrden}`).subscribe(response => {
+            this.facturas = response;
+        })
+    }
+
+    limpiarPDF() {
+        this.selectedPdf = null;
+        this.pdfInput.nativeElement.value = '';
+    }
+    limpiarXML() {
+        this.selectedXml = null;
+        this.xmlInput.nativeElement.value = '';
     }
 }
 

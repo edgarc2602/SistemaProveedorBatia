@@ -16,7 +16,7 @@ export class FacturaComponent {
     model: ListadoOrdenCompra = {
         ordenes: [], numPaginas: 0, pagina: 1, rows: 0
     }
-    idProveedor: number = 35;
+    idProveedor: number = 1108;
     fechaInicio: string = '';
     fechaFin: string = '';
 
@@ -61,8 +61,8 @@ export class FacturaComponent {
 
     }
 
-    openCargarFacturas(idOrden: number) {
-        this.upfact.open(idOrden);
+    openCargarFacturas(idOrden: number, empresa: string, cliente: string) {
+        this.upfact.open(idOrden, empresa, cliente);
     }
 
 }

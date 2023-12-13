@@ -50,8 +50,9 @@ namespace SistemaProveedoresBatia.Controllers
             return await _logic.ObtenerAcusesListado(idListado);
         }
 
-        //private readonly string _imageFolderPath = "C:/Users/LAP_Sistemas5/Desktop/SINGA_NEW/Doctos/entrega/"; // dev
-        private readonly string _imageFolderPath = "\\\\192.168.2.4\\c$\\inetpub\\wwwroot\\SINGA_APP\\Doctos\\entrega\\";
+        private readonly string _imageFolderPath = "C:/Users/LAP_Sistemas5/Desktop/SINGA_NEW/Doctos/entrega/";
+        //private readonly string _imageFolderPath = "\\\\192.168.2.4\\c$\\inetpub\\wwwroot\\SINGA_APP\\Doctos\\entrega\\";
+        //private readonly string _imageFolderPath = "\\\\192.168.2.4\\c$\\inetpub\\wwwroot\\SINGA_APP\\Doctos\\entrega\\";            ruta produccion
 
         [HttpGet("getimage/{archivo}/{carpeta}")]
         public IActionResult GetImage(string archivo, string carpeta)
@@ -73,7 +74,7 @@ namespace SistemaProveedoresBatia.Controllers
         {
             string carpeta = "F" + DateTime.Now.ToString("yyyy_MM");
             bool result;
-            string directorio = _imageFolderPath + '/' + carpeta;
+            string directorio = _imageFolderPath + carpeta;
 
             if (Directory.Exists(directorio))
             {
@@ -129,7 +130,7 @@ namespace SistemaProveedoresBatia.Controllers
         public async Task<bool> EliminaAcuse(string archivo, string carpeta,int idListado)
         {
             bool result;
-            string directorio = _imageFolderPath + '/' + carpeta;
+            string directorio = _imageFolderPath  + carpeta;
             string filePathToDelete = Path.Combine(directorio, archivo);
             
             if (System.IO.File.Exists(filePathToDelete))

@@ -23,6 +23,10 @@ export class CargarAcuseEntregaWidget {
     formato: string = '';
     prefijo: string = '';
 
+    archivo: string = '';
+    carpeta: string = '';
+    fechaEntrega: string = '';
+
     constructor(@Inject('BASE_URL') private url: string, private http: HttpClient) { }
     nuevo() {
         this.model = {
@@ -66,28 +70,31 @@ export class CargarAcuseEntregaWidget {
     }
 
     concluirEntrega() {
-
+        this.quitarFocoDeElementos();
     }
     guardarArchivo(): void {
-        if (this.selectedFile) {
-            const formData = new FormData();
-            formData.append('file', this.selectedFile);
+        if (this.selectedFileName) {
+            if (this.selectedFile) {
+                const formData = new FormData();
+                formData.append('file', this.selectedFile);
 
-            this.http.post<boolean>(`${this.url}api/entrega/guardaracuse/${this.idListado}/${this.selectedFileName}`, formData).subscribe((response) => {
-                console.log('Archivo guardado con éxito:', response);
-                this.selectedFileName = null;
-                this.selectedFile = null;
-                this.obtenerAcusesListado(this.idListado);
-                this.resetFileInput();
-            }, (error) => {
-                console.error('Error al guardar el archivo:', error);
-            });
-        } else {
-            console.error('No se ha seleccionado ningún archivo.');
+                this.http.post<boolean>(`${this.url}api/entrega/guardaracuse/${this.idListado}/${this.selectedFileName}`, formData).subscribe((response) => {
+                    console.log('Archivo guardado con éxito:', response);
+                    this.selectedFileName = null;
+                    this.selectedFile = null;
+                    this.obtenerAcusesListado(this.idListado);
+                    this.resetFileInput();
+                }, (error) => {
+                    console.error('Error al guardar el archivo:', error);
+                });
+            } else {
+                console.error('No se ha seleccionado ningún archivo.');
+            }
         }
+        this.quitarFocoDeElementos();
     }
-    eliminaAcuse(archivo: string, carpeta: string) {
-        this.http.delete<boolean>(`${this.url}api/entrega/eliminaacuse/${archivo}/${carpeta}/${this.idListado}`).subscribe(response => {
+    eliminaAcuse() {
+        this.http.delete<boolean>(`${this.url}api/entrega/eliminaacuse/${this.archivo}/${this.carpeta}/${this.idListado}`).subscribe(response => {
             console.log('Archivo eliminado con éxito:', response);
             this.selectedFileName = null;
             this.selectedFile = null;
@@ -96,7 +103,7 @@ export class CargarAcuseEntregaWidget {
         }, (error) => {
             console.error('Error al eliminar el archivo:', error);
         });
-
+        this.quitarFocoDeElementos();
     }
 
     limpiarDocumento() {
@@ -109,7 +116,7 @@ export class CargarAcuseEntregaWidget {
         this.selectedFileName = this.selectedFile.name;
     }
 
-    
+
 
 
     openDocument(archivo: string, carpeta: string) {
@@ -163,6 +170,7 @@ export class CargarAcuseEntregaWidget {
             }, error => {
                 console.error('Error al obtener el documento', error);
             });
+        this.quitarFocoDeElementos();
     }
     obtenerExtension(archivo: string): string {
         const partes = archivo.split('.');
@@ -173,5 +181,22 @@ export class CargarAcuseEntregaWidget {
     resetFileInput(): void {
         this.fileInput.nativeElement.value = '';
     }
+    elimina(archivo: string, carpeta: string) {
+        this.archivo = archivo;
+        this.carpeta = carpeta;
+        this.sendEvent.emit(true);
+    }
+
+    quitarFocoDeElementos(): void {
+        const elementos = document.querySelectorAll('button, input[type="text"]');
+
+        elementos.forEach((elemento: HTMLElement) => {
+            elemento.blur();
+        });
+    }
+    chgbtn() {
+        this.quitarFocoDeElementos();
+    }
+
 }
 

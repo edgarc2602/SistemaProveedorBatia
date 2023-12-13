@@ -123,10 +123,8 @@
     </div>
     <br />
     <pagina-widget [pagina]="model.pagina" [numPaginas]="model.numPaginas" [rows]="model.rows" (chgEvent)="muevePagina($event)"></pagina-widget>
-    <br />
-    <br />
-    <br />
-    <button type="button" class="btn btn-primary btn-bottom-right box-shadow" (click)="goBack()">Volver</button>
 </div>
 <detallematerialeslistado-widget></detallematerialeslistado-widget>
-<cargaracuseentrega-widget></cargaracuseentrega-widget>
+<cargaracuseentrega-widget (ansEvent)="openConfirmacion($event)"></cargaracuseentrega-widget>
+<elimina-widget [titulo]="" [mensaje]="" (ansEvent)="returnConfirmacion($event)"></elimina-widget>
+

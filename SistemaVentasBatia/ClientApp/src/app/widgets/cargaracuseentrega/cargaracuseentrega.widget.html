@@ -6,12 +6,12 @@
             <meta charset="UTF-8">
 
             <!-- Modal Header -->
-            <div class="modal-header justify-content-center">
+            <div class="modal-header justify-content-center bg-light">
                 <h4 class="modal-title">Cargar acuse de entrega</h4>
             </div>
 
             <!-- Modal body -->
-            <div class="modal-body">
+            <div class="modal-body ">
                 <h6 class="modal-title">Listado: {{idListado  }} {{  prefijo}}</h6>
                 <h6 class="modal-title">Punto de atención: {{sucursal}}</h6>
                 <h6 class="modal-title">Tipo: {{tipo}}</h6>
@@ -37,7 +37,7 @@
                                                     <button type="button" class="btn btn-lg text-primary" (click)="getImage(acu.archivo, acu.carpeta)" data-bs-toggle="tooltip" title="Ver">
                                                         <i class="fa-solid fa-eye" style="color: #565658;"></i>
                                                     </button>
-                                                    <button type="button" class="btn btn-lg text-secondary" (click)="eliminaAcuse(acu.archivo, acu.carpeta)" data-bs-toggle="tooltip" title="Eliminar">
+                                                    <button type="button" class="btn btn-lg text-secondary" (click)="elimina(acu.archivo, acu.carpeta)" data-bs-toggle="tooltip" title="Eliminar">
                                                         <i class="fa-solid fa-trash" style="color: #ff0000;"></i>
                                                     </button>
                                                 </div>
@@ -53,7 +53,7 @@
                 <div class="row text-center">
                     <div class="col-md-4">
                         <input type="file" (change)="onFileSelected($event)" #fileInput style="display:none" accept="image/*, application/pdf, .doc, .docx, .txt">
-                        <button type="button" class="btn btn-outline-primary mb-2" (click)="fileInput.click()">
+                        <button type="button" class="btn btn-outline-primary" (click)="fileInput.click(); chgbtn()">
                             <i class="fa-solid fa-magnifying-glass me-1"></i>
                             Seleccionar acuse
                         </button>
@@ -80,9 +80,25 @@
             </div>
 
             <!-- Modal footer -->
-            <div class="modal-footer">
-                <!--<button type="button" class="btn btn-outline-primary" (click)="concluirEntrega()" id="btnEliminarSbmt">ConcluirEntrega</button>-->
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <div class="modal-footer justify-content-start bg-light">
+
+                <div class="row col-lg-12">
+                    <div class="col-4 col-md-3">
+                        <div class="form-floating">
+                            <input type="date" class="form-control" [(ngModel)]="fechaEntrega" id="fechaEntrega">
+                            <label asp-for="fechaEntrega">Fec.Entrega</label>
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-4">
+                        <button type="button" class="btn btn-outline-success" (click)="concluirEntrega()" id="btnEliminarSbmt"><i class="fa-solid fa-box-open"></i> Concluir Entrega</button>
+                    </div>
+                    <div class="col-1 col-md-3">
+
+                    </div>
+                    <div class="col-3 col-md-2">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i> Cerrar</button>
+                    </div>
+                </div>
             </div>
 
         </div>

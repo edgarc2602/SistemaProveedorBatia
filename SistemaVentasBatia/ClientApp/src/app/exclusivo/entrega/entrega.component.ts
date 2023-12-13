@@ -6,6 +6,7 @@ import { ListadoMateriales } from 'src/app/models/listadomateriales';
 import { Catalogo } from '../../models/catalogo';
 import { DetalleMaterialesListadoWidget } from 'src/app/widgets/detallematerialeslistado/detallematerialeslistado.widget';
 import { CargarAcuseEntregaWidget } from 'src/app/widgets/cargaracuseentrega/cargaracuseentrega.widget';
+import { EliminaWidget } from 'src/app/widgets/elimina/elimina.widget';
 
 @Component({
     selector: 'entrega-comp',
@@ -25,6 +26,12 @@ export class EntregaComponent {
     idProveedor: number = 35;
     @ViewChild(DetalleMaterialesListadoWidget, { static: false }) matLis: DetalleMaterialesListadoWidget;
     @ViewChild(CargarAcuseEntregaWidget, { static: false }) acuse: CargarAcuseEntregaWidget;
+    @ViewChild(EliminaWidget, { static: false }) eliwid: EliminaWidget;
+    w
+    idListado: number = 0;
+    sucursal: string = '';
+    tipostring: string = '';
+    prefijo: string = '';
 
     constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {
         http.get<Catalogo[]>(`${url}api/catalogo/obtenermeses`).subscribe(response => {
@@ -60,7 +67,26 @@ export class EntregaComponent {
     }
 
     verAcuses(idListado: number, sucursal: string, tipo: string, prefijo: string) {
+        this.idListado = idListado;
+        this.sucursal = sucursal;
+        this.tipostring = tipo;
+        this.prefijo = prefijo;
         this.acuse.open(idListado, sucursal, tipo, prefijo);
     }
 
+    returnConfirmacion($event) {
+        if ($event == true) {
+            this.acuse.eliminaAcuse();
+        }
+        this.acuse.open(this.idListado, this.sucursal, this.tipostring, this.prefijo);
+    }
+
+    openConfirmacion($event) {
+        if ($event = true) {
+            this.acuse.close();
+            this.eliwid.titulo = 'Eliminar';
+            this.eliwid.open()
+        }
+        
+    }
 }

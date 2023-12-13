@@ -235,20 +235,7 @@ align-middle {
     }
 }
 
-.btn {
-    padding: 10px 20px;
-    border: none;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
 
-    .btn:hover {
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    }
-
-    .btn:active {
-        transform: translateY(5px);
-        box-shadow: none;
-    }
 
 
 .form-control {
@@ -276,11 +263,42 @@ align-middle {
     }
 
 tbody tr:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     transition: box-shadow 0.3s ease;
+    background-color: #E2FFFE;
 }
 
-.nav-link:active {
+.nav-link {
+    border: none;
     transition: box-shadow 0.3s ease, transform 0.3s ease;
-    transform: translateY(4px);
 }
+
+    .nav-link:active {
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+        transform: translateY(3px);
+    }
+
+.btn:active,
+.btn:focus {
+    /*outline: none !important;*/ /* Eliminar el marcado de foco */
+    box-shadow: none !important;
+}
+
+.btn.page-link {
+    user-select: none; /* Evitar la selección de texto */
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+    .btn:hover {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn:active {
+        transform: translateY(3px);
+        box-shadow: none;
+    }

@@ -78,7 +78,7 @@
                                 <button type="button" class="btn btn-lg text-primary" (click)="imprimirOrden(orden.idOrden)" data-bs-toggle="tooltip" title="Imprimir orden">
                                     <i class="fa-solid fa-print" style="color: #0d6efd;"></i>
                                 </button>
-                                <button type="button" class="btn btn-lg text-secondary" (click)="openCargarFacturas(orden.idOrden)" data-bs-toggle="tooltip" title="Facturas">
+                                <button type="button" class="btn btn-lg text-secondary" (click)="openCargarFacturas(orden.idOrden, orden.empresa, orden.cliente)" data-bs-toggle="tooltip" title="Facturas">
                                     <i class="fa-solid fa-file-circle-check"></i>
                                 </button>
                             </td>
@@ -90,9 +90,5 @@
     </div>
     <br />
     <pagina-widget [pagina]="model.pagina" [numPaginas]="model.numPaginas" [rows]="model.rows" (chgEvent)="muevePagina($event)"></pagina-widget>
-    <br />
-    <br />
-    <br />
-    <button type="button" class="btn btn-primary btn-bottom-right box-shadow" (click)="goBack()">Volver</button>
 </div>
 <cargarfactura-widget></cargarfactura-widget>

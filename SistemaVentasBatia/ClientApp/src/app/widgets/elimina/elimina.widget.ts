@@ -24,6 +24,7 @@ export class EliminaWidget implements OnChanges {
     }
 
     cancela() {
+        this.sendEvent.emit(false);
         this.close();
     }
 

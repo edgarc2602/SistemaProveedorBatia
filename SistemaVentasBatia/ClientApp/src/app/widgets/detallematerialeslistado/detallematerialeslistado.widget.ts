@@ -55,5 +55,14 @@ export class DetalleMaterialesListadoWidget{
                 const fileURL = URL.createObjectURL(file);
                 window.open(fileURL, '_blank');
             });
+        this.quitarFocoDeElementos();
+    }
+
+    quitarFocoDeElementos(): void {
+        const elementos = document.querySelectorAll('button, input[type="text"]');
+
+        elementos.forEach((elemento: HTMLElement) => {
+            elemento.blur();
+        });
     }
 }

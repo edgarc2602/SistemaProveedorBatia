@@ -6,10 +6,16 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 using Dapper;
+using Microsoft.AspNetCore.Http;
 using SistemaVentasBatia.Context;
 using SistemaVentasBatia.Models;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
+using System.Data;
+using System.Data.SqlClient;
+using System.Data.SqlTypes;
+using System.IO;
 
 namespace SistemaVentasBatia.Repositories
 {
@@ -17,6 +23,9 @@ namespace SistemaVentasBatia.Repositories
     {
         Task<List<OrdenCompra>> ObtenerOrdenesCompra(int idProveedor, string fechaInicio, string fechaFin, int pagina);
         Task<int> ContarOrdenesCompra(int idProveedor, string fechaInicio, string fechaFin);
+        Task<decimal> ObtenerSumaFacturas(int idOrden);
+        Task<List<Factura>> ObtenerFacturas(int idOrden);
+        Task<bool> ExtraerDatosXML(IFormFile xml, int idOrden);
     }
 
     public class FacturaRepository : IFacturaRepository
@@ -68,8 +77,8 @@ WHERE
             }
             return ordenes;
         }
-        
-        public async Task <int> ContarOrdenesCompra(int idProveedor, string fechaInicio, string fechaFin)
+
+        public async Task<int> ContarOrdenesCompra(int idProveedor, string fechaInicio, string fechaFin)
         {
             var query = @"
 SELECT COUNT(*) AS TotalRows
@@ -107,6 +116,90 @@ AND (@fechaInicio IS NULL OR @fechaFin IS NULL OR falta BETWEEN @fechaInicio AND
                 throw ex;
             }
             return rows;
+        }
+
+        public async Task<decimal> ObtenerSumaFacturas(int idOrden)
+        {
+            var query = @"SELECT CAST(SUM(ISNULL(total, 0)) AS decimal(18, 2)) Total
+                        FROM tb_recepcion
+                        WHERE id_orden = @idOrden
+";
+            decimal total;
+            try
+            {
+                using var connection = _ctx.CreateConnection();
+                total = await connection.QuerySingleAsync<decimal>(query, new { idOrden });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return total;
+        }
+
+        public async Task<List<Factura>> ObtenerFacturas(int idOrden)
+        {
+            string query = @"
+SELECT 
+id_orden IdOrden,
+id_recepcion IdRecepcion,
+documento Documento
+FROM tb_recepcion_factura WHERE id_orden = @idOrden
+";
+
+            var facturas = new List<Factura>();
+            try
+            {
+                using var connection = _ctx.CreateConnection();
+                facturas = (await connection.QueryAsync<Factura>(query, new { idOrden })).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return facturas;
+        }
+        public async Task<bool> ExtraerDatosXML(IFormFile xml, int idOrden)
+        {
+            if (xml.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await xml.CopyToAsync(memoryStream);
+
+                    memoryStream.Position = 0;
+
+                    SqlXml sqlXml = new SqlXml(memoryStream);
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@Material", sqlXml, DbType.Xml);
+                    parameters.Add("@IdMov", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+                    using (var connection = _ctx.CreateConnection() as SqlConnection)
+                    {
+                        if (connection != null)
+                        {
+                            await connection.OpenAsync();
+                            var result = await connection.ExecuteAsync(
+                                "sp_recepcione",
+                                parameters,
+                                commandType: CommandType.StoredProcedure
+                            );
+                            int idMovimiento = parameters.Get<int>("@IdMov");
+
+
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
