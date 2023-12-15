@@ -82,9 +82,7 @@ namespace SistemaVentasBatia.Controllers
             documentos[1] = xml.XmlName;
             bool result = false;
             var xmlDoc = new XmlDocument();
-
             var movimientoElement = xmlDoc.CreateElement("Movimiento");
-
                 var salidaElement = xmlDoc.CreateElement("salida");
                 salidaElement.SetAttribute("documento", "3");
                 salidaElement.SetAttribute("almacen1", "0");
@@ -100,23 +98,16 @@ namespace SistemaVentasBatia.Controllers
                 salidaElement.SetAttribute("iva", xml.Iva.ToString());
                 salidaElement.SetAttribute("total", xml.Total.ToString());
                 movimientoElement.AppendChild(salidaElement);
-
             foreach (var fileName in documentos)
             {
                 var archivoElement = xmlDoc.CreateElement("archivo");
                 archivoElement.SetAttribute("nombre", fileName);
                 movimientoElement.AppendChild(archivoElement);
             }
-
-
             xmlDoc.AppendChild(movimientoElement);
-
             string xmlString = xmlDoc.OuterXml;
-
             result = await _logic.InsertarXML(xmlString);
-
             Console.WriteLine(xmlString);
-
             return result;
         }
 
