@@ -6,18 +6,122 @@
             <meta charset="UTF-8">
 
             <!-- Modal Header -->
-            <div class="modal-header justify-content-center">
+            <div class="modal-header justify-content-center bg-light">
                 <h4 class="modal-title">Cargar factura</h4>
             </div>
 
             <!-- Modal body -->
-            <div class="modal-body">
-                <h6 class="modal-title">Id orden: {{idOrden}}</h6>
-                <h6 class="modal-title">Empresa: {{empresa}}</h6>
-                <h6 class="modal-title">Cliente: {{cliente}}</h6>
+            <div class="modal-body align-middle">
+                <h5>Detalles de la orden</h5>
+                <div class="row">
+                    <div class="col-md-4 col-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control custom-input" [ngModel]="detallefact.empresa" placeholder="Empresa" disabled>
+                            <label asp-for="Keywords">Empresa</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control custom-input" [ngModel]="detallefact.cliente" placeholder="Cliente" disabled>
+                            <label asp-for="Keywords">Cliente</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-4">
+                        <div class="form-floating">
+                            <input type="text" class="form-control custom-input" [ngModel]="fechaActual | date: 'dd/MM/yyyy'" placeholder="Fecha recepción" disabled>
+                            <label asp-for="Keywords">Fecha recepción</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-4">
+                        <div class="form-floating">
+                            <input type="text" class="form-control custom-input" [ngModel]="detallefact.idOrden" placeholder="Id orden" disabled>
+                            <label asp-for="Keywords">Id orden</label>
+                        </div>
+                    </div>
+                </div>
                 <br />
-                <div class="row" style="border-radius: 10px; overflow-x: hidden;">
-                    <div style="max-height: 250px; max-width:auto; overflow-y: auto; overflow-x: hidden">
+                <h5>Carga de archivos</h5>
+                <div class="row">
+                    <div class="col-md-3 col-4 mb-3 text-center">
+                        <input type="file" accept="application/pdf" (change)="onPdfSelected($event)" style="display: none;" #pdfInput>
+                        <button class="btn btn-outline-primary" (click)="pdfInput.click()">Seleccionar PDF </button>
+                    </div>
+                    <div class="col-md-3 col-4 mb-3 ">
+                        <div *ngIf="selectedPdf" class="form-floating">
+                            <input type="text" class="form-control custom-input" value="{{ selectedPdf.name }}" placeholder="PDF" disabled>
+                            <label asp-for="Keywords">PDF</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1 col-2">
+                        <button *ngIf="selectedPdf" class="btn btn-outline-danger" (click)="limpiarPDF()">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                    <div class="col-md-5 col-2 mb-3 ">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-4 mb-3 text-center">
+                        <input type="file" accept="text/xml" (change)="onXmlSelected($event)" style="display: none;" #xmlInput>
+                        <button class="btn btn-outline-secondary" (click)="xmlInput.click()">Seleccionar XML</button>
+                    </div>
+                    <div class="col-md-3 col-4 mb-3">
+                        <div *ngIf="selectedXml" class="form-floating">
+                            <input type="text" class="form-control custom-input" value="{{ selectedXml.name }}" placeholder="XML" disabled>
+                            <label asp-for="Keywords">XML</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1 col-2">
+                        <button *ngIf="selectedXml" class="btn btn-outline-danger" (click)="limpiarXML()">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                    <div class="col-md-5 col-2 mb-3">
+                    </div>
+                </div>
+                <h5 *ngIf="selectedXml">Datos del XML cargado</h5>
+                <div *ngIf="selectedXml" class="row mb-3">
+                    <div class="col-md-3 col-4">
+                        <div class="form-floating">
+                            <input type="text" class="form-control custom-input" [ngModel]="'$' + (xmldata.subTotal | number: '1.2')" placeholder="Subtotal" disabled>
+                            <label asp-for="Keywords">Subtotal</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-4">
+                        <div class="form-floating">
+                            <input type="text" class="form-control custom-input" [ngModel]="'$' + (xmldata.iva | number: '1.2')" placeholder="Subtotal" disabled>
+                            <label asp-for="Keywords">IVA</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-4">
+                        <div class="form-floating ">
+                            <input type="text" class="form-control custom-input" [ngModel]="'$' + (xmldata.total | number: '1.2')" placeholder="Total" disabled>
+                            <label asp-for="Keywords">Total</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-4">
+                        <div class="form-floating ">
+                            <input type="text" class="form-control custom-input" [ngModel]="xmldata.fechaFactura" placeholder="Fecha factura" disabled>
+                            <label asp-for="Keywords">Fecha factura</label>
+                        </div>
+                    </div>
+                    <div class="col-md-9 col-4">
+                        <div class="form-floating ">
+                            <input type="text" class="form-control custom-input" [ngModel]="xmldata.factura" placeholder="Factura" disabled>
+                            <label asp-for="Keywords">Factura</label>
+                        </div>
+                    </div>
+                    <div *ngIf="selectedXml && selectedPdf" class="col-md-3 col-3 text-center align-middle">
+                        <button type="button" class="btn btn-outline-success" (click)="subirFacturas()">
+                            <i class="fa-solid fa-save"></i>
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+                
+                <h5>Facturas cargadas</h5>
+                <div class="row box-shadow" style="border-radius: 10px; overflow-x: hidden;">
+                    <div style="max-height: 200px; max-width:auto; overflow-y: auto; overflow-x: hidden">
                         <div class="row">
                             <table class="table table-borderless table-striped table-responsive text-center">
                                 <thead class="sticky-top text-white" style="background-color: #4a92fe; color: #fff; border-radius: 10px; ">
@@ -33,15 +137,15 @@
                                         <td> {{fact.documento}}</td>
                                         <td>
                                             <!--<div class="row">
-                                                <div class="col-12 col-md-12 col-sm-12">
-                                                    <button type="button" class="btn btn-lg text-primary" (click)="getImage(acu.archivo, acu.carpeta)" data-bs-toggle="tooltip" title="Ver">
-                                                        <i class="fa-solid fa-eye" style="color: #565658;"></i>
-                                                    </button>
-                                                    <button type="button" class="btn btn-lg text-secondary" (click)="eliminaAcuse(acu.archivo, acu.carpeta)" data-bs-toggle="tooltip" title="Eliminar">
-                                                        <i class="fa-solid fa-trash" style="color: #ff0000;"></i>
-                                                    </button>
-                                                </div>
-                                            </div>-->
+                                    <div class="col-12 col-md-12 col-sm-12">
+                                        <button type="button" class="btn btn-lg text-primary" (click)="getImage(acu.archivo, acu.carpeta)" data-bs-toggle="tooltip" title="Ver">
+                                            <i class="fa-solid fa-eye" style="color: #565658;"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-lg text-secondary" (click)="eliminaAcuse(acu.archivo, acu.carpeta)" data-bs-toggle="tooltip" title="Eliminar">
+                                            <i class="fa-solid fa-trash" style="color: #ff0000;"></i>
+                                        </button>
+                                    </div>
+                                </div>-->
                                         </td>
                                     </tr>
                                 </tbody>
@@ -49,48 +153,10 @@
                         </div>
                     </div>
                 </div>
-                <br />
-                <div class="row text-center">
-                    <div class="col-md-4 mb-3">
-                        <!-- Seleccionar PDF -->
-                        <input type="file" accept="application/pdf" (change)="onPdfSelected($event)" style="display: none;" #pdfInput>
-                        <button class="btn btn-outline-primary" (click)="pdfInput.click()">Seleccionar archivo PDF</button>
-                        <div *ngIf="selectedPdf">
-                            {{ selectedPdf.name }}
-                            <button class="btn btn-outline-danger" (click)="limpiarPDF()">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <!-- Seleccionar XML -->
-                        <input type="file" accept="text/xml" (change)="onXmlSelected($event)" style="display: none;" #xmlInput>
-                        <button class="btn btn-outline-secondary" (click)="xmlInput.click()">Seleccionar archivo XML</button>
-                        <div *ngIf="selectedXml">
-                            {{ selectedXml.name }}
-                            <button class="btn btn-outline-danger" (click)="limpiarXML()"> 
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="col-md-1 mb-3">
-                        <!--<button class="btn btn-outline-danger" (click)="limpiarDocumento()">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>-->
-                    </div>
-
-                    <div class="col-md-3 mb-3">
-                        <button type="button" class="btn btn-outline-success" (click)="subirFacturas()">
-                            <i class="fa-solid fa-save"></i>
-                            Guardar
-                        </button>
-                    </div>
-                </div>
             </div>
 
             <!-- Modal footer -->
-            <div class="modal-footer">
+            <div class="modal-footer bg-light">
                 <!--<button type="button" class="btn btn-outline-primary" (click)="concluirEntrega()" id="btnEliminarSbmt">ConcluirEntrega</button>-->
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
@@ -98,3 +164,4 @@
         </div>
     </div>
 </div>
+<confirma-widget [titulo]="" [mensaje]="" (ansEvent)="returnConfirmacion($event)"></confirma-widget>

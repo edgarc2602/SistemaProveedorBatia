@@ -4,6 +4,13 @@ import { ListadoAcuseEntrega } from '../../models/listadoacuseentrega';
 declare var bootstrap: any;
 import { Factura } from 'src/app/models/Factura'
 import { FacturaComponent } from '../../exclusivo/factura/factura.component';
+import { XMLData } from '../../models/xmldata';
+import { DetalleOrdenCompra } from '../../models/detalleordencompra';
+import { getLocaleDateFormat } from '@angular/common';
+import { ConfirmaWidget } from '../../widgets/confirma/confirma.widget'
+import { XMLGraba } from '../../models/xmlgraba';
+import { StoreUser } from 'src/app/stores/StoreUser';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'cargarfactura-widget',
@@ -12,6 +19,7 @@ import { FacturaComponent } from '../../exclusivo/factura/factura.component';
 export class CargarFacturaWidget {
     @ViewChild('pdfInput', { static: false }) pdfInput!: ElementRef;
     @ViewChild('xmlInput', { static: false }) xmlInput!: ElementRef;
+    @ViewChild(ConfirmaWidget, { static: false }) conwid: ConfirmaWidget;
     @Output('ansEvent') sendEvent = new EventEmitter<boolean>();
     model: ListadoAcuseEntrega = {
         acuses: [], carpeta: '', idListado: 0
@@ -29,10 +37,28 @@ export class CargarFacturaWidget {
     selectedPdf: File | null = null;
     selectedXml: File | null = null;
     facturas: Factura = {} as Factura;
+    xmldata: XMLData = {
+        subTotal: 0, iva: 0, total: 0, fechaFactura: '', factura: ''
+    }
+    detallefact: DetalleOrdenCompra = {
+        idOrden: 0, idRequisicion: 0, idProveedor: 0, idCliente: 0, proveedor: '', empresa: '', cliente: '', subTotal: 0, iva: 0, total: 0, status: 0, dias: 0
+    }
+    fechaActual: Date;
+    idTipoFolio: number = null;
+    xmlgraba: XMLGraba = {
+        factura: '', idCliente: 0, idOrden: 0, idPersonal: 0, fechaFactura: '', dias: 0, subTotal: 0, iva: 0, total: 0, pdfName: '', xmlName: ''
+    }
 
-    constructor(@Inject('BASE_URL') private url: string, private http: HttpClient) { }
+    constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {
+
+    }
     nuevo() {
         /*this.resetFileInput();*/
+    }
+    obtenerDetallesOrden() {
+        this.http.get<DetalleOrdenCompra>(`${this.url}api/factura/obtenerdetalleorden/${this.idOrden}`).subscribe(response => {
+            this.detallefact = response;
+        })
     }
 
     open(idOrden: number, empresa: string, cliente: string) {
@@ -42,7 +68,9 @@ export class CargarFacturaWidget {
         this.cliente = cliente;
         this.selectedPdf = null;
         this.selectedXml = null;
+        this.fechaActual = new Date();
         this.obtenerListadoFacturas();
+        this.obtenerDetallesOrden();
         let docModal = document.getElementById('modalCargarFactura');
         let myModal = bootstrap.Modal.getOrCreateInstance(docModal);
         myModal.show();
@@ -95,10 +123,20 @@ export class CargarFacturaWidget {
         //}, (error) => {
         //    console.error('Error al eliminar el archivo:', error);
         //});
-
     }
-
-    
+    getDataInsertar() {
+        this.xmlgraba.factura = this.xmldata.factura;
+        this.xmlgraba.idCliente = this.detallefact.idCliente;
+        this.xmlgraba.idOrden = this.detallefact.idOrden;
+        this.xmlgraba.idPersonal = this.user.idPersonal;
+        this.xmlgraba.fechaFactura = this.xmldata.fechaFactura;
+        this.xmlgraba.dias = this.detallefact.dias;
+        this.xmlgraba.subTotal = this.xmldata.subTotal;
+        this.xmlgraba.iva = this.xmldata.iva;
+        this.xmlgraba.total = this.xmldata.total;
+        this.xmlgraba.pdfName = this.selectedPdf.name;
+        this.xmlgraba.xmlName = this.selectedXml.name;
+    }
 
     openDocument(archivo: string, carpeta: string) {
         this.getImage(archivo, carpeta);
@@ -157,19 +195,29 @@ export class CargarFacturaWidget {
         return extension;
     }
 
-    
-    //enviar facturas al Backend
     subirFacturas() {
+        
         if (this.selectedPdf && this.selectedXml) {
+            this.getDataInsertar();
             const formData = new FormData();
             formData.append('xml', this.selectedXml);
             formData.append('pdf', this.selectedPdf);
-            this.http.post<boolean>(`${this.url}api/factura/insertarfacturas/${this.idOrden}`, formData).subscribe(response => {
-                
+            this.http.post<boolean>(`${this.url}api/factura/insertarfacturascarpeta/${this.idOrden}`, formData).subscribe(response => {
+
+            })
+            this.http.post<boolean>(`${this.url}api/factura/insertarfacturasxml`, this.xmlgraba).subscribe(response => {
+                Swal.fire({
+                    icon: 'success',
+                    timer: 1000,
+                    showConfirmButton: false,
+                });
+                this.limpiarPDF();
+                this.limpiarXML();
+                this.obtenerListadoFacturas();
+
             })
         }
     }
-    //apartado para seleccionar documentacion
 
     onPdfSelected(event: any) {
         this.selectedPdf = event.target.files[0];
@@ -179,6 +227,7 @@ export class CargarFacturaWidget {
     onXmlSelected(event: any) {
         this.selectedXml = event.target.files[0];
         this.quitarFocoDeElementos();
+        this.obtenerValoresXML();
     }
 
     quitarFocoDeElementos(): void {
@@ -190,7 +239,7 @@ export class CargarFacturaWidget {
     }
 
     obtenerListadoFacturas() {
-         this.http.get<Factura>(`${this.url}api/factura/obtenerfacturas/${this.idOrden}`).subscribe(response => {
+        this.http.get<Factura>(`${this.url}api/factura/obtenerfacturas/${this.idOrden}`).subscribe(response => {
             this.facturas = response;
         })
     }
@@ -202,6 +251,38 @@ export class CargarFacturaWidget {
     limpiarXML() {
         this.selectedXml = null;
         this.xmlInput.nativeElement.value = '';
+        this.xmldata = {
+            subTotal: 0, iva: 0, total: 0, fechaFactura: '', factura: ''
+        }
+    }
+
+    obtenerValoresXML() {
+        if (this.idTipoFolio == null) {
+            this.openConfirmacion();
+        }
+        if (this.selectedXml) {
+            const formData = new FormData();
+            formData.append('xml', this.selectedXml);
+            this.http.post<XMLData>(`${this.url}api/factura/obtenerdatosxml/${this.idTipoFolio}`, formData).subscribe(response => {
+                this.xmldata = response;
+                this.idTipoFolio = null;
+            })
+        }
+    }
+    openConfirmacion() {
+        this.conwid.titulo = 'Factura';
+        this.conwid.mensaje = '\u00BFSu factura cuenta con un folio serializado?'
+        this.conwid.open()
+
+    }
+    returnConfirmacion($event) {
+        if ($event == true) {
+            this.idTipoFolio = 1;
+        }
+        else {
+            this.idTipoFolio = 0;
+        }
+        this.obtenerValoresXML();
     }
 }
 

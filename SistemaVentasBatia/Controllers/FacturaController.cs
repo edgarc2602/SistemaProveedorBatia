@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using System.Xml.Linq;
+using System.Xml;
 
 namespace SistemaVentasBatia.Controllers
 {
@@ -43,35 +45,79 @@ namespace SistemaVentasBatia.Controllers
         private readonly string FolderPath = "C:\\Users\\LAP_Sistemas5\\Desktop\\SINGA_NEW\\Doctos\\compras\\";
 
         [HttpPost("[action]/{idOrden}")]
-        public async Task<bool> InsertarFacturas([FromForm] IFormFile xml, [FromForm] IFormFile pdf, int idOrden)
+        public async Task<bool> InsertarFacturasCarpeta([FromForm] IFormFile xml, [FromForm] IFormFile pdf, int idOrden)
         {
-            string directorio = FolderPath + idOrden.ToString();
             bool result;
+            string directorio = FolderPath + idOrden.ToString();
             if (!Directory.Exists(directorio))
             {
                 Directory.CreateDirectory(directorio);
             }
             try
             {
-                //Guardar PDF
                 var pdfFilePath = Path.Combine(directorio, pdf.FileName);
                 using (var stream = new FileStream(pdfFilePath, FileMode.Create))
                 {
                     await pdf.CopyToAsync(stream);
                 }
-                //Guardar XML
                 var xmlFilePath = Path.Combine(directorio, xml.FileName);
                 using (var stream = new FileStream(xmlFilePath, FileMode.Create))
                 {
                     await xml.CopyToAsync(stream);
                 }
-                result = await _logic.ExtraerDatosXML(xml, idOrden);
-                return result;
+                result = true;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+            return result;
+        }
+
+        [HttpPost("[action]")]
+        public async Task<bool> InsertarFacturasXML([FromBody] XMLGraba xml)
+        {
+            string[] documentos = new string[2];
+            documentos[0] = xml.PdfName;
+            documentos[1] = xml.XmlName;
+            bool result = false;
+            var xmlDoc = new XmlDocument();
+
+            var movimientoElement = xmlDoc.CreateElement("Movimiento");
+
+                var salidaElement = xmlDoc.CreateElement("salida");
+                salidaElement.SetAttribute("documento", "3");
+                salidaElement.SetAttribute("almacen1", "0");
+                salidaElement.SetAttribute("factura", xml.Factura);
+                salidaElement.SetAttribute("cliente", xml.IdCliente.ToString());
+                salidaElement.SetAttribute("almacen", "0");
+                salidaElement.SetAttribute("orden", xml.IdOrden.ToString());
+                salidaElement.SetAttribute("usuario", xml.IdPersonal.ToString());
+                salidaElement.SetAttribute("fecfac", xml.FechaFactura);
+                salidaElement.SetAttribute("idproveedor", xml.IdPersonal.ToString());
+                salidaElement.SetAttribute("dias", xml.Dias.ToString());
+                salidaElement.SetAttribute("sub", xml.SubTotal.ToString());
+                salidaElement.SetAttribute("iva", xml.Iva.ToString());
+                salidaElement.SetAttribute("total", xml.Total.ToString());
+                movimientoElement.AppendChild(salidaElement);
+
+            foreach (var fileName in documentos)
+            {
+                var archivoElement = xmlDoc.CreateElement("archivo");
+                archivoElement.SetAttribute("nombre", fileName);
+                movimientoElement.AppendChild(archivoElement);
+            }
+
+
+            xmlDoc.AppendChild(movimientoElement);
+
+            string xmlString = xmlDoc.OuterXml;
+
+            result = await _logic.InsertarXML(xmlString);
+
+            Console.WriteLine(xmlString);
+
+            return result;
         }
 
         [HttpGet("[action]/{idOrden}")]
@@ -80,9 +126,16 @@ namespace SistemaVentasBatia.Controllers
             return await _logic.ObtenerFacturas(idOrden);
         }
 
-        [HttpPost("[action]")]
-        public async Task<bool> InsertarFacturas([FromForm] IFormFile xml)
+        [HttpPost("[action]/{idTipoFolio}")]
+        public async Task<XMLData> ObtenerDatosXML([FromForm] IFormFile xml, int idTipoFolio)
         {
+            return await _logic.ExtraerDatosXML(xml, idTipoFolio);
+        }
+
+        [HttpGet("[action]/{idOrden}")]
+        public async Task<DetalleOrdenCompra> ObtenerDetalleOrden(int idOrden)
+        {
+            return await _logic.ObtenerDetalleOrden(idOrden);
         }
     }
 }

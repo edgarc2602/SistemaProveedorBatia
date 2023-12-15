@@ -302,3 +302,10 @@ tbody tr:hover {
         transform: translateY(3px);
         box-shadow: none;
     }
+
+.custom-input:disabled {
+    border: none; /* Elimina el borde */
+    background-color: transparent; /* Elimina el color de fondo */
+    box-shadow: none; /* Elimina cualquier sombra */
+    /* Otros estilos adicionales que desees agregar o modificar */
+}

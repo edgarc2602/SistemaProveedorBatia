@@ -25,6 +25,7 @@ import { FacturaComponent } from './exclusivo/factura/factura.component';
 import { DetalleMaterialesListadoWidget } from './widgets/detallematerialeslistado/detallematerialeslistado.widget';
 import { CargarAcuseEntregaWidget } from './widgets/cargaracuseentrega/cargaracuseentrega.widget';
 import { CargarFacturaWidget } from './widgets/cargarfactura/cargarfactura.widget';
+import { ConfirmaWidget } from './widgets/confirma/confirma.widget';
  
 
 @NgModule({
@@ -47,7 +48,8 @@ import { CargarFacturaWidget } from './widgets/cargarfactura/cargarfactura.widge
         DashboardComponent,
         EstadoDeCuentaComponent,
         EntregaComponent,
-        FacturaComponent,   
+        FacturaComponent,  
+        ConfirmaWidget,
         
     ],
     imports: [

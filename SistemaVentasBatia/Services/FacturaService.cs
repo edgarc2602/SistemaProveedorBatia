@@ -18,7 +18,9 @@ namespace SistemaVentasBatia.Services
         Task<ListadoOrdenCompraDTO> ObtenerOrdenesCompra(ListadoOrdenCompraDTO ordenescompra, int idProveedor, string fechaInicio, string fechaFin);
         Task<decimal> ObtenerSumaFacturas(int idOrden);
         Task<List<FacturaDTO>> ObtenerFacturas(int idOrden);
-        Task<bool> ExtraerDatosXML(IFormFile xml, int idOrden);
+        Task<XMLData> ExtraerDatosXML(IFormFile xml, int idTipoFolio);
+        Task<DetalleOrdenCompra> ObtenerDetalleOrden(int idOrden);
+        Task<bool> InsertarXML(string xmlString);
     }
 
     public class FacturaService : IFacturaService
@@ -64,10 +66,18 @@ namespace SistemaVentasBatia.Services
             return facturas;
         }
 
-        public async Task<bool> ExtraerDatosXML(IFormFile xml, int idOrden)
+        public async Task<XMLData> ExtraerDatosXML(IFormFile xml, int idTipoFolio)
         {
-            await _FacturaRepo.ExtraerDatosXML(xml, idOrden);
-            return true;
+            return await _FacturaRepo.ExtraerDatosXML(xml, idTipoFolio);
+        }
+        public async Task<DetalleOrdenCompra> ObtenerDetalleOrden(int idOrden)
+        {
+            return await _FacturaRepo.ObtenerDetalleOrden(idOrden);
+        }
+
+        public async Task<bool> InsertarXML(string xmlString)
+        {
+            return await _FacturaRepo.InsertarXML(xmlString);
         }
     }
 }

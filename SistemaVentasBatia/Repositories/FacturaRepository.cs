@@ -16,6 +16,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
 using System.IO;
+using System.Xml.Linq;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace SistemaVentasBatia.Repositories
 {
@@ -25,7 +27,9 @@ namespace SistemaVentasBatia.Repositories
         Task<int> ContarOrdenesCompra(int idProveedor, string fechaInicio, string fechaFin);
         Task<decimal> ObtenerSumaFacturas(int idOrden);
         Task<List<Factura>> ObtenerFacturas(int idOrden);
-        Task<bool> ExtraerDatosXML(IFormFile xml, int idOrden);
+        Task<XMLData> ExtraerDatosXML(IFormFile xml, int idTipoFolio);
+        Task<DetalleOrdenCompra> ObtenerDetalleOrden(int idOrden);
+        Task<bool> InsertarXML(string xmlString);
     }
 
     public class FacturaRepository : IFacturaRepository
@@ -159,47 +163,147 @@ FROM tb_recepcion_factura WHERE id_orden = @idOrden
             }
             return facturas;
         }
-        public async Task<bool> ExtraerDatosXML(IFormFile xml, int idOrden)
+        public async Task<XMLData> ExtraerDatosXML(IFormFile xml, int idTipoFolio)
         {
-            if (xml.Length > 0)
+            var XMLData = new XMLData();
+            try
             {
-                using (var memoryStream = new MemoryStream())
+                XDocument xDoc = XDocument.Load(xml.OpenReadStream());
+
+                XElement comprobante = xDoc.Descendants().FirstOrDefault(e => e.Name.LocalName == "Comprobante" && e.Name.NamespaceName.StartsWith("http://www.sat.gob.mx/cfd/"));
+
+                if (comprobante != null)
                 {
-                    await xml.CopyToAsync(memoryStream);
+                    XNamespace cfdiNamespace = comprobante.Name.Namespace;
+                    XNamespace tfd = "http://www.sat.gob.mx/TimbreFiscalDigital";
 
-                    memoryStream.Position = 0;
-
-                    SqlXml sqlXml = new SqlXml(memoryStream);
-                    var parameters = new DynamicParameters();
-                    parameters.Add("@Material", sqlXml, DbType.Xml);
-                    parameters.Add("@IdMov", dbType: DbType.Int32, direction: ParameterDirection.Output);
-
-                    using (var connection = _ctx.CreateConnection() as SqlConnection)
+                    string subTotal = comprobante.Attribute("SubTotal")?.Value;
+                    if (idTipoFolio == 1) //si es serielizada
                     {
-                        if (connection != null)
-                        {
-                            await connection.OpenAsync();
-                            var result = await connection.ExecuteAsync(
-                                "sp_recepcione",
-                                parameters,
-                                commandType: CommandType.StoredProcedure
-                            );
-                            int idMovimiento = parameters.Get<int>("@IdMov");
+                        string Serie = comprobante.Attribute("Serie")?.Value;
+                        string Factura = comprobante.Attribute("Folio")?.Value;
+                        string Folio = Serie + Factura;
+                        XMLData.Factura = Folio;
 
-
-                            return true;
-                        }
-                        else
+                        XElement complemento = comprobante.Element(cfdiNamespace + "Complemento");
+                        if (complemento != null)
                         {
-                            return false;
+                            XElement timbrefiscaldigital = complemento.Element(tfd + "TimbreFiscalDigital");
+                            string fechaTimbrado = timbrefiscaldigital.Attribute("FechaTimbrado")?.Value;
+                            DateTime fecha = DateTime.Parse(fechaTimbrado);
+                            string fechaFormateada = fecha.ToString("yyyy-MM-dd");
+                            XMLData.FechaFactura = fechaFormateada;
                         }
                     }
+                    else
+                    {
+                        XElement complemento = comprobante.Element(cfdiNamespace + "Complemento");
+                        if (complemento != null)
+                        {
+                            XElement timbrefiscaldigital = complemento.Element(tfd + "TimbreFiscalDigital");
+                            string UUID = timbrefiscaldigital.Attribute("UUID")?.Value;
+                            string fechaTimbrado = timbrefiscaldigital.Attribute("FechaTimbrado")?.Value;
+                            DateTime fecha = DateTime.Parse(fechaTimbrado);
+                            string fechaFormateada = fecha.ToString("yyyy-MM-dd");
+                            XMLData.Factura = UUID;
+                            XMLData.FechaFactura = fechaFormateada;
+                        }
+                    }
+
+                    XMLData.SubTotal = decimal.Parse(subTotal);
+
+                    XElement impuestos = comprobante.Element(cfdiNamespace + "Impuestos");
+
+                    if (impuestos != null)
+                    {
+                        XElement traslados = impuestos.Element(cfdiNamespace + "Traslados");
+
+                        if (traslados != null)
+                        {
+                            XElement traslado = traslados.Element(cfdiNamespace + "Traslado");
+
+                            if (traslado != null)
+                            {
+                                string impuesto = traslado.Attribute("Importe")?.Value;
+                                XMLData.Iva = decimal.Parse(impuesto);
+                                decimal total = decimal.Parse(subTotal) + decimal.Parse(impuesto);
+                                XMLData.Total = total;
+                            }
+                        }
+                    }
+
                 }
             }
-            else
+            catch (Exception ex)
             {
-                return false;
+                Console.WriteLine($"Error: {ex.Message}");
             }
+
+            return XMLData;
+
+        }
+
+        public async Task<DetalleOrdenCompra> ObtenerDetalleOrden(int idOrden)
+        {
+            string query = @"
+select 
+id_orden IdOrden, 
+id_requisicion IdRequisicion, 
+a.id_proveedor IdProveedor, 
+a.id_cliente IdCliente,
+b.nombre Proveedor, 
+c.nombre Empresa, 
+e.nombre Cliente, 
+subtotal SubTotal, 
+iva Iva, 
+total Total, 
+a.id_status Status,
+d.dias Dias
+from tb_ordencompra a inner join tb_proveedor b on a.id_proveedor = b.id_proveedor
+inner join tb_empresa c on a.id_empresa = c.id_empresa
+inner join tb_credito d on b.credito = d.id_credito
+left outer join tb_cliente e on a.id_cliente = e.id_cliente
+where id_orden = @idOrden
+";
+            var detalle = new DetalleOrdenCompra();
+            try
+            {
+                using var connection = _ctx.CreateConnection();
+                detalle = await connection.QueryFirstAsync<DetalleOrdenCompra>(query, new { idOrden });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return detalle;
+        }
+
+        public async Task<bool> InsertarXML(string xml)
+        {
+            bool result;
+            try
+            {                
+                using (var connection = _ctx.CreateConnection() )
+                {
+                    connection.Open();
+
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@Material", new SqlXml(new System.Xml.XmlTextReader(xml, System.Xml.XmlNodeType.Document, null)), DbType.Xml, ParameterDirection.Input);
+                    parameters.Add("@IdMov", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+                    connection.Execute("sp_recepcione", parameters, commandType: CommandType.StoredProcedure);
+
+                    int idMov = parameters.Get<int>("@IdMov");
+                    Console.WriteLine("ID Movimiento generado: " + idMov);
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Console.WriteLine("Error: " + ex.Message);
+            }
+            return result;
         }
     }
 }
