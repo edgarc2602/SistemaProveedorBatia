@@ -70,6 +70,7 @@ namespace SistemaVentasBatia.Services
         {
             return await _FacturaRepo.ExtraerDatosXML(xml, idTipoFolio);
         }
+
         public async Task<DetalleOrdenCompra> ObtenerDetalleOrden(int idOrden)
         {
             return await _FacturaRepo.ObtenerDetalleOrden(idOrden);

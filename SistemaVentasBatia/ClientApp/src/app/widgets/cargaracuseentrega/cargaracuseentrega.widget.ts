@@ -2,6 +2,7 @@ import { Component, OnChanges, Output, EventEmitter, Inject, ViewChild, ElementR
 import { HttpClient } from '@angular/common/http';
 import { ListadoAcuseEntrega } from '../../models/listadoacuseentrega';
 declare var bootstrap: any;
+import { ConfirmaWidget } from '../../widgets/confirma/confirma.widget'
 
 @Component({
     selector: 'cargaracuseentrega-widget',
@@ -10,6 +11,8 @@ declare var bootstrap: any;
 export class CargarAcuseEntregaWidget {
     @ViewChild('fileInput', { static: false }) fileInput!: ElementRef;
     @Output('ansEvent') sendEvent = new EventEmitter<boolean>();
+    @Output('entregado') entregado = new EventEmitter<boolean>();
+    @ViewChild(ConfirmaWidget, { static: false }) conwid: ConfirmaWidget;
 
     model: ListadoAcuseEntrega = {
         acuses: [], carpeta: '', idListado: 0
@@ -70,6 +73,10 @@ export class CargarAcuseEntregaWidget {
     }
 
     concluirEntrega() {
+        this.conwid.titulo = 'Concluir entrega';
+        this.conwid.mensaje = 'Una vez concluida no se podran modificar los acuses, \u00BFdesea continuar?'
+        this.conwid.open()
+
         this.quitarFocoDeElementos();
     }
     guardarArchivo(): void {
@@ -196,6 +203,15 @@ export class CargarAcuseEntregaWidget {
     }
     chgbtn() {
         this.quitarFocoDeElementos();
+    }
+
+    returnConfirmacion($event) {
+        if ($event == true) {
+            this.http.get<boolean>(`${this.url}api/entrega/concluirentrega/${this.idListado}/${this.fechaEntrega}`).subscribe(response => {
+                this.close();
+                this.entregado.emit(true);
+            })
+        }
     }
 
 }

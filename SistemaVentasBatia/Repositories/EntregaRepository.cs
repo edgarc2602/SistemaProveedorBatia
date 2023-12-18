@@ -23,6 +23,7 @@ namespace SistemaVentasBatia.Repositories
         Task<List<AcuseEntrega>> ObtieneAcusesListado(int idListado);
         Task<bool> InsertaAcuse(int idListado, string carpeta, string archivo);
         Task<bool> EliminarAcuse(int idListado, string carpeta, string archivo);
+        Task<bool> ConcluirEntrega(int idListado, string fechaEntrega);
     }
 
     public class EntregaRepository : IEntregaRepository
@@ -150,7 +151,7 @@ ORDER BY RowNum
             return listado;
         }
 
-        public async Task <List<DetalleMaterial>> ObtenerMaterialesListado(int idListado)
+        public async Task<List<DetalleMaterial>> ObtenerMaterialesListado(int idListado)
         {
             string query = @"
 SELECT
@@ -197,14 +198,14 @@ WHERE id_listado = @idListado
                 using var connection = _ctx.CreateConnection();
                 acuses = (await connection.QueryAsync<AcuseEntrega>(query, new { idListado })).ToList();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
             return acuses;
         }
 
-        public async Task <bool> InsertaAcuse (int idListado, string carpeta, string archivo)
+        public async Task<bool> InsertaAcuse(int idListado, string carpeta, string archivo)
         {
             var query = @"
 INSERT INTO tb_listadomateriala
@@ -236,7 +237,7 @@ VALUES
             return result;
         }
 
-        public async Task <bool> EliminarAcuse(int idListado, string carpeta, string archivo)
+        public async Task<bool> EliminarAcuse(int idListado, string carpeta, string archivo)
         {
             string query = @"
 DELETE FROM tb_listadomateriala
@@ -249,7 +250,30 @@ WHERE id_listado = @idListado AND carpeta = @carpeta AND archivo = @archivo
                 var rowsAffected = await connection.ExecuteAsync(query, new { archivo, carpeta, idListado });
                 result = rowsAffected > 0;
             }
-            catch(Exception ex)
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        public async Task<bool> ConcluirEntrega(int idListado, string fechaEntrega)
+        {
+            string query = @"
+UPDATE tb_listadomaterial
+SET 
+id_status = 4,
+fentrega = @fechaEntrega
+WHERE id_listado = @idListado
+";
+            bool result;
+            try
+            {
+                using var connection = _ctx.CreateConnection();
+                var rowsAffected = await connection.ExecuteAsync(query, new { idListado, fechaEntrega });
+                result = rowsAffected > 0;
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }

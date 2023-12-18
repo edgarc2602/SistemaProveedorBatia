@@ -37,8 +37,8 @@
                                         <td> {{mat.descripcion}}</td>
                                         <td> {{mat.unidad}}</td>
                                         <td> {{mat.cantidad}}</td>
-                                        <td> {{mat.precio}}</td>
-                                        <td> {{mat.total}}</td>
+                                        <td class="text-end"> ${{mat.precio | number: '1.2'}}</td>
+                                        <td class="text-end"> ${{mat.total | number: '1.2'}}</td>
                                     </tr>
                                 </tbody>
                             </table>

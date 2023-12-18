@@ -18,5 +18,6 @@ namespace SistemaProveedoresBatia.DTOs
         public decimal Total { get; set; }
         public string Observacion { get; set; }
         public int Inventario { get; set; }
+        public decimal Facturado { get; set; }
     }
 }

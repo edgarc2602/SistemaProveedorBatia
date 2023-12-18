@@ -105,11 +105,15 @@
                             </td>
                             <td class="text-center">
                                 <div>
+
                                     <div class="col-12 col-md-12 col-sm-12">
                                         <button type="button" class="btn btn-lg text-primary" (click)="obtenerMateriales(listado.idListado, listado.nombreSucursal, listado.tipo, listado.prefijo)" data-bs-toggle="tooltip" title="Ver lista">
                                             <i class="fa-solid fa-list"></i>
                                         </button>
-                                        <button type="button" class="btn btn-lg text-secondary" (click)="verAcuses(listado.idListado, listado.nombreSucursal, listado.tipo, listado.prefijo)" data-bs-toggle="tooltip" title="Acuse">
+                                        <button type="button" class="btn btn-lg text-secondary"
+                                                (click)="verAcuses(listado.idListado, listado.nombreSucursal, listado.tipo, listado.prefijo)"
+                                                data-bs-toggle="tooltip" title="Acuse"
+                                                [disabled]="listado.estatus === 'Entregado'">
                                             <i class="fa-solid fa-file-circle-check"></i>
                                         </button>
                                     </div>
@@ -125,6 +129,7 @@
     <pagina-widget [pagina]="model.pagina" [numPaginas]="model.numPaginas" [rows]="model.rows" (chgEvent)="muevePagina($event)"></pagina-widget>
 </div>
 <detallematerialeslistado-widget></detallematerialeslistado-widget>
-<cargaracuseentrega-widget (ansEvent)="openConfirmacion($event)"></cargaracuseentrega-widget>
+<cargaracuseentrega-widget (ansEvent)="openConfirmacion($event)" (entregado)="entregado($event)"></cargaracuseentrega-widget>
+
 <elimina-widget [titulo]="" [mensaje]="" (ansEvent)="returnConfirmacion($event)"></elimina-widget>
 

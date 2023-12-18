@@ -89,4 +89,7 @@ export class EntregaComponent {
         }
         
     }
+    entregado($event) {
+        this.obtenerListados();
+    }
 }

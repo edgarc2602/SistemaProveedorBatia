@@ -41,7 +41,7 @@ export class CargarFacturaWidget {
         subTotal: 0, iva: 0, total: 0, fechaFactura: '', factura: ''
     }
     detallefact: DetalleOrdenCompra = {
-        idOrden: 0, idRequisicion: 0, idProveedor: 0, idCliente: 0, proveedor: '', empresa: '', cliente: '', subTotal: 0, iva: 0, total: 0, status: 0, dias: 0
+        idOrden: 0, idRequisicion: 0, idProveedor: 0, idCliente: 0, proveedor: '', empresa: '', cliente: '', subTotal: 0, iva: 0, total: 0, status: 0, dias: 0, facturado: 0
     }
     fechaActual: Date;
     idTipoFolio: number = null;
@@ -211,10 +211,10 @@ export class CargarFacturaWidget {
                     timer: 1000,
                     showConfirmButton: false,
                 });
+                this.obtenerDetallesOrden();
+                this.obtenerListadoFacturas();
                 this.limpiarPDF();
                 this.limpiarXML();
-                this.obtenerListadoFacturas();
-
             })
         }
     }

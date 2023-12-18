@@ -14,13 +14,13 @@
             <div class="modal-body align-middle">
                 <h5>Detalles de la orden</h5>
                 <div class="row">
-                    <div class="col-md-4 col-6">
+                    <div class="col-md-3 col-6">
                         <div class="form-floating">
                             <input type="text" class="form-control custom-input" [ngModel]="detallefact.empresa" placeholder="Empresa" disabled>
                             <label asp-for="Keywords">Empresa</label>
                         </div>
                     </div>
-                    <div class="col-md-4 col-6">
+                    <div class="col-md-2 col-6">
                         <div class="form-floating">
                             <input type="text" class="form-control custom-input" [ngModel]="detallefact.cliente" placeholder="Cliente" disabled>
                             <label asp-for="Keywords">Cliente</label>
@@ -36,6 +36,12 @@
                         <div class="form-floating">
                             <input type="text" class="form-control custom-input" [ngModel]="detallefact.idOrden" placeholder="Id orden" disabled>
                             <label asp-for="Keywords">Id orden</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-4">
+                        <div class="form-floating">
+                            <input type="text" class="form-control custom-input" [ngModel]="'$' + (detallefact.facturado | number: '1.2')" placeholder="Facturado" disabled>
+                            <label asp-for="Keywords">Facturado</label>
                         </div>
                     </div>
                 </div>
@@ -105,7 +111,7 @@
                             <label asp-for="Keywords">Fecha factura</label>
                         </div>
                     </div>
-                    <div class="col-md-9 col-4">
+                    <div *ngIf="xmldata.factura" class="col-md-9 col-4">
                         <div class="form-floating ">
                             <input type="text" class="form-control custom-input" [ngModel]="xmldata.factura" placeholder="Factura" disabled>
                             <label asp-for="Keywords">Factura</label>

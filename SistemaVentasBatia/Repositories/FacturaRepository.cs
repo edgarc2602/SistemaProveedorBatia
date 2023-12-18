@@ -46,25 +46,40 @@ namespace SistemaVentasBatia.Repositories
             var query = @"
 SELECT * FROM (
 SELECT 
-ROW_NUMBER() over (order by id_orden desc ) as rownum, 
-id_orden IdOrden,
+ROW_NUMBER() over (order by a.id_orden desc ) as rownum, 
+a.id_orden IdOrden,
 case when a.tipo = 1 then 'Materiales' else 'Servicios' end as Tipo,
 e.descripcion as Estatus, 
-convert(varchar(12), falta,103) as FechaAlta ,  
-b.nombre as Empresa	, 
+convert(varchar(12), a.falta,103) as FechaAlta ,  
+b.nombre as Empresa	,
 isnull(c.nombre,'') as Proveedor, 
 isnull(d.nombre,'') as Cliente,
 f.Per_Nombre + ' ' + f.Per_Paterno as Elabora, 
 a.Total Total, 
 a.observacion Observacion, 
-a.inventario Inventario
+a.inventario Inventario,
+CAST(SUM(ISNULL(r.total, 0)) AS decimal(18, 2)) Facturado
 from tb_ordencompra a inner join tb_empresa b on a.id_empresa = b.id_empresa
 left outer join tb_proveedor c on a.id_proveedor = c.id_proveedor
 left outer join tb_cliente d on a.id_cliente = d.id_cliente
-inner join tb_statusc e on a.id_status = e.id_status inner join personal f on a.ualta = f.IdPersonal
-where a.id_proveedor = @idProveedor
-AND (@fechaInicio IS NULL OR @fechaFin IS NULL OR falta BETWEEN @fechaInicio AND @fechaFin)
-) as Ordenes
+left outer join tb_statusc e on a.id_status = e.id_status inner join personal f on a.ualta = f.IdPersonal
+left outer join tb_recepcion r on r.id_orden = a.id_orden
+WHERE a.id_proveedor = @idProveedor
+        AND (@fechaInicio IS NULL OR @fechaFin IS NULL OR falta BETWEEN @fechaInicio AND @fechaFin)
+    GROUP BY 
+        a.id_orden, 
+        a.tipo,
+        e.descripcion,
+        a.falta,
+        b.nombre,
+        c.nombre,
+        d.nombre,
+        f.Per_Nombre,
+        f.Per_Paterno,
+        a.Total,
+        a.observacion,
+        a.inventario
+) AS Ordenes
 WHERE   
   RowNum >= ((@pagina - 1) * 40) + 1
   AND RowNum <= (@pagina * 40);
@@ -163,6 +178,7 @@ FROM tb_recepcion_factura WHERE id_orden = @idOrden
             }
             return facturas;
         }
+
         public async Task<XMLData> ExtraerDatosXML(IFormFile xml, int idTipoFolio)
         {
             var XMLData = new XMLData();
@@ -246,24 +262,39 @@ FROM tb_recepcion_factura WHERE id_orden = @idOrden
         public async Task<DetalleOrdenCompra> ObtenerDetalleOrden(int idOrden)
         {
             string query = @"
-select 
-id_orden IdOrden, 
-id_requisicion IdRequisicion, 
+select
+a.id_orden IdOrden, 
+a.id_requisicion IdRequisicion, 
 a.id_proveedor IdProveedor, 
 a.id_cliente IdCliente,
 b.nombre Proveedor, 
 c.nombre Empresa, 
 e.nombre Cliente, 
-subtotal SubTotal, 
-iva Iva, 
-total Total, 
+a.subtotal SubTotal, 
+a.iva Iva, 
+a.total Total, 
 a.id_status Status,
-d.dias Dias
+d.dias Dias,
+CAST(SUM(ISNULL(f.total, 0)) AS decimal(18, 2)) Facturado
 from tb_ordencompra a inner join tb_proveedor b on a.id_proveedor = b.id_proveedor
 inner join tb_empresa c on a.id_empresa = c.id_empresa
 inner join tb_credito d on b.credito = d.id_credito
 left outer join tb_cliente e on a.id_cliente = e.id_cliente
-where id_orden = @idOrden
+left outer join tb_recepcion f on f.id_orden = a.id_orden
+where a.id_orden = @idOrden
+GROUP BY
+    a.id_orden,
+    a.id_requisicion,
+    a.id_proveedor,
+    a.id_cliente,
+    a.subtotal,
+    a.iva,
+    a.total,
+    a.id_status,
+    b.nombre,
+    c.nombre,
+    e.nombre,
+    d.dias
 ";
             var detalle = new DetalleOrdenCompra();
             try

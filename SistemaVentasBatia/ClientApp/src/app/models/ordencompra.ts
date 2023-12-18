@@ -10,5 +10,6 @@
     total: number;
     observacion: string;
     inventario: number;
+    facturado: number;
 
 }

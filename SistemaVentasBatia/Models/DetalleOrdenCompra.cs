@@ -14,5 +14,6 @@
         public decimal Total { get; set; }
         public int Status { get; set; }
         public int Dias { get; set; }
+        public decimal Facturado { get; set; }
     }
 }

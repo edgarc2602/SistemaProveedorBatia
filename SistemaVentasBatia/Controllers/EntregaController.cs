@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
 using System.Data;
+using System.Reflection;
+using System.Reflection.Metadata.Ecma335;
 
 namespace SistemaProveedoresBatia.Controllers
 
@@ -19,7 +21,7 @@ namespace SistemaProveedoresBatia.Controllers
     [ApiController]
     public class EntregaController : ControllerBase
     {
-        
+
 
         private readonly IEntregaService _logic;
 
@@ -127,12 +129,12 @@ namespace SistemaProveedoresBatia.Controllers
         }
 
         [HttpDelete("[action]/{archivo}/{carpeta}/{idListado}")]
-        public async Task<bool> EliminaAcuse(string archivo, string carpeta,int idListado)
+        public async Task<bool> EliminaAcuse(string archivo, string carpeta, int idListado)
         {
             bool result;
-            string directorio = _imageFolderPath  + carpeta;
+            string directorio = _imageFolderPath + carpeta;
             string filePathToDelete = Path.Combine(directorio, archivo);
-            
+
             if (System.IO.File.Exists(filePathToDelete))
             {
                 System.IO.File.Delete(filePathToDelete);
@@ -146,32 +148,10 @@ namespace SistemaProveedoresBatia.Controllers
             return result;
         }
 
-        //[HttpPost("[action]/{idListado}/{prefijo}")]
-        //public async Task<bool> ObtenerReporte(int idListado, string prefijo)
-        //{
-        //    bool result;
-
-
-        //    return result;
-        //}
-
-        //[HttpGet("[action]/{idListado}/{prefijo}")]
-        //public async Task<byte[]> GenerarReporte(int idListado, string prefijo)
-        //{
-        //    ReportDocument report = new ReportDocument();
-        //    report.Load("C:/Users/LAP_Sistemas5/Desktop/listadoentrega.rpt");
-
-        //    Configurar parámetros del reporte
-        //        report.SetParameterValue("idListado", idListado);
-
-        //    byte[] reportBytes;
-        //    using (MemoryStream stream = new MemoryStream())
-        //    {
-        //        report.ExportToStream(ExportFormatType.PortableDocFormat).CopyTo(stream);
-        //        reportBytes = stream.ToArray();
-        //    }
-
-        //    return reportBytes;
-        //}
+        [HttpGet("[action]/{idListado}/{fechaEntrega}")]
+        public async Task<bool> ConcluirEntrega(int idListado, string fechaEntrega)
+        {
+            return await _logic.ConcluirEntrega(idListado, fechaEntrega);
+        }
     }
 }

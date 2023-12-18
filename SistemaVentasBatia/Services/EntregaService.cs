@@ -21,6 +21,7 @@ namespace SistemaVentasBatia.Services
         Task<ListadoAcuseEntregaDTO> ObtenerAcusesListado(int idListado);
         Task<bool> InsertaAcuse(int idListado, string carpeta, string archivo);
         Task<bool> EliminarAcuse(int idListado, string carpeta, string archivo);
+        Task<bool> ConcluirEntrega(int idListado, string fechaEntrega);
     }
 
     public class EntregaService : IEntregaService
@@ -86,6 +87,11 @@ namespace SistemaVentasBatia.Services
         public async Task<bool> EliminarAcuse(int idListado, string carpeta, string archivo)
         {
             return await _entregaRepo.EliminarAcuse(idListado, carpeta, archivo);
+        }
+
+        public async Task<bool> ConcluirEntrega(int idListado, string fechaEntrega)
+        {
+            return await _entregaRepo.ConcluirEntrega(idListado,fechaEntrega);
         }
     }
 }

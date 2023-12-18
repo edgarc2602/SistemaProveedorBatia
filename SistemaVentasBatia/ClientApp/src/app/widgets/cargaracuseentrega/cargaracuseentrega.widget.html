@@ -90,7 +90,7 @@
                         </div>
                     </div>
                     <div class="col-4 col-md-4">
-                        <button type="button" class="btn btn-outline-success" (click)="concluirEntrega()" id="btnEliminarSbmt"><i class="fa-solid fa-box-open"></i> Concluir Entrega</button>
+                        <button type="button" class="btn btn-outline-success" (click)="concluirEntrega()" id="concluirEntrega"><i class="fa-solid fa-box-open"></i> Concluir Entrega</button>
                     </div>
                     <div class="col-1 col-md-3">
 
@@ -100,7 +100,7 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
+<confirma-widget [titulo]="" [mensaje]="" (ansEvent)="returnConfirmacion($event)"></confirma-widget>

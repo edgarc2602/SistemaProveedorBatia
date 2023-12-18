@@ -11,4 +11,5 @@
     total: number;
     status: number;
     dias: number;
+    facturado: number;
 }
