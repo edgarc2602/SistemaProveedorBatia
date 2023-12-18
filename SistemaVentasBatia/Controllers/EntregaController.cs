@@ -2,17 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using SistemaProveedoresBatia.DTOs;
 using SistemaVentasBatia.DTOs;
-using SistemaVentasBatia.Models;
 using SistemaVentasBatia.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using System.Data.SqlClient;
-using System.Data;
-using System.Reflection;
-using System.Reflection.Metadata.Ecma335;
 
 namespace SistemaProveedoresBatia.Controllers
 
@@ -68,8 +62,6 @@ namespace SistemaProveedoresBatia.Controllers
             var imageBytes = System.IO.File.ReadAllBytes(imagePath);
             return File(imageBytes, "image/jpeg");
         }
-
-
 
         [HttpPost("[action]/{idListado}/{selectedFileName}")]
         public async Task<bool> GuardarAcuse(int idListado, string selectedFileName, IFormFile file)
@@ -134,7 +126,6 @@ namespace SistemaProveedoresBatia.Controllers
             bool result;
             string directorio = _imageFolderPath + carpeta;
             string filePathToDelete = Path.Combine(directorio, archivo);
-
             if (System.IO.File.Exists(filePathToDelete))
             {
                 System.IO.File.Delete(filePathToDelete);

@@ -18,22 +18,5 @@ namespace SistemaVentasBatia.Controllers
         {
             _logic = logic;
         }
-
-        //[HttpGet("[action]")]
-        //public async Task<ActionResult<UsuarioDTO>> Login(AccesoDTO dto)
-        //{
-        //    return await _logic.Login(dto);
-        //}
-
-
-
-
-        //[HttpPost("[action]")]
-        //public async Task<ActionResult<bool>> AgregarUsuario([FromBody] UsuarioRegistro usuario)
-        //{
-        //    bool result = false;
-        //    result = await _logic.InsertarUsuario(usuario);
-        //    return true;
-        //}
     }
 }

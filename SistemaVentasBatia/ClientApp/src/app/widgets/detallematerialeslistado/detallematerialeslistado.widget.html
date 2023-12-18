@@ -1,16 +1,13 @@
 <meta charset="UTF-8">
 <div class="modal fade modal-lg" id="modalDetalleMaterialesListado" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
-
         <div class="modal-content">
             <meta charset="UTF-8">
-
             <!-- Modal Header -->
             <div class="modal-header justify-content-center bg-light">
                 <h4 class="modal-title">Detalle de materiales</h4>
                 <!--<button type="button" class="btn-close" data-bs-dismiss="modal"></button>-->
             </div>
-
             <!-- Modal body -->
             <div class="modal-body">
                 <h6 class="modal-title">Listado: {{idListado}}</h6>
@@ -46,17 +43,12 @@
                     </div>
 
                 </div>
-
-
-
             </div>
-
             <!-- Modal footer -->
             <div class="modal-footer bg-light">
                 <button type="button" class="btn btn-outline-primary" (click)="obtenerReporte(idListado,prefijo)"><i class="fa-solid fa-print"></i> Imprimir</button>
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i> Cerrar</button>
             </div>
-
         </div>
     </div>
 </div>

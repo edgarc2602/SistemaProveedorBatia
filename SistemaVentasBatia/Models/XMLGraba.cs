@@ -13,6 +13,6 @@
         public decimal Total { get; set; }
         public string PdfName { get; set; }
         public string XmlName { get; set; }
-
+        public string Uuid { get; set; }
     }
 }

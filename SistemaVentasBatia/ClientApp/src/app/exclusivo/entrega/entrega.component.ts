@@ -87,7 +87,6 @@ export class EntregaComponent {
             this.eliwid.titulo = 'Eliminar';
             this.eliwid.open()
         }
-        
     }
     entregado($event) {
         this.obtenerListados();

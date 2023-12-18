@@ -4,4 +4,5 @@
     total: number;
     fechaFactura: string;
     factura: string;
+    uuid: string;
 }

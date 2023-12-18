@@ -21,6 +21,7 @@ namespace SistemaVentasBatia.Services
         Task<XMLData> ExtraerDatosXML(IFormFile xml, int idTipoFolio);
         Task<DetalleOrdenCompra> ObtenerDetalleOrden(int idOrden);
         Task<bool> InsertarXML(string xmlString);
+        Task<bool> FacturaExiste(string uuid);
     }
 
     public class FacturaService : IFacturaService
@@ -79,6 +80,11 @@ namespace SistemaVentasBatia.Services
         public async Task<bool> InsertarXML(string xmlString)
         {
             return await _FacturaRepo.InsertarXML(xmlString);
+        }
+
+        public async Task<bool> FacturaExiste(string uuid)
+        {
+            return await _FacturaRepo.FacturaExiste(uuid);
         }
     }
 }

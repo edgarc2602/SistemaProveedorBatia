@@ -10,4 +10,5 @@
     total: number;
     pdfName: string;
     xmlName: string;
+    uuid: string;
 }

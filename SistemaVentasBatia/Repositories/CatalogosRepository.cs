@@ -76,8 +76,6 @@ namespace SistemaVentasBatia.Repositories
             return servicios;
         }
 
-
-
         public async Task<List<Catalogo>> ObtenerMunicipios(int idEstado)
         {
             var query = @"
@@ -223,7 +221,6 @@ FROM tb_clase";
 
             return direcciones;
         }
-
 
         public async Task<List<Catalogo>> ObtenerCatalogoDireccionesCotizacion(int idCotizacion)
         {

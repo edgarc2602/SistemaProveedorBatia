@@ -30,6 +30,7 @@ namespace SistemaVentasBatia.Repositories
         Task<XMLData> ExtraerDatosXML(IFormFile xml, int idTipoFolio);
         Task<DetalleOrdenCompra> ObtenerDetalleOrden(int idOrden);
         Task<bool> InsertarXML(string xmlString);
+        Task<bool> FacturaExiste(string uuid);
     }
 
     public class FacturaRepository : IFacturaRepository
@@ -205,6 +206,8 @@ FROM tb_recepcion_factura WHERE id_orden = @idOrden
                         if (complemento != null)
                         {
                             XElement timbrefiscaldigital = complemento.Element(tfd + "TimbreFiscalDigital");
+                            string UUID = timbrefiscaldigital.Attribute("UUID")?.Value;
+                            XMLData.Uuid = UUID;
                             string fechaTimbrado = timbrefiscaldigital.Attribute("FechaTimbrado")?.Value;
                             DateTime fecha = DateTime.Parse(fechaTimbrado);
                             string fechaFormateada = fecha.ToString("yyyy-MM-dd");
@@ -218,10 +221,10 @@ FROM tb_recepcion_factura WHERE id_orden = @idOrden
                         {
                             XElement timbrefiscaldigital = complemento.Element(tfd + "TimbreFiscalDigital");
                             string UUID = timbrefiscaldigital.Attribute("UUID")?.Value;
+                            XMLData.Uuid = UUID;
                             string fechaTimbrado = timbrefiscaldigital.Attribute("FechaTimbrado")?.Value;
                             DateTime fecha = DateTime.Parse(fechaTimbrado);
                             string fechaFormateada = fecha.ToString("yyyy-MM-dd");
-                            XMLData.Factura = UUID;
                             XMLData.FechaFactura = fechaFormateada;
                         }
                     }
@@ -313,8 +316,8 @@ GROUP BY
         {
             bool result;
             try
-            {                
-                using (var connection = _ctx.CreateConnection() )
+            {
+                using (var connection = _ctx.CreateConnection())
                 {
                     connection.Open();
 
@@ -335,6 +338,31 @@ GROUP BY
                 Console.WriteLine("Error: " + ex.Message);
             }
             return result;
+        }
+
+        public async Task<bool> FacturaExiste(string uuid)
+        {
+            var query = @"
+        SELECT CASE 
+            WHEN EXISTS (
+                SELECT 1
+                FROM tb_recepcion
+                WHERE uuid = @uuid
+            )
+            THEN CAST(1 AS BIT)
+            ELSE CAST(0 AS BIT)
+        END AS Existe
+    ";
+            try
+            {
+                using var connection = _ctx.CreateConnection();
+                var result = await connection.ExecuteScalarAsync<bool>(query, new { uuid });
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

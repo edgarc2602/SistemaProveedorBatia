@@ -6,7 +6,6 @@ import { Factura } from 'src/app/models/Factura'
 import { FacturaComponent } from '../../exclusivo/factura/factura.component';
 import { XMLData } from '../../models/xmldata';
 import { DetalleOrdenCompra } from '../../models/detalleordencompra';
-import { getLocaleDateFormat } from '@angular/common';
 import { ConfirmaWidget } from '../../widgets/confirma/confirma.widget'
 import { XMLGraba } from '../../models/xmlgraba';
 import { StoreUser } from 'src/app/stores/StoreUser';
@@ -30,7 +29,6 @@ export class CargarFacturaWidget {
     public imageUrl: string = '';
     formato: string = '';
     prefijo: string = '';
-
     idOrden: number = 0;
     empresa: string = '';
     cliente: string = '';
@@ -38,7 +36,7 @@ export class CargarFacturaWidget {
     selectedXml: File | null = null;
     facturas: Factura = {} as Factura;
     xmldata: XMLData = {
-        subTotal: 0, iva: 0, total: 0, fechaFactura: '', factura: ''
+        subTotal: 0, iva: 0, total: 0, fechaFactura: '', factura: '', uuid: ''
     }
     detallefact: DetalleOrdenCompra = {
         idOrden: 0, idRequisicion: 0, idProveedor: 0, idCliente: 0, proveedor: '', empresa: '', cliente: '', subTotal: 0, iva: 0, total: 0, status: 0, dias: 0, facturado: 0
@@ -46,14 +44,11 @@ export class CargarFacturaWidget {
     fechaActual: Date;
     idTipoFolio: number = null;
     xmlgraba: XMLGraba = {
-        factura: '', idCliente: 0, idOrden: 0, idPersonal: 0, fechaFactura: '', dias: 0, subTotal: 0, iva: 0, total: 0, pdfName: '', xmlName: ''
+        factura: '', idCliente: 0, idOrden: 0, idPersonal: 0, fechaFactura: '', dias: 0, subTotal: 0, iva: 0, total: 0, pdfName: '', xmlName: '', uuid: ''
     }
 
-    constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {
-
-    }
+    constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {}
     nuevo() {
-        /*this.resetFileInput();*/
     }
     obtenerDetallesOrden() {
         this.http.get<DetalleOrdenCompra>(`${this.url}api/factura/obtenerdetalleorden/${this.idOrden}`).subscribe(response => {
@@ -92,38 +87,15 @@ export class CargarFacturaWidget {
     }
 
     concluirEntrega() {
-
     }
-    guardarArchivos() {
-        //if (this.selectedFile) {
-        //    const formData = new FormData();
-        //    formData.append('file', this.selectedFile);
 
-        //    this.http.post<boolean>(`${this.url}api/entrega/guardaracuse/${this.idListado}/${this.selectedFileName}`, formData).subscribe((response) => {
-        //        console.log('Archivo guardado con éxito:', response);
-        //        this.selectedFileName = null;
-        //        this.selectedFile = null;
-        //        //this.obtenerAcusesListado(this.idListado);
-        //        this.resetFileInput();
-        //    }, (error) => {
-        //        console.error('Error al guardar el archivo:', error);
-        //    });
-        //} else {
-        //    console.error('No se ha seleccionado ningún archivo.');
-        //}
+    guardarArchivos() {
         this.quitarFocoDeElementos();
     }
+
     eliminaAcuse(archivo: string, carpeta: string) {
-        //this.http.delete<boolean>(`${this.url}api/entrega/eliminaacuse/${archivo}/${carpeta}/${this.idListado}`).subscribe(response => {
-        //    console.log('Archivo eliminado con éxito:', response);
-        //    this.selectedFileName = null;
-        //    this.selectedFile = null;
-        //    //this.obtenerAcusesListado(this.idListado);
-        //    this.resetFileInput();
-        //}, (error) => {
-        //    console.error('Error al eliminar el archivo:', error);
-        //});
     }
+
     getDataInsertar() {
         this.xmlgraba.factura = this.xmldata.factura;
         this.xmlgraba.idCliente = this.detallefact.idCliente;
@@ -136,6 +108,7 @@ export class CargarFacturaWidget {
         this.xmlgraba.total = this.xmldata.total;
         this.xmlgraba.pdfName = this.selectedPdf.name;
         this.xmlgraba.xmlName = this.selectedXml.name;
+        this.xmlgraba.uuid = this.xmldata.uuid;
     }
 
     openDocument(archivo: string, carpeta: string) {
@@ -196,7 +169,7 @@ export class CargarFacturaWidget {
     }
 
     subirFacturas() {
-        
+
         if (this.selectedPdf && this.selectedXml) {
             this.getDataInsertar();
             const formData = new FormData();
@@ -232,7 +205,6 @@ export class CargarFacturaWidget {
 
     quitarFocoDeElementos(): void {
         const elementos = document.querySelectorAll('button, input[type="text"]');
-
         elementos.forEach((elemento: HTMLElement) => {
             elemento.blur();
         });
@@ -252,11 +224,12 @@ export class CargarFacturaWidget {
         this.selectedXml = null;
         this.xmlInput.nativeElement.value = '';
         this.xmldata = {
-            subTotal: 0, iva: 0, total: 0, fechaFactura: '', factura: ''
+            subTotal: 0, iva: 0, total: 0, fechaFactura: '', factura: '', uuid: ''
         }
     }
 
     obtenerValoresXML() {
+        this.http.get<boolean>(`${this.url}api/factura/facturaexiste`)
         if (this.idTipoFolio == null) {
             this.openConfirmacion();
         }
@@ -266,6 +239,18 @@ export class CargarFacturaWidget {
             this.http.post<XMLData>(`${this.url}api/factura/obtenerdatosxml/${this.idTipoFolio}`, formData).subscribe(response => {
                 this.xmldata = response;
                 this.idTipoFolio = null;
+                this.http.get<boolean>(`${this.url}api/factura/facturaexiste/${this.xmldata.uuid}`).subscribe(response => {
+                    if (response == true) {
+                        this.limpiarXML();
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Esta factura ya est\u00E1 registrada',
+                            icon: 'error',
+                            timer: 3000,
+                            showConfirmButton: false,
+                        });
+                    }
+                })
             })
         }
     }
@@ -273,7 +258,6 @@ export class CargarFacturaWidget {
         this.conwid.titulo = 'Factura';
         this.conwid.mensaje = '\u00BFSu factura cuenta con un folio serializado?'
         this.conwid.open()
-
     }
     returnConfirmacion($event) {
         if ($event == true) {

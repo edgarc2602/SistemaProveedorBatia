@@ -16,7 +16,6 @@
             <div class="col-md-3 col-5 mb-3">
                 <div class="form-floating">
                     <select class="form-select" [(ngModel)]="mes" (change)="obtenerListados()" id="ddlmes">
-                        <!--<option value="0">Seleccione ...</option>-->
                         <option *ngFor="let m of meses" [ngValue]="m.id">{{ m.descripcion }}</option>
                     </select>
                     <label asp-for="ddlmes">Mes</label>
@@ -130,6 +129,5 @@
 </div>
 <detallematerialeslistado-widget></detallematerialeslistado-widget>
 <cargaracuseentrega-widget (ansEvent)="openConfirmacion($event)" (entregado)="entregado($event)"></cargaracuseentrega-widget>
-
 <elimina-widget [titulo]="" [mensaje]="" (ansEvent)="returnConfirmacion($event)"></elimina-widget>
 

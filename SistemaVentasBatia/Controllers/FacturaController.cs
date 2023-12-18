@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SistemaProveedoresBatia.DTOs;
 using SistemaVentasBatia.DTOs;
@@ -9,8 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
-using System.Xml.Linq;
 using System.Xml;
 
 namespace SistemaVentasBatia.Controllers
@@ -20,7 +17,6 @@ namespace SistemaVentasBatia.Controllers
     public class FacturaController : ControllerBase
     {
         private readonly IFacturaService _logic;
-
         public FacturaController(IFacturaService logic)
         {
             _logic = logic;
@@ -40,7 +36,6 @@ namespace SistemaVentasBatia.Controllers
         {
             return await _logic.ObtenerSumaFacturas(idOrden);
         }
-
 
         private readonly string FolderPath = "C:\\Users\\LAP_Sistemas5\\Desktop\\SINGA_NEW\\Doctos\\compras\\";
 
@@ -83,21 +78,22 @@ namespace SistemaVentasBatia.Controllers
             bool result = false;
             var xmlDoc = new XmlDocument();
             var movimientoElement = xmlDoc.CreateElement("Movimiento");
-                var salidaElement = xmlDoc.CreateElement("salida");
-                salidaElement.SetAttribute("documento", "3");
-                salidaElement.SetAttribute("almacen1", "0");
-                salidaElement.SetAttribute("factura", xml.Factura);
-                salidaElement.SetAttribute("cliente", xml.IdCliente.ToString());
-                salidaElement.SetAttribute("almacen", "0");
-                salidaElement.SetAttribute("orden", xml.IdOrden.ToString());
-                salidaElement.SetAttribute("usuario", xml.IdPersonal.ToString());
-                salidaElement.SetAttribute("fecfac", xml.FechaFactura);
-                salidaElement.SetAttribute("idproveedor", xml.IdPersonal.ToString());
-                salidaElement.SetAttribute("dias", xml.Dias.ToString());
-                salidaElement.SetAttribute("sub", xml.SubTotal.ToString());
-                salidaElement.SetAttribute("iva", xml.Iva.ToString());
-                salidaElement.SetAttribute("total", xml.Total.ToString());
-                movimientoElement.AppendChild(salidaElement);
+            var salidaElement = xmlDoc.CreateElement("salida");
+            salidaElement.SetAttribute("documento", "3");
+            salidaElement.SetAttribute("almacen1", "0");
+            salidaElement.SetAttribute("factura", xml.Factura);
+            salidaElement.SetAttribute("cliente", xml.IdCliente.ToString());
+            salidaElement.SetAttribute("almacen", "0");
+            salidaElement.SetAttribute("orden", xml.IdOrden.ToString());
+            salidaElement.SetAttribute("usuario", xml.IdPersonal.ToString());
+            salidaElement.SetAttribute("fecfac", xml.FechaFactura);
+            salidaElement.SetAttribute("idproveedor", xml.IdPersonal.ToString());
+            salidaElement.SetAttribute("dias", xml.Dias.ToString());
+            salidaElement.SetAttribute("sub", xml.SubTotal.ToString());
+            salidaElement.SetAttribute("iva", xml.Iva.ToString());
+            salidaElement.SetAttribute("total", xml.Total.ToString());
+            salidaElement.SetAttribute("uuid", xml.Uuid);
+            movimientoElement.AppendChild(salidaElement);
             foreach (var fileName in documentos)
             {
                 var archivoElement = xmlDoc.CreateElement("archivo");
@@ -127,6 +123,11 @@ namespace SistemaVentasBatia.Controllers
         public async Task<DetalleOrdenCompra> ObtenerDetalleOrden(int idOrden)
         {
             return await _logic.ObtenerDetalleOrden(idOrden);
+        }
+        [HttpGet("[action]/{uuid}")]
+        public async Task<bool> FacturaExiste(string uuid)
+        {
+            return await _logic.FacturaExiste(uuid);
         }
     }
 }

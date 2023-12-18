@@ -64,7 +64,6 @@ export class PaginaWidget implements OnChanges {
     }
     quitarFocoDeElementos(): void {
         const elementos = document.querySelectorAll('button, input[type="text"]');
-
         elementos.forEach((elemento: HTMLElement) => {
             elemento.blur();
         });

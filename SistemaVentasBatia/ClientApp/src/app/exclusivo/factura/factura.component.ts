@@ -1,6 +1,5 @@
 ﻿import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Catalogo } from 'src/app/models/catalogo';
 import { fadeInOut } from 'src/app/fade-in-out';
 import { StoreUser } from 'src/app/stores/StoreUser';
 import { ListadoOrdenCompra } from 'src/app/models/listadoordencompra';
@@ -12,7 +11,6 @@ import { CargarFacturaWidget } from 'src/app/widgets/cargarfactura/cargarfactura
 })
 export class FacturaComponent {
     @ViewChild(CargarFacturaWidget, { static: false }) upfact: CargarFacturaWidget;
-    /*@ViewChild(UsuarioAddWidget, { static: false }) addUsu: UsuarioAddWidget;*/
     model: ListadoOrdenCompra = {
         ordenes: [], numPaginas: 0, pagina: 1, rows: 0
     }
@@ -20,11 +18,8 @@ export class FacturaComponent {
     fechaInicio: string = '';
     fechaFin: string = '';
 
-    constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {
-        //this.http.get<ListadoOrdenCompra>(`${this.url}api/factura/obtenerordenescompra/${this.idProveedor}/${this.fechaInicio}/${this.fechaFin}/${this.model.pagina}`).subscribe(response => {
-        //    this.model = response;
-        //})
-    }
+    constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) { }
+
     ngOnInit() {
         this.getDias();
         this.obtenerOrdenes();
@@ -58,12 +53,10 @@ export class FacturaComponent {
         this.fechaFin = this.obtenerDiaActual();
     }
     imprimirOrden(idOrden: number) {
-
     }
 
     openCargarFacturas(idOrden: number, empresa: string, cliente: string) {
         this.upfact.open(idOrden, empresa, cliente);
     }
-
 }
 

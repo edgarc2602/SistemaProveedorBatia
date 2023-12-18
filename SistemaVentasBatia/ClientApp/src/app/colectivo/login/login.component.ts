@@ -7,8 +7,6 @@ import { Subject } from 'rxjs';
 
 import { fadeInOut } from 'src/app/fade-in-out';
 
-
-
 @Component({
     selector: 'login-comp',
     templateUrl: './login.component.html',

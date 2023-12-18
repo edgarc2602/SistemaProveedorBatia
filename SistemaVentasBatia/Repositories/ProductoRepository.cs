@@ -11,7 +11,6 @@ namespace SistemaVentasBatia.Repositories
 {
     public interface IProductoRepository
     {
-
     }
 
     public class ProductoRepository : IProductoRepository

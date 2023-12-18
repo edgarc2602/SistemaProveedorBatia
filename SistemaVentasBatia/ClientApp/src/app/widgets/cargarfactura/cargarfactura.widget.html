@@ -1,15 +1,12 @@
 <meta charset="UTF-8">
 <div class="modal fade modal-lg" id="modalCargarFactura" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
-
         <div class="modal-content">
             <meta charset="UTF-8">
-
             <!-- Modal Header -->
             <div class="modal-header justify-content-center bg-light">
                 <h4 class="modal-title">Cargar factura</h4>
             </div>
-
             <!-- Modal body -->
             <div class="modal-body align-middle">
                 <h5>Detalles de la orden</h5>
@@ -111,10 +108,16 @@
                             <label asp-for="Keywords">Fecha factura</label>
                         </div>
                     </div>
-                    <div *ngIf="xmldata.factura" class="col-md-9 col-4">
+                    <div *ngIf="xmldata.factura" class="col-md-3 col-4">
                         <div class="form-floating ">
                             <input type="text" class="form-control custom-input" [ngModel]="xmldata.factura" placeholder="Factura" disabled>
                             <label asp-for="Keywords">Factura</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-4">
+                        <div class="form-floating ">
+                            <input type="text" class="form-control custom-input" [ngModel]="xmldata.uuid" placeholder="UUID" disabled>
+                            <label asp-for="Keywords">UUID</label>
                         </div>
                     </div>
                     <div *ngIf="selectedXml && selectedPdf" class="col-md-3 col-3 text-center align-middle">
@@ -124,7 +127,6 @@
                         </button>
                     </div>
                 </div>
-                
                 <h5>Facturas cargadas</h5>
                 <div class="row box-shadow" style="border-radius: 10px; overflow-x: hidden;">
                     <div style="max-height: 200px; max-width:auto; overflow-y: auto; overflow-x: hidden">
@@ -142,16 +144,6 @@
                                         <td> {{fact.idRecepcion}}</td>
                                         <td> {{fact.documento}}</td>
                                         <td>
-                                            <!--<div class="row">
-                                    <div class="col-12 col-md-12 col-sm-12">
-                                        <button type="button" class="btn btn-lg text-primary" (click)="getImage(acu.archivo, acu.carpeta)" data-bs-toggle="tooltip" title="Ver">
-                                            <i class="fa-solid fa-eye" style="color: #565658;"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-lg text-secondary" (click)="eliminaAcuse(acu.archivo, acu.carpeta)" data-bs-toggle="tooltip" title="Eliminar">
-                                            <i class="fa-solid fa-trash" style="color: #ff0000;"></i>
-                                        </button>
-                                    </div>
-                                </div>-->
                                         </td>
                                     </tr>
                                 </tbody>
@@ -160,13 +152,10 @@
                     </div>
                 </div>
             </div>
-
             <!-- Modal footer -->
             <div class="modal-footer bg-light">
-                <!--<button type="button" class="btn btn-outline-primary" (click)="concluirEntrega()" id="btnEliminarSbmt">ConcluirEntrega</button>-->
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
-
         </div>
     </div>
 </div>

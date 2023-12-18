@@ -15,7 +15,6 @@ namespace SistemaVentasBatia.Services
 {
     public interface IEntregaService
     {
-
         Task<ListadoMaterialDTO> ObtenerListados(ListadoMaterialDTO listados, int mes, int anio, int idProveedor, int idEstado, int tipo);
         Task<List<DetalleMaterialDTO>> ObtenerMaterialesListado(int idListado);
         Task<ListadoAcuseEntregaDTO> ObtenerAcusesListado(int idListado);

@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.IO;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SistemaVentasBatia.Controllers
 {
@@ -13,13 +8,6 @@ namespace SistemaVentasBatia.Controllers
     [ApiController]
     public class ReportController : ControllerBase
     {
-        //private readonly IHttpClientFactory _httpClientFactory;
-
-        //public ReportController(IHttpClientFactory httpClientFactory)
-        //{
-        //    _httpClientFactory = httpClientFactory;
-        //}
-
         [HttpPost("[action]/{tipo}")]
         public IActionResult DescargarReporteCotizacion([FromBody] int idCotizacion, int tipo = 0)
         {
@@ -33,12 +21,10 @@ namespace SistemaVentasBatia.Controllers
                         Credentials = new NetworkCredential("Administrador", "GrupoBatia@")
                     };
                     byte[] myDataBuffer = wc.DownloadData(url.ToString());
-
                     return new FileContentResult(myDataBuffer, "application/pdf")
                     {
                         FileDownloadName = "PropuestaTecnica.pdf"
                     };
-
                 }
                 catch (Exception ex)
                 {
@@ -61,7 +47,6 @@ namespace SistemaVentasBatia.Controllers
                     {
                         FileDownloadName = "PropuestaEconomica.pdf"
                     };
-
                 }
                 catch (Exception ex)
                 {
@@ -79,7 +64,6 @@ namespace SistemaVentasBatia.Controllers
                         Credentials = new NetworkCredential("Administrador", "GrupoBatia@")
                     };
                     byte[] myDataBuffer = wc.DownloadData(url.ToString());
-
                     return new FileContentResult(myDataBuffer, "application/docx") // Cambia el tipo MIME a application/docx
                     {
                         FileDownloadName = "PropuestaTecnica.docx" // Cambia el nombre del archivo a .docx
@@ -101,7 +85,6 @@ namespace SistemaVentasBatia.Controllers
                         Credentials = new NetworkCredential("Administrador", "GrupoBatia@")
                     };  
                     byte[] myDataBuffer = wc.DownloadData(url.ToString());
-
                     return new FileContentResult(myDataBuffer, "application/docx") // Cambia el tipo MIME a application/docx
                     {
                         FileDownloadName = "PropuestaEconomica.docx" // Cambia el nombre del archivo a .docx
@@ -118,6 +101,5 @@ namespace SistemaVentasBatia.Controllers
                 throw new Exception();
             }
         }
-
     }
 }

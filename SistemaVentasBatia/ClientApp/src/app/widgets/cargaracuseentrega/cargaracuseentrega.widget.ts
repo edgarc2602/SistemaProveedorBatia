@@ -123,9 +123,6 @@ export class CargarAcuseEntregaWidget {
         this.selectedFileName = this.selectedFile.name;
     }
 
-
-
-
     openDocument(archivo: string, carpeta: string) {
         this.getImage(archivo, carpeta);
     }
@@ -213,6 +210,5 @@ export class CargarAcuseEntregaWidget {
             })
         }
     }
-
 }
 

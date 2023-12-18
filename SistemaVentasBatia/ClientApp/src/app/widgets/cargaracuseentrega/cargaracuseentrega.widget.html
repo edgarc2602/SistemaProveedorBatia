@@ -1,15 +1,12 @@
 <meta charset="UTF-8">
 <div class="modal fade modal-lg" id="modalCargarAcuseEntrega" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
-
         <div class="modal-content">
             <meta charset="UTF-8">
-
             <!-- Modal Header -->
             <div class="modal-header justify-content-center bg-light">
                 <h4 class="modal-title">Cargar acuse de entrega</h4>
             </div>
-
             <!-- Modal body -->
             <div class="modal-body ">
                 <h6 class="modal-title">Listado: {{idListado  }} {{  prefijo}}</h6>
@@ -22,14 +19,12 @@
                             <table class="table table-borderless table-striped table-responsive text-center">
                                 <thead class="sticky-top text-white" style="background-color: #4a92fe; color: #fff; border-radius: 10px; ">
                                     <tr class="col-1 text-center">
-                                        <!--<th>Carpeta</th>-->
                                         <th>Acuse</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let acu of model.acuses">
-                                        <!--<td> {{acu.carpeta}}</td>-->
                                         <td> {{acu.archivo}}</td>
                                         <td>
                                             <div class="row">
@@ -78,7 +73,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Modal footer -->
             <div class="modal-footer justify-content-start bg-light">
 
@@ -93,7 +87,6 @@
                         <button type="button" class="btn btn-outline-success" (click)="concluirEntrega()" id="concluirEntrega"><i class="fa-solid fa-box-open"></i> Concluir Entrega</button>
                     </div>
                     <div class="col-1 col-md-3">
-
                     </div>
                     <div class="col-3 col-md-2">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i> Cerrar</button>
