@@ -96,4 +96,4 @@
     <br />
     <pagina-widget [pagina]="model.pagina" [numPaginas]="model.numPaginas" [rows]="model.rows" (chgEvent)="muevePagina($event)"></pagina-widget>
 </div>
-<cargarfactura-widget></cargarfactura-widget>
+<cargarfactura-widget (ansEvent)="returnModal($event)"></cargarfactura-widget>

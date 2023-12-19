@@ -84,6 +84,7 @@ export class CargarFacturaWidget {
         let docModal = document.getElementById('modalCargarFactura');
         let myModal = bootstrap.Modal.getOrCreateInstance(docModal);
         myModal.hide();
+        this.sendEvent.emit(true);
     }
 
     concluirEntrega() {

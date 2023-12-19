@@ -58,5 +58,8 @@ export class FacturaComponent {
     openCargarFacturas(idOrden: number, empresa: string, cliente: string) {
         this.upfact.open(idOrden, empresa, cliente);
     }
+    returnModal($event) {
+        this.obtenerOrdenes();
+    }
 }
 
