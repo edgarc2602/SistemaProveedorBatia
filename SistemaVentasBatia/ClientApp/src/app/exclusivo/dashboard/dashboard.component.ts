@@ -2,198 +2,325 @@
 import * as Highcharts from 'highcharts';
 import { fadeInOut } from 'src/app/fade-in-out';
 import { HttpClient } from '@angular/common/http';
+import { GraficaListado } from '../../models/graficalistado';
+import { Catalogo } from '../../models/catalogo';
+import { GraficaOrden } from '../../models/graficaorden';
 
-interface DatosAgrupados {
-    nombre: string;
-    cotizacionMes: number[];
-}
 @Component({
     selector: 'dashboard-comp',
     templateUrl: './dashboard.component.html',
     animations: [fadeInOut],
 })
 export class DashboardComponent implements OnInit {
-    //model: UsuarioGrafica = {
-    //    idPersonal: 0,
-    //    nombre: '',
-    //    cotizaciones: 0,
-    //    prospectos: 0
-    //};
-    //modelMensual: UsuarioGraficaMensual = {
-    //    idPersonal: 0,
-    //    nombre: '',
-    //    mes: 0,
-    //    cotizacionesPorMes: 0
-  /*  }*/
+    graficaListadoMes: GraficaListado = {
+        mes: 0, totalListadosPorMes: 0, alta: 0, aprobado: 0, despachado: 0, entregado: 0, cancelado: 0
+    }
+    graficaListadoAnio: GraficaListado[] = []
 
-    //usuarios: UsuarioGrafica[] = [];
-    //usuariosMensual: UsuarioGraficaMensual[] = [];
+    graficaOrdenMes: GraficaOrden = {
+        mes: 0, totalOrdenesPorMes: 0, alta: 0, autorizada: 0, rechazada: 0, completa: 0, despachada: 0, enRequicision: 0
+    }
+    graficaOrdenAnio: GraficaOrden[] = []
+    mes: number = 0;
+    anio: number = 0;
+    idProveedor: number = 35;
+    meses: Catalogo[];
 
-    //datosAgrupadosMensuales: Record<number, UsuarioGraficaMensual[]> = {};
-    //datosAgrupados: DatosAgrupados[] = [];
-
-
-    constructor(
-        @Inject('BASE_URL') private url: string,
-        private http: HttpClient
-    ) {
-        //http.get<UsuarioGrafica[]>(`${url}api/usuario/obtenercotizacionesusuarios`).subscribe(response => {
-        //    this.usuarios = response;
-        //    this.getDonut();
-        //}, err => console.log(err));
-
-        //http.get<UsuarioGraficaMensual[]>(`${url}api/usuario/obtenercotizacionesmensuales`).subscribe(response => {
-        //    this.usuariosMensual = response;
-        //}, err => console.log(err));
+    constructor(@Inject('BASE_URL') private url: string, private http: HttpClient) {
+        http.get<Catalogo[]>(`${url}api/catalogo/obtenermeses`).subscribe(response => {
+            this.meses = response;
+        })
     }
     ngOnInit(): void {
-        //this.agruparDatosMensuales()
-        //this.getTop();
-        //this.getDonut();
+        const fechaActual = new Date();
+        this.anio = fechaActual.getFullYear();
+        const fechaActualMes = new Date();
+        this.mes = fechaActualMes.getMonth() + 1;
+        this.getGraficas();
     }
 
-    //agruparDatosMensuales() {
-    //    this.http.get<UsuarioGraficaMensual[]>(`${this.url}api/usuario/obtenercotizacionesmensuales`).subscribe(response => {
-    //        const datosAgrupados: DatosAgrupados[] = [];
+    getGraficas() {
+        this.graficaListadoAnio = null;
+        this.graficaListadoMes = null;
+        this.http.get<GraficaListado[]>(`${this.url}api/usuario/obtenergraficalistadoanio/${this.anio}/${this.idProveedor}`).subscribe(response => {
+            this.graficaListadoAnio = response;
+            this.getGraficaListadoAnio();
+        }, err => console.log(err));
+        this.http.get<GraficaListado>(`${this.url}api/usuario/obtenergraficalistadoaniomes/${this.anio}/${this.mes}/${this.idProveedor}`).subscribe(response => {
+            this.graficaListadoMes = response;
+            this.getGraficaListadoMes();
+        }, err => console.log(err));
+        this.http.get<GraficaOrden[]>(`${this.url}api/usuario/obtenerordenesanio/${this.anio}/${this.idProveedor}`).subscribe(response => {
+            this.graficaOrdenAnio = response;
+            this.getGraficaOrdenAnio();
+        }, err => console.log(err));
+        this.http.get<GraficaOrden>(`${this.url}api/usuario/obtenerordenesaniomes/${this.anio}/${this.mes}/${this.idProveedor}`).subscribe(response => {
+            this.graficaOrdenMes = response;
+            this.getGraficaOrdenMes();
+        }, err => console.log(err));
+    }
 
-    //        response.forEach(dato => {
-    //            const { nombre, mes, cotizacionesPorMes } = dato;
+    getGraficaListadoMes() {
+        let container: HTMLElement = document.getElementById('glm');
+        const categories = ['Alta', 'Aprobado', 'Despachado', 'Entregado', 'Cancelado'];
+        const data = [
+            this.graficaListadoMes.alta,
+            this.graficaListadoMes.aprobado,
+            this.graficaListadoMes.despachado,
+            this.graficaListadoMes.entregado,
+            this.graficaListadoMes.cancelado
+        ];
 
-    //            const datosAgrupadosExistente = datosAgrupados.find(item => item.nombre === nombre);
+        Highcharts.chart(container, {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Mensual'
+            },
+            subtitle: {
+                text: `Total: ${this.graficaListadoMes.totalListadosPorMes}`,
+                align: 'center',
+                style: {
+                    fontSize: '16px'
+                }
+            },
+            xAxis: {
+                categories: categories,
+                crosshair: true
+            },
+            yAxis: {
+                allowDecimals: false,
+                min: 0,
+                title: {
+                    text: ''
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                formatter: function () {
+                    return '<b>' + this.x + '</b><br/>' +
+                        'Total: ' + this.y + '<br/>';
+                },
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                type: 'column',
+                name: 'Detalles',
+                data: data
+            }]
+        });
+    }
 
-    //            if (datosAgrupadosExistente) {
-    //                datosAgrupadosExistente.cotizacionMes[mes - 1] = cotizacionesPorMes;
-    //            } else {
-    //                const nuevoDatoAgrupado: DatosAgrupados = {
-    //                    nombre: nombre,
-    //                    cotizacionMes: Array(12).fill(0)
-    //                };
+    getGraficaListadoAnio() {
+        let container: HTMLElement = document.getElementById('gla');
+        const meses = [
+            'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+        ];
+        let total = 0;
+        const seriesData = this.graficaListadoAnio.map(mes => {
+            total += mes.totalListadosPorMes;
+            return {
+                name: meses[mes.mes - 1],
+                y: mes.totalListadosPorMes,
+                alta: mes.alta,
+                aprobado: mes.aprobado,
+                despachado: mes.despachado,
+                entregado: mes.entregado,
+                cancelado: mes.cancelado
+            };
+        });
+        const totalSubtitle = `Total: ${total}`;
 
-    //                nuevoDatoAgrupado.cotizacionMes[mes - 1] = cotizacionesPorMes;
+        Highcharts.chart(container, {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Anual'
+            },
+            subtitle: {
+                text: totalSubtitle,
+                align: 'center',
+                style: {
+                    fontSize: '16px'
+                }
+            },
+            xAxis: {
+                categories: meses,
+                crosshair: true
+            },
+            yAxis: {
+                allowDecimals: false,
+                min: 0,
+                title: {
+                    text: 'Listados'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{}Total: </td>' +
+                    '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
+                    
+                    //+'<tr><td>Alta:</td><td>{point.alta}</td></tr>' +
+                    //'<tr><td>Aprobado:</td><td>{point.aprobado}</td></tr>' +
+                    //'<tr><td>Despachado:</td><td>{point.despachado}</td></tr>' +
+                    //'<tr><td>Entregado:</td><td>{point.entregado}</td></tr>' +
+                    //'<tr><td>Cancelado:</td><td>{point.cancelado}</td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            series: [{
+                type: 'column',
+                name: 'Meses',
+                data: seriesData
+            }]
+        });
+    }
 
-    //                datosAgrupados.push(nuevoDatoAgrupado);
-    //            }
-    //        });
-    //        this.datosAgrupados = datosAgrupados;
-    //        this.getTop();
-    //    }, err => console.log(err));
+    getGraficaOrdenMes() {
+        let container: HTMLElement = document.getElementById('gom');
+        const categories = ['Alta', 'Autorizada', 'Rechazada', 'Completa', 'Despachada', 'En Requisicion'];
+        const data = [
+            this.graficaOrdenMes.alta,
+            this.graficaOrdenMes.autorizada,
+            this.graficaOrdenMes.rechazada,
+            this.graficaOrdenMes.completa,
+            this.graficaOrdenMes.despachada,
+            this.graficaOrdenMes.enRequicision
+        ];
 
-    //}
-    //getDonut() {
-    //    let container: HTMLElement = document.getElementById('dvdonut');
+        Highcharts.chart(container, {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Mensual'
+            },
+            subtitle: {
+                text: `Total: ${this.graficaOrdenMes.totalOrdenesPorMes}`,
+                align: 'center',
+                style: {
+                    fontSize: '16px'
+                }
+            },
+            xAxis: {
+                categories: categories,
+                crosshair: true
+            },
+            yAxis: {
+                allowDecimals: false,
+                min: 0,
+                title: {
+                    text: ''
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                formatter: function () {
+                    return '<b>' + this.x + '</b><br/>' +
+                        'Total: ' + this.y + '<br/>';
+                },
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    color: '#5094fc',
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                type: 'column',
+                name: 'Detalles',
+                data: data
+            }]
+        });
+    }
 
-    //    const seriesOptions: Highcharts.SeriesColumnOptions[] = [];
+    getGraficaOrdenAnio() {
+        let container: HTMLElement = document.getElementById('goa');
+        const meses = [
+            'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+        ];
+        let totalOrden = 0;
+        const seriesData = this.graficaOrdenAnio.map(mes => {
+            totalOrden += mes.totalOrdenesPorMes;
+            return {
+                name: meses[mes.mes - 1],
+                y: mes.totalOrdenesPorMes,
+                alta: mes.alta,
+                aprobado: mes.autorizada,
+                despachado: mes.rechazada,
+                entregado: mes.completa,
+                cancelado: mes.despachada
+            };
+        });
+        const totalSubtitle = `Total: ${totalOrden}`;
 
-    //    this.usuarios.forEach(usuario => {
-    //        seriesOptions.push({
-    //            name: usuario.nombre,
-    //            data: [usuario.cotizaciones, usuario.prospectos],
-    //            type: 'column',
-    //        });
-    //    });
+        Highcharts.chart(container, {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Anual'
+            },
+            subtitle: {
+                text: totalSubtitle,
+                align: 'center',
+                style: {
+                    fontSize: '16px'
+                }
+            },
+            plotOptions: {
+                column: {
+                    color: '#5094fc',
+                }
+            },
+            xAxis: {
+                categories: meses,
+                crosshair: true
+            },
+            yAxis: {
+                allowDecimals: false,
+                min: 0,
+                title: {
+                    text: 'Listados'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{}Total: </td>' +
+                    '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
 
-    //    Highcharts.chart(container, {
-    //        chart: {
-    //            type: 'column'
-    //        },
-    //        title: {
-    //            text: 'Total'
-    //        },
-    //        xAxis: {
-    //            categories: ['Cotizaciones', 'Prospectos'],
-    //            crosshair: true
-    //        },
-    //        yAxis: {
-    //            allowDecimals: false,
-    //            min: 0,
-    //            title: {
-    //                text: ' '
-    //            }
-    //        },
-    //        tooltip: {
-    //            formatter: function () {
-    //                return '<b>' + this.x + '</b><br/>' +
-    //                    this.series.name + ': ' + this.y + '<br/>';
-    //                //+'Total: ' + this.point['stackTotal'] 
-    //            }
-    //        },
+                //+'<tr><td>Alta:</td><td>{point.alta}</td></tr>' +
+                //'<tr><td>Aprobado:</td><td>{point.aprobado}</td></tr>' +
+                //'<tr><td>Despachado:</td><td>{point.despachado}</td></tr>' +
+                //'<tr><td>Entregado:</td><td>{point.entregado}</td></tr>' +
+                //'<tr><td>Cancelado:</td><td>{point.cancelado}</td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            series: [{
+                type: 'column',
+                name: 'Meses',
+                data: seriesData
+            }]
+        });
+    }
 
-    //        plotOptions: {
-    //            column: {
-    //                pointPadding: 0.2,
-    //                borderWidth: 0
-    //            }
-    //        },
-    //        series: seriesOptions
-    //    });
-    //}
-
-    //getTop() {
-    //    let container: HTMLElement = document.getElementById('dvtop');
-    //    const seriesOptions: Highcharts.SeriesColumnOptions[] = [];
-
-
-    //    this.datosAgrupados.forEach(dato => {
-    //        seriesOptions.push({
-    //            name: dato.nombre,
-    //            data: dato.cotizacionMes,
-    //            type: 'column',
-    //        });
-    //    });
-
-
-    //    Highcharts.chart(container, {
-    //        chart: {
-    //            type: 'column'
-    //        },
-    //        title: {
-    //            text: 'Cotizaciones por mes'
-    //        },
-
-    //        xAxis: {
-    //            categories: [
-    //                'Jan',
-    //                'Feb',
-    //                'Mar',
-    //                'Apr',
-    //                'May',
-    //                'Jun',
-    //                'Jul',
-    //                'Aug',
-    //                'Sep',
-    //                'Oct',
-    //                'Nov',
-    //                'Dec'
-    //            ],
-    //            crosshair: true
-    //        },
-    //        yAxis: {
-    //            allowDecimals: false,
-
-    //            min: 0,
-    //            title: {
-    //                text: ''
-    //            }
-    //        },
-    //        tooltip: {
-    //            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-    //            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-    //                '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
-
-    //            footerFormat: '</table>',
-    //            shared: true,
-    //            useHTML: true
-    //        },
-    //        plotOptions: {
-    //            column: {
-    //                pointPadding: 0.2,
-    //                borderWidth: 0
-    //            }
-    //        },
-    //        series: seriesOptions
-    //    });
-
-    //}
     goBack() {
         window.history.back();
     }

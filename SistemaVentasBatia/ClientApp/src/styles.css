@@ -309,3 +309,11 @@ tbody tr:hover {
     box-shadow: none; /* Elimina cualquier sombra */
     /* Otros estilos adicionales que desees agregar o modificar */
 }
+
+.sticky-container {
+    position: sticky;
+    top: 0; /* Fija el div en la parte superior */
+    background-color: transparent; /* Define el color de fondo que desees */
+    z-index: 100; /* Ajusta el z-index según sea necesario */
+    /* ... Otros estilos que desees aplicar ... */
+}

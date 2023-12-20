@@ -14,7 +14,7 @@ export class FacturaComponent {
     model: ListadoOrdenCompra = {
         ordenes: [], numPaginas: 0, pagina: 1, rows: 0
     }
-    idProveedor: number = 1108;
+    idProveedor: number = 35;
     fechaInicio: string = '';
     fechaFin: string = '';
 
