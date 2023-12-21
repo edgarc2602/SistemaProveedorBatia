@@ -9,7 +9,9 @@ namespace SistemaVentasBatia.Controllers
     [Route("api/[controller]")]
     public class HomeController : ControllerBase
     {
+#pragma warning disable IDE0052 // Quitar miembros privados no leídos
         private readonly ILogger<HomeController> _logger;
+#pragma warning restore IDE0052 // Quitar miembros privados no leídos
 
         public HomeController(ILogger<HomeController> logger)
         {

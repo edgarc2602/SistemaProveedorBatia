@@ -139,21 +139,22 @@ ORDER BY
             b.mes
         ORDER BY 
             b.mes";
-            GraficaListado listadosaniomes = new GraficaListado();
             try
             {
                 using var connection = _ctx.CreateConnection();
-                
-                listadosaniomes = await connection.QueryFirstOrDefaultAsync<GraficaListado>(query, new { anio, mes, idProveedor });
+
+                GraficaListado listadosaniomes = await connection.QueryFirstOrDefaultAsync<GraficaListado>(query, new { anio, mes, idProveedor });
                 if (listadosaniomes == null)
                 {
-                    GraficaListado listadosaniomes2 = new GraficaListado();
-                    listadosaniomes2.TotalListadosPorMes = 0;
-                    listadosaniomes2.Alta = 0;
-                    listadosaniomes2.Aprobado = 0;
-                    listadosaniomes2.Despachado = 0;
-                    listadosaniomes2.Entregado = 0;
-                    listadosaniomes2.Cancelado = 0;
+                    GraficaListado listadosaniomes2 = new GraficaListado
+                    {
+                        TotalListadosPorMes = 0,
+                        Alta = 0,
+                        Aprobado = 0,
+                        Despachado = 0,
+                        Entregado = 0,
+                        Cancelado = 0
+                    };
 
                     return listadosaniomes2;
                 }
@@ -220,21 +221,22 @@ GROUP BY
     oc.mes, oc.anio;
 
 ";
-            var ordenesaniomes = new GraficaOrden();
             try
             {
                 using var connection = _ctx.CreateConnection();
-                ordenesaniomes = await connection.QueryFirstOrDefaultAsync<GraficaOrden>(query, new { anio, mes, idProveedor });
+                GraficaOrden ordenesaniomes = await connection.QueryFirstOrDefaultAsync<GraficaOrden>(query, new { anio, mes, idProveedor });
                 if (ordenesaniomes == null)
                 {
-                    GraficaOrden ordenesaniomes2 = new GraficaOrden();
-                    ordenesaniomes2.TotalOrdenesPorMes = 0;
-                    ordenesaniomes2.Alta = 0;
-                    ordenesaniomes2.Autorizada = 0;
-                    ordenesaniomes2.Rechazada = 0;
-                    ordenesaniomes2.Completa = 0;
-                    ordenesaniomes2.Despachada = 0;
-                    ordenesaniomes2.EnRequisicion = 0;
+                    GraficaOrden ordenesaniomes2 = new GraficaOrden
+                    {
+                        TotalOrdenesPorMes = 0,
+                        Alta = 0,
+                        Autorizada = 0,
+                        Rechazada = 0,
+                        Completa = 0,
+                        Despachada = 0,
+                        EnRequisicion = 0
+                    };
 
                     return ordenesaniomes2;
                 }
