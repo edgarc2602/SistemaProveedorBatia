@@ -22,6 +22,7 @@ namespace SistemaVentasBatia.Services
         Task<DetalleOrdenCompra> ObtenerDetalleOrden(int idOrden);
         Task<bool> InsertarXML(string xmlString);
         Task<bool> FacturaExiste(string uuid);
+        Task<bool> CambiarStatusOrdenCompleta(int idOrden);
     }
 
     public class FacturaService : IFacturaService
@@ -85,6 +86,11 @@ namespace SistemaVentasBatia.Services
         public async Task<bool> FacturaExiste(string uuid)
         {
             return await _FacturaRepo.FacturaExiste(uuid);
+        }
+
+        public async Task<bool> CambiarStatusOrdenCompleta(int idOrden)
+        {
+            return await _FacturaRepo.CambiarStatusOrdenCompleta(idOrden);
         }
     }
 }

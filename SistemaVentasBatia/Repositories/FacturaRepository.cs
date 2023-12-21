@@ -31,6 +31,7 @@ namespace SistemaVentasBatia.Repositories
         Task<DetalleOrdenCompra> ObtenerDetalleOrden(int idOrden);
         Task<bool> InsertarXML(string xmlString);
         Task<bool> FacturaExiste(string uuid);
+        Task<bool> CambiarStatusOrdenCompleta(int idOrden);
     }
 
     public class FacturaRepository : IFacturaRepository
@@ -357,6 +358,26 @@ GROUP BY
             {
                 using var connection = _ctx.CreateConnection();
                 var result = await connection.ExecuteScalarAsync<bool>(query, new { uuid });
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<bool> CambiarStatusOrdenCompleta(int idOrden)
+        {
+            string query = @"
+UPDATE tb_ordencompra
+SET 
+id_status = 4
+WHERE id_orden = @idOrden
+";
+            try
+            {
+                using var connection = _ctx.CreateConnection();
+                var result = await connection.ExecuteScalarAsync<bool>(query, new { idOrden });
                 return result;
             }
             catch (Exception ex)

@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { GraficaListado } from '../../models/graficalistado';
 import { Catalogo } from '../../models/catalogo';
 import { GraficaOrden } from '../../models/graficaorden';
+import { StoreUser } from 'src/app/stores/StoreUser';
+
 
 @Component({
     selector: 'dashboard-comp',
@@ -23,17 +25,18 @@ export class DashboardComponent implements OnInit {
     graficaOrdenAnio: GraficaOrden[] = []
     mes: number = 0;
     anio: number = 0;
-    idProveedor: number = 35;
+    idProveedor: number = 0;
     meses: Catalogo[];
 
-    constructor(@Inject('BASE_URL') private url: string, private http: HttpClient) {
+    constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {
         http.get<Catalogo[]>(`${url}api/catalogo/obtenermeses`).subscribe(response => {
             this.meses = response;
         })
     }
     ngOnInit(): void {
+        this.idProveedor = this.user.idProveedor;
         const fechaActual = new Date();
-        this.anio = fechaActual.getFullYear();
+        this.anio = fechaActual.getFullYear();  
         const fechaActualMes = new Date();
         this.mes = fechaActualMes.getMonth() + 1;
         this.getGraficas();

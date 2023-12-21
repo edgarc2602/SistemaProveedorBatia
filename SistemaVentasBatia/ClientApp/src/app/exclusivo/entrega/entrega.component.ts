@@ -23,17 +23,18 @@ export class EntregaComponent {
     anio: number = 0;
     idEstado: number = 0;
     tipo: number = 0;
-    idProveedor: number = 35;
+    idProveedor: number = 0;
     @ViewChild(DetalleMaterialesListadoWidget, { static: false }) matLis: DetalleMaterialesListadoWidget;
     @ViewChild(CargarAcuseEntregaWidget, { static: false }) acuse: CargarAcuseEntregaWidget;
     @ViewChild(EliminaWidget, { static: false }) eliwid: EliminaWidget;
-    w
+    
     idListado: number = 0;
     sucursal: string = '';
     tipostring: string = '';
     prefijo: string = '';
 
     constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {
+        
         http.get<Catalogo[]>(`${url}api/catalogo/obtenermeses`).subscribe(response => {
             this.meses = response;
         })
@@ -49,7 +50,7 @@ export class EntregaComponent {
         this.obtenerListados();
     }
     obtenerListados() {
-        //this.user.idPersonal
+        this.idProveedor = this.user.idProveedor;
         this.http.get<ListadoMateriales>(`${this.url}api/entrega/obtenerlistados/${this.mes}/${this.anio}/${this.idProveedor}/${this.idEstado}/${this.tipo}/${this.model.pagina}`).subscribe(response => {
             this.model = response;
         }, err => console.log(err));

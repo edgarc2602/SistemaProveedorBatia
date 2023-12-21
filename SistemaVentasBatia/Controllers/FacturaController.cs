@@ -129,5 +129,11 @@ namespace SistemaVentasBatia.Controllers
         {
             return await _logic.FacturaExiste(uuid);
         }
+
+        [HttpPost("[action]/{idOrden}")]
+        public async Task<bool> CambiarStatusOrdenCompleta(int idOrden)
+        {
+            return await _logic.CambiarStatusOrdenCompleta(idOrden);
+        }
     }
 }

@@ -8,4 +8,5 @@ export class StoreUser {
     idInterno: number;
     idEmpleado: number;
     estatus: number;
+    idProveedor: number;
 }

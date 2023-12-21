@@ -14,7 +14,7 @@ export class FacturaComponent {
     model: ListadoOrdenCompra = {
         ordenes: [], numPaginas: 0, pagina: 1, rows: 0
     }
-    idProveedor: number = 35;
+    idProveedor: number = 1186;
     fechaInicio: string = '';
     fechaFin: string = '';
 
@@ -25,6 +25,7 @@ export class FacturaComponent {
         this.obtenerOrdenes();
     }   
     obtenerOrdenes() {
+        this.idProveedor = this.user.idProveedor;
         this.http.get<ListadoOrdenCompra>(`${this.url}api/factura/ObtenerOrdenesCompra/${this.idProveedor}/${this.model.pagina}/${this.fechaInicio}/${this.fechaFin}`).subscribe(response => {
             this.model = response;
         })
@@ -55,8 +56,8 @@ export class FacturaComponent {
     imprimirOrden(idOrden: number) {
     }
 
-    openCargarFacturas(idOrden: number, empresa: string, cliente: string) {
-        this.upfact.open(idOrden, empresa, cliente);
+    openCargarFacturas(idOrden: number, empresa: string, cliente: string, total: number) {
+        this.upfact.open(idOrden, empresa, cliente,total);
     }
     returnModal($event) {
         this.obtenerOrdenes();

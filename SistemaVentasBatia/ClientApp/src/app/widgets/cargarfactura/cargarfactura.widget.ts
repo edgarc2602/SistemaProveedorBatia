@@ -46,24 +46,27 @@ export class CargarFacturaWidget {
     xmlgraba: XMLGraba = {
         factura: '', idCliente: 0, idOrden: 0, idPersonal: 0, fechaFactura: '', dias: 0, subTotal: 0, iva: 0, total: 0, pdfName: '', xmlName: '', uuid: ''
     }
+    total: number = 0;
 
-    constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {}
+    constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) { }
     nuevo() {
+        this.selectedPdf = null;
+        this.selectedXml = null;
+        this.fechaActual = new Date();
     }
     obtenerDetallesOrden() {
         this.http.get<DetalleOrdenCompra>(`${this.url}api/factura/obtenerdetalleorden/${this.idOrden}`).subscribe(response => {
             this.detallefact = response;
+            this.validaOrdenCompleta();
         })
     }
 
-    open(idOrden: number, empresa: string, cliente: string) {
+    open(idOrden: number, empresa: string, cliente: string, total: number) {
+        this.total = total;
         this.nuevo();
         this.idOrden = idOrden;
         this.empresa = empresa;
         this.cliente = cliente;
-        this.selectedPdf = null;
-        this.selectedXml = null;
-        this.fechaActual = new Date();
         this.obtenerListadoFacturas();
         this.obtenerDetallesOrden();
         let docModal = document.getElementById('modalCargarFactura');
@@ -170,7 +173,6 @@ export class CargarFacturaWidget {
     }
 
     subirFacturas() {
-
         if (this.selectedPdf && this.selectedXml) {
             this.getDataInsertar();
             const formData = new FormData();
@@ -185,14 +187,28 @@ export class CargarFacturaWidget {
                     timer: 1000,
                     showConfirmButton: false,
                 });
-                this.obtenerDetallesOrden();
+                
                 this.obtenerListadoFacturas();
                 this.limpiarPDF();
                 this.limpiarXML();
+                this.obtenerDetallesOrden();
+                
             })
         }
     }
-
+    validaOrdenCompleta() {
+        if (this.detallefact.facturado == this.total) {
+            this.close();
+            Swal.fire({
+                title: 'Completada',
+                text: 'Se cargaron las facturas necesarias',
+                icon: 'success',
+                timer: 3000,
+                showConfirmButton: false,
+            });
+        }
+    }
+        
     onPdfSelected(event: any) {
         this.selectedPdf = event.target.files[0];
         this.quitarFocoDeElementos();

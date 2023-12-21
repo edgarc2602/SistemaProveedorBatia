@@ -5,4 +5,5 @@
     idInterno: number;
     idEmpleado: number;
     estatus: number;
+    idProveedor: number;
 }
