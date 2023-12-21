@@ -64,6 +64,7 @@ export class EntregaComponent {
     }
 
     obtenerMateriales(idListado: number, sucursal: string, tipo: string, prefijo: string) {
+        this.quitarFocoDeElementos();
         this.matLis.open(idListado, sucursal, tipo, prefijo);
     }
 
@@ -72,6 +73,7 @@ export class EntregaComponent {
         this.sucursal = sucursal;
         this.tipostring = tipo;
         this.prefijo = prefijo;
+        this.quitarFocoDeElementos();
         this.acuse.open(idListado, sucursal, tipo, prefijo);
     }
 
@@ -91,5 +93,11 @@ export class EntregaComponent {
     }
     entregado($event) {
         this.obtenerListados();
+    }
+    quitarFocoDeElementos(): void {
+        const elementos = document.querySelectorAll('button, input[type="text"]');
+        elementos.forEach((elemento: HTMLElement) => {
+            elemento.blur();
+        });
     }
 }

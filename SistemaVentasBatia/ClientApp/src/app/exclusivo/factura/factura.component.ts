@@ -54,13 +54,21 @@ export class FacturaComponent {
         this.fechaFin = this.obtenerDiaActual();
     }
     imprimirOrden(idOrden: number) {
+        this.quitarFocoDeElementos();
     }
 
     openCargarFacturas(idOrden: number, empresa: string, cliente: string, total: number) {
+        this.quitarFocoDeElementos();
         this.upfact.open(idOrden, empresa, cliente,total);
     }
     returnModal($event) {
         this.obtenerOrdenes();
+    }
+    quitarFocoDeElementos(): void {
+        const elementos = document.querySelectorAll('button, input[type="text"]');
+        elementos.forEach((elemento: HTMLElement) => {
+            elemento.blur();
+        });
     }
 }
 
