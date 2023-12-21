@@ -76,7 +76,6 @@ export class CargarAcuseEntregaWidget {
         this.conwid.titulo = 'Concluir entrega';
         this.conwid.mensaje = 'Una vez concluida no se podran modificar los acuses, \u00BFdesea continuar?'
         this.conwid.open()
-
         this.quitarFocoDeElementos();
     }
     guardarArchivo(): void {

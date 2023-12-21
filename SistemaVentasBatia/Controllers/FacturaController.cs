@@ -24,10 +24,12 @@ namespace SistemaVentasBatia.Controllers
         [HttpGet("[action]/{idProveedor}/{pagina}/{fechaInicio}/{fechaFin}")]
         public async Task<ActionResult<ListadoOrdenCompraDTO>> ObtenerOrdenesCompra(int idProveedor = 0, int pagina = 1, string fechaInicio = null, string fechaFin = null)
         {
-            fechaInicio = fechaInicio + " 00:00:00";
-            fechaFin = fechaFin + " 23:59:59";
-            ListadoOrdenCompraDTO ordenescompra = new ListadoOrdenCompraDTO();
-            ordenescompra.Pagina = pagina;
+            fechaInicio += " 00:00:00";
+            fechaFin += " 23:59:59";
+            ListadoOrdenCompraDTO ordenescompra = new ListadoOrdenCompraDTO
+            {
+                Pagina = pagina
+            };
             return await _logic.ObtenerOrdenesCompra(ordenescompra, idProveedor, fechaInicio, fechaFin);
         }
 
@@ -75,7 +77,7 @@ namespace SistemaVentasBatia.Controllers
             string[] documentos = new string[2];
             documentos[0] = xml.PdfName;
             documentos[1] = xml.XmlName;
-            bool result = false;
+            bool result;
             var xmlDoc = new XmlDocument();
             var movimientoElement = xmlDoc.CreateElement("Movimiento");
             var salidaElement = xmlDoc.CreateElement("salida");

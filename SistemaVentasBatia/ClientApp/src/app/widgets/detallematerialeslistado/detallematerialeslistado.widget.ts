@@ -1,7 +1,6 @@
 import { Component, OnChanges, Output, EventEmitter, SimpleChanges, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DetalleMaterial } from '../../models/detallematerial';
-
 declare var bootstrap: any;
 
 @Component({

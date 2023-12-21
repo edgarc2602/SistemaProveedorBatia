@@ -91,6 +91,7 @@ namespace SistemaVentasBatia.Services
         {
             return await _repo.ObtenerOrdenesAnio(anio, idProveedor);
         }
+
         public async Task<GraficaOrden> ObtenerOrdenesAnioMes(int anio, int mes, int idProveedor)
         {
             return await _repo.ObtenerOrdenesAnioMes(anio,mes,idProveedor);

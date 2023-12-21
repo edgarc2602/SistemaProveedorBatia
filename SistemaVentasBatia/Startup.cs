@@ -61,8 +61,6 @@ namespace SistemaVentasBatia
 
             // Services
             services.AddScoped<ICatalogosService, CatalogosService>();
-            services.AddScoped<IProductoService, ProductoService>();
-            services.AddScoped<IMaterialService, MaterialService>();
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IEntregaService, EntregaService>();
             services.AddScoped<IFacturaService, FacturaService>();
@@ -70,8 +68,6 @@ namespace SistemaVentasBatia
 
             // Repositories
             services.AddScoped<ICatalogosRepository, CatalogosRepository>();
-            services.AddScoped<IProductoRepository, ProductoRepository>();
-            services.AddScoped<IMaterialRepository, MaterialRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IEntregaRepository, EntregaRepository>();
             services.AddScoped<IFacturaRepository, FacturaRepository>();

@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { ListadoAcuseEntrega } from '../../models/listadoacuseentrega';
 declare var bootstrap: any;
 import { Factura } from 'src/app/models/Factura'
-import { FacturaComponent } from '../../exclusivo/factura/factura.component';
 import { XMLData } from '../../models/xmldata';
 import { DetalleOrdenCompra } from '../../models/detalleordencompra';
 import { ConfirmaWidget } from '../../widgets/confirma/confirma.widget'
@@ -187,7 +186,6 @@ export class CargarFacturaWidget {
                     timer: 1000,
                     showConfirmButton: false,
                 });
-                
                 this.obtenerListadoFacturas();
                 this.limpiarPDF();
                 this.limpiarXML();

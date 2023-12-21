@@ -181,7 +181,7 @@ FROM tb_recepcion_factura WHERE id_orden = @idOrden
             return facturas;
         }
 
-        public async Task<XMLData> ExtraerDatosXML(IFormFile xml, int idTipoFolio)
+        public Task<XMLData> ExtraerDatosXML(IFormFile xml, int idTipoFolio)
         {
             var XMLData = new XMLData();
             try
@@ -258,8 +258,7 @@ FROM tb_recepcion_factura WHERE id_orden = @idOrden
             {
                 Console.WriteLine($"Error: {ex.Message}");
             }
-
-            return XMLData;
+            return Task.FromResult(XMLData);
 
         }
 
@@ -313,32 +312,30 @@ GROUP BY
             return detalle;
         }
 
-        public async Task<bool> InsertarXML(string xml)
+        public Task<bool> InsertarXML(string xml)
         {
             bool result;
             try
             {
-                using (var connection = _ctx.CreateConnection())
-                {
-                    connection.Open();
+                using var connection = _ctx.CreateConnection();
+                connection.Open();
 
-                    var parameters = new DynamicParameters();
-                    parameters.Add("@Material", new SqlXml(new System.Xml.XmlTextReader(xml, System.Xml.XmlNodeType.Document, null)), DbType.Xml, ParameterDirection.Input);
-                    parameters.Add("@IdMov", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                var parameters = new DynamicParameters();
+                parameters.Add("@Material", new SqlXml(new System.Xml.XmlTextReader(xml, System.Xml.XmlNodeType.Document, null)), DbType.Xml, ParameterDirection.Input);
+                parameters.Add("@IdMov", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
-                    connection.Execute("sp_recepcione", parameters, commandType: CommandType.StoredProcedure);
+                connection.Execute("sp_recepcione", parameters, commandType: CommandType.StoredProcedure);
 
-                    int idMov = parameters.Get<int>("@IdMov");
-                    Console.WriteLine("ID Movimiento generado: " + idMov);
-                    result = true;
-                }
+                int idMov = parameters.Get<int>("@IdMov");
+                Console.WriteLine("ID Movimiento generado: " + idMov);
+                result = true;
             }
             catch (Exception ex)
             {
                 result = false;
                 Console.WriteLine("Error: " + ex.Message);
             }
-            return result;
+            return Task.FromResult(result);
         }
 
         public async Task<bool> FacturaExiste(string uuid)

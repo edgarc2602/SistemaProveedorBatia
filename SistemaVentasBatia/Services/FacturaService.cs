@@ -63,8 +63,8 @@ namespace SistemaVentasBatia.Services
 
         public async Task<List<FacturaDTO>> ObtenerFacturas(int idOrden)
         {
-            var facturas = new List<FacturaDTO>();
-            facturas = _mapper.Map<List<FacturaDTO>>(await _FacturaRepo.ObtenerFacturas(idOrden));
+            _ = new List<FacturaDTO>();
+            List<FacturaDTO> facturas = _mapper.Map<List<FacturaDTO>>(await _FacturaRepo.ObtenerFacturas(idOrden));
             return facturas;
         }
 

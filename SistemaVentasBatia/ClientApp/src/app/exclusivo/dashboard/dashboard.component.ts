@@ -306,7 +306,6 @@ export class DashboardComponent implements OnInit {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                 pointFormat: '<tr><td style="color:{series.color};padding:0">{}Total: </td>' +
                     '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
-
                 //+'<tr><td>Alta:</td><td>{point.alta}</td></tr>' +
                 //'<tr><td>Aprobado:</td><td>{point.aprobado}</td></tr>' +
                 //'<tr><td>Despachado:</td><td>{point.despachado}</td></tr>' +
