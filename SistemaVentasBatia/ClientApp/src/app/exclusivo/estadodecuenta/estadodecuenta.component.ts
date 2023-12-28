@@ -34,4 +34,9 @@ export class EstadoDeCuentaComponent {
             this.model = response;
         })
     }
+
+    muevePagina(event) {
+        this.model.pagina = event;
+        this.ngOnInit();
+    }
 }
