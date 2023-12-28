@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using SistemaVentasBatia.Enums;
 using Microsoft.Extensions.Options;
-using SistemaProveedoresBatia.Controllers;
+using SistemaVentasBatia.Controllers;
 
 namespace SistemaVentasBatia.Services
 {

@@ -10,14 +10,14 @@
                     <div class="card-body">
                         <div class="mb-2">
                             <div class="form-floating">
-                                <input type="text" class="form-control my-input-class" [(ngModel)]="model.usuario" id="txusuario" placeholder="Usuario">
+                                <input type="text" class="form-control my-input-class translucent" [(ngModel)]="model.usuario" id="txusuario" placeholder="Usuario">
                                 <label for="txusuario">Usuario</label>
                             </div>
                             <span *ngIf="ferr('Usuario')" class="text-danger">{{ terr('Usuario') }}</span>
                         </div>
                         <div class="mb-2">
                             <div class="form-floating">
-                                <input type="password" class="form-control my-input-class" [(ngModel)]="model.contrasena" id="txpassword" placeholder="Contraseña">
+                                <input type="password" class="form-control my-input-class translucent" [(ngModel)]="model.contrasena" id="txpassword" placeholder="Contraseña">
                                 <label for="txpassword">Contraseña</label>
                             </div>
                             <span *ngIf="ferr('Contrasena')" class="text-danger">{{ terr('Contrasena') }}</span>

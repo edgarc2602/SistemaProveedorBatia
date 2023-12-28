@@ -26,7 +26,7 @@ namespace SistemaVentasBatia.Controllers
         {
             fechaInicio += " 00:00:00";
             fechaFin += " 23:59:59";
-            ListadoOrdenCompraDTO ordenescompra = new ListadoOrdenCompraDTO
+            var ordenescompra = new ListadoOrdenCompraDTO
             {
                 Pagina = pagina
             };

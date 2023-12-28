@@ -195,7 +195,8 @@ export class CargarFacturaWidget {
         }
     }
     validaOrdenCompleta() {
-        if (this.detallefact.facturado == this.total) {
+        const rango = 10;
+        if (Math.abs(this.detallefact.facturado - this.total) <= rango) {
             this.close();
             Swal.fire({
                 title: 'Completada',

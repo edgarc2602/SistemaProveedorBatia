@@ -7,13 +7,13 @@
     </div>
     <div>
         <div class="row">
-            <div class="col-md-3 col-7 mb-3">
+            <div class="col-md-3 col-6 mb-3">
                 <div class="form-floating box-shadow">
                     <input type="number" class="form-control" [(ngModel)]="anio" id="Anio" placeholder="Escriba un año" (input)="obtenerListados()">
                     <label asp-for="anio">Año</label>
                 </div>
             </div>
-            <div class="col-md-3 col-5 mb-3">
+            <div class="col-md-3 col-6 mb-3">
                 <div class="form-floating box-shadow">
                     <select class="form-select" [(ngModel)]="mes" (change)="obtenerListados()" id="ddlmes">
                         <option *ngFor="let m of meses" [ngValue]="m.id">{{ m.descripcion }}</option>

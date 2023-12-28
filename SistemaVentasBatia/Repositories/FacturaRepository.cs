@@ -196,7 +196,9 @@ FROM tb_recepcion_factura WHERE id_orden = @idOrden
                     XNamespace tfd = "http://www.sat.gob.mx/TimbreFiscalDigital";
 
                     string subTotal = comprobante.Attribute("SubTotal")?.Value;
-                    if (idTipoFolio == 1) //si es serielizada
+                    string Total = comprobante.Attribute("Total")?.Value;
+                    XMLData.Total = decimal.Parse(Total);
+                    if (idTipoFolio == 1)
                     {
                         string Serie = comprobante.Attribute("Serie")?.Value;
                         string Factura = comprobante.Attribute("Folio")?.Value;
@@ -246,12 +248,9 @@ FROM tb_recepcion_factura WHERE id_orden = @idOrden
                             {
                                 string impuesto = traslado.Attribute("Importe")?.Value;
                                 XMLData.Iva = decimal.Parse(impuesto);
-                                decimal total = decimal.Parse(subTotal) + decimal.Parse(impuesto);
-                                XMLData.Total = total;
                             }
                         }
                     }
-
                 }
             }
             catch (Exception ex)

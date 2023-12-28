@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace SistemaProveedoresBatia.Controllers
+namespace SistemaVentasBatia.Controllers
 
 {
     [Route("api/[controller]")]

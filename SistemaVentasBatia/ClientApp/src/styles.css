@@ -99,13 +99,12 @@ body {
     /* rtl:remove */
     left: 0;
     z-index: 101; /* Behind the navbar */
-    padding: 48px 0 0; /* Height of navbar */
+    padding: 100px 0 0; /* Height of navbar */
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
 
 @media (max-width: 767.98px) {
     .sidebar {
-        top: 5rem;
     }
 }
 
@@ -235,9 +234,6 @@ align-middle {
     }
 }
 
-
-
-
 .form-control {
     padding: 8px;
     border: 1px solid #ccc;
@@ -280,12 +276,11 @@ tbody tr:hover {
 
 .btn:active,
 .btn:focus {
-    /*outline: none !important;*/ /* Eliminar el marcado de foco */
     box-shadow: none !important;
 }
 
 .btn.page-link {
-    user-select: none; /* Evitar la selección de texto */
+    user-select: none;
 }
 
 .btn {
@@ -304,16 +299,19 @@ tbody tr:hover {
     }
 
 .custom-input:disabled {
-    border: none; /* Elimina el borde */
-    background-color: transparent; /* Elimina el color de fondo */
-    box-shadow: none; /* Elimina cualquier sombra */
-    /* Otros estilos adicionales que desees agregar o modificar */
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
 }
 
 .sticky-container {
     position: sticky;
-    top: 0; /* Fija el div en la parte superior */
-    background-color: transparent; /* Define el color de fondo que desees */
-    z-index: 100; /* Ajusta el z-index según sea necesario */
-    /* ... Otros estilos que desees aplicar ... */
+    top: 0;
+    background-color: transparent;
+    z-index: 100;
+}
+
+.translucent {
+    backdrop-filter: blur(10px);
+    background-color: rgba(248, 249, 250, 0.7);
 }

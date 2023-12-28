@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
-using SistemaProveedoresBatia.Controllers;
+using SistemaVentasBatia.Controllers;
 using SistemaProveedoresBatia.DTOs;
 using SistemaVentasBatia.DTOs;
 using SistemaVentasBatia.Models;

@@ -23,16 +23,21 @@
                             <label asp-for="Keywords">Cliente</label>
                         </div>
                     </div>
-                    <div class="col-md-2 col-4">
-                        <div class="form-floating">
-                            <input type="text" class="form-control custom-input" [ngModel]="fechaActual | date: 'dd/MM/yyyy'" placeholder="Fecha recepción" disabled>
-                            <label asp-for="Keywords">Fecha recepción</label>
-                        </div>
-                    </div>
+
                     <div class="col-md-2 col-4">
                         <div class="form-floating">
                             <input type="text" class="form-control custom-input" [ngModel]="detallefact.idOrden" placeholder="Id orden" disabled>
                             <label asp-for="Keywords">Id orden</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-4">
+                        <!--<div class="form-floating">
+                            <input type="text" class="form-control custom-input" [ngModel]="fechaActual | date: 'dd/MM/yyyy'" placeholder="Fecha recepción" disabled>
+                            <label asp-for="Keywords">Fecha recepción</label>
+                        </div>-->
+                        <div class="form-floating">
+                            <input type="text" class="form-control custom-input" [ngModel]="'$' + (total | number: '1.2')" placeholder="Facturado" disabled>
+                            <label asp-for="Keywords">Total</label>
                         </div>
                     </div>
                     <div class="col-md-3 col-4">

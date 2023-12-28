@@ -16,6 +16,7 @@ export class ExMenuComponent {
     }
 
     logout() {
+        this.quitarFocoDeElementos();
         localStorage.removeItem('singaUser');
         this.user = null;
         this.rtr.navigate(['']);
@@ -27,5 +28,14 @@ export class ExMenuComponent {
 
   toggle() {
     this.isExpanded = !this.isExpanded;
-  }
+    }
+    button() {
+        this.quitarFocoDeElementos();
+    }
+    quitarFocoDeElementos(): void {
+        const elementos = document.querySelectorAll('button, input[type="text"]');
+        elementos.forEach((elemento: HTMLElement) => {
+            elemento.blur();
+        });
+    }
 }

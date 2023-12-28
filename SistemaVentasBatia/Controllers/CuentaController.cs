@@ -18,5 +18,15 @@ namespace SistemaVentasBatia.Controllers
         {
             _logic = logic;
         }
+
+        [HttpGet("[action]/{idProveedor}/{pagina}")]
+        public async Task <ListadoEstadoDeCuentaDTO> GetEstadoDeCuenta(int idProveedor = 0, int pagina = 1)
+        {
+            var estadodecuenta = new ListadoEstadoDeCuentaDTO
+            {
+                Pagina = pagina
+            };
+            return await _logic.GetEstadoDeCuenta(estadodecuenta,idProveedor);
+        }
     }
 }

@@ -30,6 +30,8 @@ namespace SistemaVentasBatia
             CreateMap<AcuseEntregaDTO, AcuseEntrega>();
             CreateMap<Factura, FacturaDTO>();
             CreateMap<FacturaDTO, Factura>();
+            CreateMap<EstadoDeCuenta, EstadoDeCuentaDTO>();
+            CreateMap<EstadoDeCuentaDTO, EstadoDeCuenta>();
         }
     }
 }
