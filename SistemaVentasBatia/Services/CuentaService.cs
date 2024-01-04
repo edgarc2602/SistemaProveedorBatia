@@ -54,7 +54,11 @@ namespace SistemaVentasBatia.Services
             var evaluaciones = new List<ListaEvaluacionProveedorDTO>();
             evaluaciones = _mapper.Map<List<ListaEvaluacionProveedorDTO>>(await _CuentaRepo.GetListaEvaluaciones(idProveedor));
             foreach (var item in evaluaciones) {
-            item.Evaluacion = _mapper.Map<List<EvaluacionProveedorDTO>>(await _CuentaRepo.GetEvaluacionProveedor(item.IdEvaluacionProveedor));
+                if (!string.IsNullOrEmpty(item.FechaEvaluacion))
+                {
+                    item.FechaEvaluacion = char.ToUpper(item.FechaEvaluacion[0]) + item.FechaEvaluacion.Substring(1);
+                }
+                item.Evaluacion = _mapper.Map<List<EvaluacionProveedorDTO>>(await _CuentaRepo.GetEvaluacionProveedor(item.IdEvaluacionProveedor));
             }
             return evaluaciones;
         }

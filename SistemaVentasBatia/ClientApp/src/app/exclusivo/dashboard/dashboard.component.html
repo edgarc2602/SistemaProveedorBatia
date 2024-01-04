@@ -46,29 +46,24 @@
         </div>
     </div>
     <br />
-
-
     <br />
     <h5>Mis evaluaciones</h5>
     <br />
     <div class="d-flex flex-row-reverse">
     </div>
-    <div id="accordion" *ngFor="let eva of listaEvaluaciones">
-        <div class="card box-shadow">
-            <div class="card-header bg-primary bg-opacity-75">
-                <div class="row ">
-                    <div class="col-md-12">
-                        <a id="aListaOperarios{{ eva.idEvaluacionProveedor }}" class="btn text-white" data-bs-toggle="collapse" href="#dvDetalleEvaluacion{{ eva.idEvaluacionProveedor }}" (click)="quitarFoco()">
-                            <h5 style="margin-bottom:0;">
-                                {{ eva.fechaEvaluacion }}
-                            </h5>
-                            <span class="badge bg-primary ms-3 ">Promedio: {{ eva.promedio }}</span>
-                        </a>
-                    </div>
+    <div id="accordion">
+        <div *ngFor="let eva of listaEvaluaciones" class="btn col-md-12 text-start" data-bs-toggle="collapse" [attr.href]="'#dvDetalleEvaluacion' + eva.idEvaluacionProveedor"  style="cursor: pointer;">
+            <div class="row card-header bg-white" >
+                <div class="col-md-12">
+                    <h6 style="margin-bottom: 7px; margin-top: 7px;">
+                        {{ eva.fechaEvaluacion }}
+                        <span class="badge bg-primary ms-3">Promedio: {{ eva.promedio }}</span>
+                    </h6>
                 </div>
             </div>
-            <div id="dvDetalleEvaluacion{{ eva.idEvaluacionProveedor }}" class="collapse" data-bs-parent="#accordion">
+            <div [id]="'dvDetalleEvaluacion' + eva.idEvaluacionProveedor" class="collapse" data-bs-parent="#accordion">
                 <div class="card-body">
+                    <br/>
                     <div style="border-radius: 10px; overflow-x: hidden;">
                         <table class="table table-borderless table-responsive table-striped" id="tbOperarios">
                             <tbody>
@@ -87,10 +82,7 @@
                                                 <span class="badge text-dark">Criterios:</span>
                                                 <div class="ms-1">{{ det.criterios }}</div>
                                             </div>
-
                                         </div>
-                                    </td>
-                                    <td class="align-middle w-auto">
                                     </td>
                                 </tr>
                             </tbody>
@@ -100,5 +92,6 @@
             </div>
         </div>
     </div>
+
     <br />
 </div>
