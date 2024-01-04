@@ -7,14 +7,14 @@ declare var bootstrap: any;
     selector: 'detallematerialeslistado-widget',
     templateUrl: './detallematerialeslistado.widget.html'
 })
-export class DetalleMaterialesListadoWidget{
+export class DetalleMaterialesListadoWidget {
     @Output('ansEvent') sendEvent = new EventEmitter<boolean>();
     model: DetalleMaterial = {} as DetalleMaterial;
     sucursal: string;
     tipo: string;
     idListado: number;
     prefijo: string = '';
-    constructor(@Inject('BASE_URL') private url: string, private http: HttpClient) {}
+    constructor(@Inject('BASE_URL') private url: string, private http: HttpClient) { }
 
     open(idListado: number, sucursal: string, tipo: string, prefijo: string) {
         this.idListado = idListado;
@@ -27,7 +27,7 @@ export class DetalleMaterialesListadoWidget{
         myModal.show();
     }
     obtenerMaterialesListado(idListado: number) {
-        this.http.get <DetalleMaterial>(`${this.url}api/entrega/obtenermaterialeslistado/${idListado}`).subscribe(response => {
+        this.http.get<DetalleMaterial>(`${this.url}api/entrega/obtenermaterialeslistado/${idListado}`).subscribe(response => {
             this.model = response;
         })
     }
@@ -48,13 +48,23 @@ export class DetalleMaterialesListadoWidget{
     }
 
     obtenerReporte(idListado: number, prefijo: string) {
-        this.http.get<any>(`${this.url}api/entrega/generarreporte/${idListado}/${prefijo}`, { responseType: 'blob' as 'json' })
-            .subscribe(response => {
-                const file = new Blob([response], { type: 'application/pdf' }); // Cambia el tipo MIME si el reporte es de otro formato
-                const fileURL = URL.createObjectURL(file);
-                window.open(fileURL, '_blank');
-            });
         this.quitarFocoDeElementos();
+        this.http.get(`${this.url}api/report/DescargarReporteListadoMaterial/${idListado}`, { responseType: 'arraybuffer' })
+            .subscribe(
+                (data: ArrayBuffer) => {
+                    const pdfDataUrl = this.arrayBufferToDataUrl(data);
+                    window.open(pdfDataUrl, '_blank');
+                },
+                error => {
+                    console.error('Error al obtener el archivo PDF', error);
+                }
+            );
+    }
+
+    arrayBufferToDataUrl(buffer: ArrayBuffer): string {
+        const blob = new Blob([buffer], { type: 'application/pdf' });
+        const dataUrl = URL.createObjectURL(blob);
+        return dataUrl;
     }
 
     quitarFocoDeElementos(): void {

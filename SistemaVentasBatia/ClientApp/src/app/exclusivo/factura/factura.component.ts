@@ -55,6 +55,21 @@ export class FacturaComponent {
     }
     imprimirOrden(idOrden: number) {
         this.quitarFocoDeElementos();
+        this.http.get(`${this.url}api/report/DescargarReporteOrdenCompra/${idOrden}`, { responseType: 'arraybuffer' })
+            .subscribe(
+                (data: ArrayBuffer) => {
+                    const pdfDataUrl = this.arrayBufferToDataUrl(data);
+                    window.open(pdfDataUrl, '_blank');
+                },
+                error => {
+                    console.error('Error al obtener el archivo PDF', error);
+                }
+            );
+    }
+    arrayBufferToDataUrl(buffer: ArrayBuffer): string {
+        const blob = new Blob([buffer], { type: 'application/pdf' });
+        const dataUrl = URL.createObjectURL(blob);
+        return dataUrl;
     }
 
     openCargarFacturas(idOrden: number, empresa: string, cliente: string, total: number) {

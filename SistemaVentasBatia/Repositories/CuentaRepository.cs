@@ -15,6 +15,8 @@ namespace SistemaVentasBatia.Repositories
     {
         Task<int> ContarEstadoDeCuenta(int idProveedor);
         Task<List<EstadoDeCuenta>> GetEstadoDeCuenta(int idProveedor, int pagina);
+        Task<List<ListaEvaluacionProveedor>> GetListaEvaluaciones(int idProveedor);
+        Task<List<EvaluacionProveedor>> GetEvaluacionProveedor(int idEvaluacionProveedor);
     }
 
     public class CuentaRepository : ICuentaRepository
@@ -151,6 +153,60 @@ WHERE
                 throw ex;
             }
             return rows;
+        }
+
+        public async Task<List<ListaEvaluacionProveedor>> GetListaEvaluaciones(int idProveedor)
+        {
+            string query = @"
+SET LANGUAGE Spanish;
+SELECT 
+id_evaluacionproveedor IdEvaluacionProveedor,
+id_proveedor IdProveedor,
+id_status IdStatus,
+FORMAT(fecha_evaluacion, 'dddd, d MMMM, yyyy') AS FechaEvaluacion,
+numero_contrato NumeroContrato,
+promedio Promedio,
+texto_promedio TextoPromedio,
+id_usuario IdUsuario
+FROM tb_evaluacionproveedor WHERE id_proveedor = @idProveedor ORDER BY fecha_evaluacion DESC
+";
+            var evaluaciones = new List<ListaEvaluacionProveedor>();
+            try
+            {
+                using var connection = _ctx.CreateConnection();
+                evaluaciones = (await connection.QueryAsync<ListaEvaluacionProveedor>(query, new { idProveedor})).ToList();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            return evaluaciones;
+        }
+
+        public async Task <List<EvaluacionProveedor>> GetEvaluacionProveedor(int idEvaluacionProveedor)
+        {
+            string query = @"
+SELECT 
+a.id_evaluacionproveedor IdEvaluacionProveedor,
+a.id_caracteristica IdCaracteristica,
+b.descripcion Descripcion,
+a.calificacion Calificacion,
+b.criterios Criterios
+FROM tb_evaluacion a
+INNER JOIN tb_caracteristica b ON a.id_caracteristica = b.id_caracteristica
+WHERE id_evaluacionproveedor =  @idEvaluacionProveedor ORDER BY a.id_caracteristica
+";
+            var evaluacion = new List<EvaluacionProveedor>();
+            try
+            {
+                using var connection = _ctx.CreateConnection();
+                evaluacion = (await connection.QueryAsync<EvaluacionProveedor>(query, new { idEvaluacionProveedor })).ToList();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            return evaluacion;
         }
     }
 }

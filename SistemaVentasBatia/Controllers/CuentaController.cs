@@ -28,5 +28,10 @@ namespace SistemaVentasBatia.Controllers
             };
             return await _logic.GetEstadoDeCuenta(estadodecuenta,idProveedor);
         }
+        [HttpGet("[action]/{idProveedor}")]
+        public async Task <List<ListaEvaluacionProveedorDTO>> GetListadoEvaluacionProveedor(int idProveedor)
+        {
+            return await _logic.GetListadoEvaluacionProveedor(idProveedor);
+        }
     }
 }

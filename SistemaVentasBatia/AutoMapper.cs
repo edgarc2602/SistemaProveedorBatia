@@ -32,6 +32,10 @@ namespace SistemaVentasBatia
             CreateMap<FacturaDTO, Factura>();
             CreateMap<EstadoDeCuenta, EstadoDeCuentaDTO>();
             CreateMap<EstadoDeCuentaDTO, EstadoDeCuenta>();
+            CreateMap<ListaEvaluacionProveedor, ListaEvaluacionProveedorDTO>();
+            CreateMap<ListaEvaluacionProveedorDTO, ListaEvaluacionProveedor>();
+            CreateMap<EvaluacionProveedor, EvaluacionProveedorDTO>();
+            CreateMap<EvaluacionProveedorDTO, EvaluacionProveedor>();
         }
     }
 }

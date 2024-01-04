@@ -7,6 +7,7 @@ import { StoreUser } from 'src/app/stores/StoreUser';
 import { UsuarioRegistro } from 'src/app/models/usuarioregistro';
 import { EstadoDeCuenta } from '../../models/estadodecuenta';
 import { ListadoEstadoDeCuenta } from '../../models/listadoestadodecuenta';
+import { ListaEvaluacionProveedor } from '../../models/listaevaluacionproveedor';
 
 @Component({
     selector: 'estadodecuenta-comp',
@@ -14,13 +15,15 @@ import { ListadoEstadoDeCuenta } from '../../models/listadoestadodecuenta';
     animations: [fadeInOut],
 })
 export class EstadoDeCuentaComponent {
-    /*@ViewChild(UsuarioAddWidget, { static: false }) addUsu: UsuarioAddWidget;*/
     usuario: UsuarioRegistro = {
         idAutorizacionVentas: 0, idPersonal: 0, autoriza: 0, nombres: '', apellidos: '', puesto: '', telefono: '', telefonoExtension: '', telefonoMovil: '', email: '',
         firma: '', revisa: 0
     }
     model: ListadoEstadoDeCuenta = {
         estadosDeCuenta: [], numPaginas: 0, pagina: 1, rows: 0
+    }
+    listaEvaluaciones: ListaEvaluacionProveedor = {
+        evaluacion: [], idEvaluacionProveedor: 0,idProveedor: 0, idStatus: 0, fechaEvaluacion: '', numeroContrato: '', promedio: 0, textoPromedio: '', idUsuario: 0
     }
 
 
@@ -33,10 +36,13 @@ export class EstadoDeCuentaComponent {
         this.http.get<ListadoEstadoDeCuenta>(`${this.url}api/cuenta/getestadodecuenta/${this.user.idProveedor}/${this.model.pagina}`).subscribe(response => {
             this.model = response;
         })
+        
     }
 
     muevePagina(event) {
         this.model.pagina = event;
         this.ngOnInit();
     }
+
+    
 }

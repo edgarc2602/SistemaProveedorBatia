@@ -6,6 +6,7 @@ import { GraficaListado } from '../../models/graficalistado';
 import { Catalogo } from '../../models/catalogo';
 import { GraficaOrden } from '../../models/graficaorden';
 import { StoreUser } from 'src/app/stores/StoreUser';
+import { ListaEvaluacionProveedor } from '../../models/listaevaluacionproveedor';
 
 
 @Component({
@@ -28,6 +29,10 @@ export class DashboardComponent implements OnInit {
     idProveedor: number = 0;
     meses: Catalogo[];
 
+    listaEvaluaciones: ListaEvaluacionProveedor = {
+        evaluacion: [], idEvaluacionProveedor: 0, idProveedor: 0, idStatus: 0, fechaEvaluacion: '', numeroContrato: '', promedio: 0, textoPromedio: '', idUsuario: 0
+    }
+
     constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {
         http.get<Catalogo[]>(`${url}api/catalogo/obtenermeses`).subscribe(response => {
             this.meses = response;
@@ -36,10 +41,11 @@ export class DashboardComponent implements OnInit {
     ngOnInit(): void {
         this.idProveedor = this.user.idProveedor;
         const fechaActual = new Date();
-        this.anio = fechaActual.getFullYear();  
+        this.anio = fechaActual.getFullYear();
         const fechaActualMes = new Date();
         this.mes = fechaActualMes.getMonth() + 1;
         this.getGraficas();
+        this.getEvaluaciones();
     }
 
     getGraficas() {
@@ -171,13 +177,12 @@ export class DashboardComponent implements OnInit {
             tooltip: {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                 pointFormat: '<tr><td style="color:{series.color};padding:0">{}Total: </td>' +
-                    '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
-                    
-                    //+'<tr><td>Alta:</td><td>{point.alta}</td></tr>' +
-                    //'<tr><td>Aprobado:</td><td>{point.aprobado}</td></tr>' +
-                    //'<tr><td>Despachado:</td><td>{point.despachado}</td></tr>' +
-                    //'<tr><td>Entregado:</td><td>{point.entregado}</td></tr>' +
-                    //'<tr><td>Cancelado:</td><td>{point.cancelado}</td></tr>',
+                    '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>'
+                    + '<tr><td>Alta:</td><td>{point.alta}</td></tr>' +
+                    '<tr><td>Aprobado:</td><td>{point.aprobado}</td></tr>' +
+                    '<tr><td>Despachado:</td><td>{point.despachado}</td></tr>' +
+                    '<tr><td>Entregado:</td><td>{point.entregado}</td></tr>' +
+                    '<tr><td>Cancelado:</td><td>{point.cancelado}</td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true
@@ -326,4 +331,33 @@ export class DashboardComponent implements OnInit {
     goBack() {
         window.history.back();
     }
+
+    getEvaluaciones() {
+        this.http.get<ListaEvaluacionProveedor>(`${this.url}api/cuenta/GetListadoEvaluacionProveedor/${this.user.idProveedor}`).subscribe(response => {
+            this.listaEvaluaciones = response;
+        })
+    }
+    filtroPlan(id: number) {
+        if (this.listaEvaluaciones && Array.isArray(this.listaEvaluaciones) && this.listaEvaluaciones.length > 0) {
+            let list = this.listaEvaluaciones.filter(item =>
+                item.evaluacion && Array.isArray(item.evaluacion) && item.evaluacion.some(evaluacion =>
+                    evaluacion.idEvaluacionProveedor === id
+                )
+            );
+            return list.length > 0 ? list[0].evaluacion : [];
+        } else {
+            return [];
+        }
+    }
+    quitarfoco() {
+        this.quitarFocoDeElementos();
+    }
+    quitarFocoDeElementos(): void {
+        const elementos = document.querySelectorAll('button, input[type="text"]');
+        elementos.forEach((elemento: HTMLElement) => {
+            elemento.blur();
+        });
+    }
+
+
 }

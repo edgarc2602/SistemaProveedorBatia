@@ -8,97 +8,48 @@ namespace SistemaVentasBatia.Controllers
     [ApiController]
     public class ReportController : ControllerBase
     {
-        [HttpPost("[action]/{tipo}")]
-        public IActionResult DescargarReporteCotizacion([FromBody] int idCotizacion, int tipo = 0)
+        [HttpGet("[action]/{idOrden}")]
+        public IActionResult DescargarReporteOrdenCompra(int idOrden = 0)
         {
-            if (tipo == 1)
+            try
             {
-                try
+                var url = ("http://192.168.2.4/Reporte?%2freporteordencompra&rs:Format=PDF&idOrden=" + idOrden.ToString());
+                WebClient wc = new WebClient
                 {
-                    var url = ("http://192.168.2.4/Reporte?%2freportecotizacion&rs:Format=PDF&idCotizacion=" + idCotizacion.ToString());
-                    WebClient wc = new WebClient
-                    {
-                        Credentials = new NetworkCredential("Administrador", "GrupoBatia@")
-                    };
-                    byte[] myDataBuffer = wc.DownloadData(url.ToString());
-                    return new FileContentResult(myDataBuffer, "application/pdf")
-                    {
-                        FileDownloadName = "PropuestaTecnica.pdf"
-                    };
-                }
-                catch (Exception ex)
+                    Credentials = new NetworkCredential("Administrador", "GrupoBatia@")
+                };
+                byte[] myDataBuffer = wc.DownloadData(url.ToString());
+                return new FileContentResult(myDataBuffer, "application/pdf")
                 {
-                    Console.WriteLine($"Error al obtener el archivo PDF: {ex.Message}");
-                    return StatusCode(500, "Error al obtener el archivo PDF");
-                }
+                    FileDownloadName = "ReporteOrden" + idOrden.ToString() +".pdf"
+                };
             }
-            if (tipo == 2)
+            catch (Exception ex)
             {
-                try
-                {
-                    var url = ("http://192.168.2.4/Reporte?%2freportecotizacion2&rs:Format=PDF&idCotizacion=" + idCotizacion.ToString());
-                    WebClient wc = new WebClient
-                    {
-                        Credentials = new NetworkCredential("Administrador", "GrupoBatia@")
-                    };
-                    byte[] myDataBuffer = wc.DownloadData(url.ToString());
-
-                    return new FileContentResult(myDataBuffer, "application/pdf")
-                    {
-                        FileDownloadName = "PropuestaEconomica.pdf"
-                    };
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error al obtener el archivo PDF: {ex.Message}");
-                    return StatusCode(500, "Error al obtener el archivo PDF");
-                }
+                Console.WriteLine($"Error al obtener el archivo PDF: {ex.Message}");
+                return StatusCode(500, "Error al obtener el archivo PDF");
             }
-            if (tipo == 3)
+        }
+        [HttpGet("[action]/{idListado}")]
+        public IActionResult DescargarReporteListadoMaterial(int idListado = 0)
+        {
+            try
             {
-                try
+                var url = ("http://192.168.2.4/Reporte?%2freportelistadomateriales&rs:Format=PDF&idListado=" + idListado.ToString());
+                WebClient wc = new WebClient
                 {
-                    var url = ("http://192.168.2.4/Reporte?%2freportecotizacion&rs:Format=DOCX&idCotizacion=" + idCotizacion.ToString()); // Cambia rs:Format a DOCX
-                    WebClient wc = new WebClient
-                    {
-                        Credentials = new NetworkCredential("Administrador", "GrupoBatia@")
-                    };
-                    byte[] myDataBuffer = wc.DownloadData(url.ToString());
-                    return new FileContentResult(myDataBuffer, "application/docx") // Cambia el tipo MIME a application/docx
-                    {
-                        FileDownloadName = "PropuestaTecnica.docx" // Cambia el nombre del archivo a .docx
-                    };
-                }
-                catch (Exception ex)
+                    Credentials = new NetworkCredential("Administrador", "GrupoBatia@")
+                };
+                byte[] myDataBuffer = wc.DownloadData(url.ToString());
+                return new FileContentResult(myDataBuffer, "application/pdf")
                 {
-                    Console.WriteLine($"Error al obtener el archivo DOCX: {ex.Message}");
-                    return StatusCode(500, "Error al obtener el archivo DOCX");
-                }
+                    FileDownloadName = "ReporteListado" + idListado.ToString() + ".pdf"
+                };
             }
-            if (tipo == 4)
+            catch (Exception ex)
             {
-                try
-                {
-                    var url = ("http://192.168.2.4/Reporte?%2freportecotizacion2&rs:Format=DOCX&idCotizacion=" + idCotizacion.ToString()); // Cambia rs:Format a DOCX
-                    WebClient wc = new WebClient
-                    {
-                        Credentials = new NetworkCredential("Administrador", "GrupoBatia@")
-                    };  
-                    byte[] myDataBuffer = wc.DownloadData(url.ToString());
-                    return new FileContentResult(myDataBuffer, "application/docx") // Cambia el tipo MIME a application/docx
-                    {
-                        FileDownloadName = "PropuestaEconomica.docx" // Cambia el nombre del archivo a .docx
-                    };
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error al obtener el archivo DOCX: {ex.Message}");
-                    return StatusCode(500, "Error al obtener el archivo DOCX");
-                }
-            }
-            else
-            {
-                throw new Exception();
+                Console.WriteLine($"Error al obtener el archivo PDF: {ex.Message}");
+                return StatusCode(500, "Error al obtener el archivo PDF");
             }
         }
     }

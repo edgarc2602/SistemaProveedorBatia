@@ -14,6 +14,7 @@ namespace SistemaVentasBatia.Services
     public interface ICuentaService
     {
         Task<ListadoEstadoDeCuentaDTO> GetEstadoDeCuenta(ListadoEstadoDeCuentaDTO estadodecuenta, int idProveedor);
+        Task<List<ListaEvaluacionProveedorDTO>> GetListadoEvaluacionProveedor(int idProveedor);
     }
 
     public class CuentaService : ICuentaService
@@ -46,6 +47,16 @@ namespace SistemaVentasBatia.Services
                 estadodecuenta.EstadosDeCuenta = new List<EstadoDeCuentaDTO>();
             }
             return estadodecuenta;
+        }
+
+        public async Task <List<ListaEvaluacionProveedorDTO>> GetListadoEvaluacionProveedor( int idProveedor)
+        {
+            var evaluaciones = new List<ListaEvaluacionProveedorDTO>();
+            evaluaciones = _mapper.Map<List<ListaEvaluacionProveedorDTO>>(await _CuentaRepo.GetListaEvaluaciones(idProveedor));
+            foreach (var item in evaluaciones) {
+            item.Evaluacion = _mapper.Map<List<EvaluacionProveedorDTO>>(await _CuentaRepo.GetEvaluacionProveedor(item.IdEvaluacionProveedor));
+            }
+            return evaluaciones;
         }
     }
 }
