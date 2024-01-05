@@ -2,11 +2,11 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Provide sufficient contrast against white background */
-a.navbar-brand {
+/*a.navbar-brand {
     white-space: normal;
     text-align: center;
     word-break: break-all;
-}
+}*/
 
 /* Provide sufficient contrast against white background */
 a {
@@ -38,7 +38,7 @@ html {
 }
 
 .border-top {
-    border-top: 1px solid #e5e5e5;
+    border-top: 0px solid #e5e5e5;
 }
 
 .border-bottom {
@@ -145,7 +145,7 @@ body {
  * Navbar
  */
 
-.navbar-brand {
+/*.navbar-brand {
     padding-top: .75rem;
     padding-bottom: .75rem;
     font-size: 1rem;
@@ -162,6 +162,10 @@ body {
     padding: .75rem 1rem;
     border-width: 0;
     border-radius: 0;
+}*/
+
+.navbar {
+    background-color: #f8f9fa;
 }
 
 .form-control-dark {
@@ -314,4 +318,181 @@ tbody tr:hover {
 .translucent {
     backdrop-filter: blur(10px);
     background-color: rgba(248, 249, 250, 0.7);
+}
+#sidebarMenu {
+    background-color: #383434;
+    border: none;
+    color: #fff;
+}
+
+#sidebarMenustatic {
+    background-color: #f8f9fa;
+}
+#sidebarMenu {
+    background-color: #f8f9fa;
+}
+.modal-header {
+    background-color: #f8f9fa;
+}
+
+.modal-body {
+    background-color: #fff;
+}
+
+.modal-footer {
+    background-color: #f8f9fa;
+}
+
+
+.dark-theme {
+    --background-light: #282424;
+    --text-color-light: #ffffff;
+}
+
+    .dark-theme input {
+        background-color: #383434;
+        color: #fff;
+        border-color: #383434;
+    }
+        .dark-theme input:focus {
+            color: #fff;
+            background-color: #383434;
+        }
+
+    .dark-theme select {
+        background-color: #383434;
+        color: #fff;
+        border-color: #383434;
+    }
+        .dark-theme select:focus {
+            background-color: #383434;
+        }
+
+    .dark-theme table tbody tr td {
+        color: #fff;
+    }
+
+    .dark-theme table.table-striped tbody tr:nth-of-type(odd) td {
+        color: #fff;
+    }
+
+    .dark-theme table.table-striped tbody tr:nth-of-type(even) td {
+        color: #fff;
+    }
+
+    .dark-theme .sidebar {
+        background-color: #383434;
+    }
+
+    .dark-theme #sidebarMenu {
+        background-color: #383434;
+        border: none;
+        color: #fff;
+    }
+
+    .dark-theme #sidebarMenustatic {
+        background-color: #383434;
+        border: none;
+        color: #fff;
+    }
+    .dark-theme #gla {
+        background-color: #383434;
+    }
+
+    .dark-theme .page-item {
+        background-color: #383434;
+    }
+
+        .dark-theme .page-item .btn {
+            background-color: #282424;
+        }
+    .dark-theme table thead {
+        background-color: #383434;
+        color: #fff;
+    }
+table thead {
+    background-color: #4a92fe;
+    color: #fff;
+}
+
+    .dark-theme tbody tr:hover {
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        transition: box-shadow 0.3s ease;
+        background-color: #383434;
+        color: #fff;
+    }
+
+    .dark-theme tbody tr:focus {
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        transition: box-shadow 0.3s ease;
+        background-color: #383434;
+        color: #fff;
+    }
+    .dark-theme .box-shadow {
+        box-shadow: 0 .25rem .75rem rgba(255, 255, 255, .05);
+    }
+
+    .dark-theme .highcharts-container {
+        background-color: #383434;
+        color: #fff;
+    }
+
+    .dark-theme .highcharts-background {
+        fill: #383434;
+    }
+
+    .dark-theme .highcharts-plot-background {
+        fill: #383434;
+    }
+
+    .dark-theme #accordion {
+        background-color: #383434;
+    }
+
+    .dark-theme .card-header {
+        background-color: #383434;
+        color: #fff;
+    }
+    .dark-theme .nav-link i {
+        color: #fff;
+    }
+    .dark-theme .nav-link.active {
+        color: #ffcc00;
+    }
+
+    .dark-theme .navbar {
+        background-color: #383434;
+        color: #fff;
+        border-color: #383434;
+    }
+        .dark-theme .navbar a {
+            color: #fff;
+            border-color: #383434;
+        }
+
+    .dark-theme .navbar-toggler-icon {
+    }
+    .dark-theme #navbarSupportedContent {
+        background-color: #383434;
+        color: #fff;
+    }
+
+.dark-theme .modal-header {
+    background-color: #383434;
+    color: #fff;
+}
+
+.dark-theme .modal-body {
+    background-color: #282424;
+    color: #fff;
+}
+
+.dark-theme .modal-footer {
+    background-color: #383434;
+    color: #fff; 
+}
+
+body {
+    background-color: var(--background-light);
+    color: var(--text-color-light);
 }

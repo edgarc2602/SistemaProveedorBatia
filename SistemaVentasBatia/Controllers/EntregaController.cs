@@ -24,14 +24,14 @@ namespace SistemaVentasBatia.Controllers
             _logic = logic;
         }
 
-        [HttpGet("[action]/{mes}/{anio}/{idProveedor}/{idEstado}/{tipo}/{pagina}")]
-        public async Task<ActionResult<ListadoMaterialDTO>> ObtenerListados(int mes, int anio, int idProveedor, int idEstado, int tipo, int pagina = 1)
+        [HttpGet("[action]/{mes}/{anio}/{idProveedor}/{idEstado}/{tipo}/{pagina}/{idStatus}")]
+        public async Task<ActionResult<ListadoMaterialDTO>> ObtenerListados(int mes, int anio, int idProveedor, int idEstado, int tipo, int pagina = 1,int idStatus = 0)
         {
             ListadoMaterialDTO listados = new ListadoMaterialDTO
             {
                 Pagina = pagina
             };
-            return await _logic.ObtenerListados(listados, mes, anio, idProveedor, idEstado, tipo);
+            return await _logic.ObtenerListados(listados, mes, anio, idProveedor, idEstado, tipo, idStatus);
         }
 
         [HttpGet("[action]/{idListado}")]
@@ -143,6 +143,12 @@ namespace SistemaVentasBatia.Controllers
         public async Task<bool> ConcluirEntrega(int idListado, string fechaEntrega)
         {
             return await _logic.ConcluirEntrega(idListado, fechaEntrega);
+        }
+
+        [HttpGet("[action]")]
+        public async Task <List<CatalogoDTO>> GetStatusListado()
+        {
+            return await _logic.GetStatusListado();
         }
     }
 }

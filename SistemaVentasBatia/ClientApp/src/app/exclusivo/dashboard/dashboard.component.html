@@ -23,37 +23,15 @@
             </div>
         </div>
     </div>
-    <div class="container">
-        <br />
-        <h5>Listados de materiales</h5>
-        <div class="row">
-            <div class="col-12 col-md-6">
-                <div id="gla"></div>
-            </div>
-            <div class="col-12 col-md-6">
-                <div id="glm"></div>
-            </div>
-        </div>
-        <br />
-        <h5>Ordenes de compra</h5>
-        <div class="row">
-            <div class="col-12 col-md-6">
-                <div id="goa"></div>
-            </div>
-            <div class="col-12 col-md-6">
-                <div id="gom"></div>
-            </div>
-        </div>
-    </div>
-    <br />
+    <hr />
     <br />
     <h5>Mis evaluaciones</h5>
     <br />
     <div class="d-flex flex-row-reverse">
     </div>
     <div id="accordion">
-        <div *ngFor="let eva of listaEvaluaciones" class="btn col-md-12 text-start" data-bs-toggle="collapse" [attr.href]="'#dvDetalleEvaluacion' + eva.idEvaluacionProveedor"  style="cursor: pointer;">
-            <div class="row card-header bg-white" >
+        <div *ngFor="let eva of listaEvaluaciones" class="btn col-md-12 text-start" data-bs-toggle="collapse" [attr.href]="'#dvDetalleEvaluacion' + eva.idEvaluacionProveedor" style="cursor: pointer;">
+            <div class="row card-header">
                 <div class="col-md-12">
                     <h6 style="margin-bottom: 7px; margin-top: 7px;">
                         {{ eva.fechaEvaluacion }}
@@ -63,7 +41,7 @@
             </div>
             <div [id]="'dvDetalleEvaluacion' + eva.idEvaluacionProveedor" class="collapse" data-bs-parent="#accordion">
                 <div class="card-body">
-                    <br/>
+                    <br />
                     <div style="border-radius: 10px; overflow-x: hidden;">
                         <table class="table table-borderless table-responsive table-striped" id="tbOperarios">
                             <tbody>
@@ -92,6 +70,161 @@
             </div>
         </div>
     </div>
+    <hr>
+    <div class="container">
+        <br />
+        <h5>Listados de materiales</h5>
+        <div class="row mb-3">
+            <div class="col-12 col-md-6">
+                <div id="gla"></div><!--<div id="glm"></div>-->
+            </div>
+            <!--<div class="col-12 col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-dark mb-4">Alta</h5>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <i class="fa-solid fa-rectangle-list fa-3x"></i>
+                            </div>
+                            <div class="display-6">
+                                {{ graficaListadoMes.alta }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+            <div class="col-12 col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-dark mb-4">Aprobado</h5>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <i class="fa-solid fa-check fa-3x"></i>
+                            </div>
+                            <div class="display-6">
+                                {{ graficaListadoMes.aprobado }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="col-12 col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-dark mb-4">Despachado</h5>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <i class="fa-solid fa-box-open fa-3x"></i>
+                            </div>
+                            <div class="display-6">
+                                {{ graficaListadoMes.despachado }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+            <div class="col-12 col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-dark mb-4">Entregado</h5>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <i class="fa-solid fa-truck-front fa-3x"></i>
+                            </div>
+                            <div class="display-6">
+                                {{ graficaListadoMes.entregado }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div id="gla"></div><!--<div id="glm"></div>-->
+            </div>
 
+        </div>
+
+
+
+        <br />
+        <hr />
+        <br />
+        <h5>Ordenes de compra</h5>
+        <div class="row mb-3">
+            <div class="col-12 col-md-6">
+                <div id="goa"></div>
+            </div>
+            <!--<div class="col-12 col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-dark mb-4">Alta</h5>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <i class="fa-solid fa-rectangle-list fa-3x"></i>
+                            </div>
+                            <div class="display-6">
+                                {{ graficaOrdenMes.alta }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+            <div class="col-12 col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-dark mb-4">Autorizada</h5>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <i class="fa-solid fa-check fa-3x"></i>
+                            </div>
+                            <div class="display-6">
+                                {{ graficaOrdenMes.autorizada }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="col-12 col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-dark mb-4">Despachada</h5>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <i class="fa-solid fa-box-open fa-3x"></i>
+                            </div>
+                            <div class="display-6">
+                                {{ graficaOrdenMes.despachada }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+            <div class="col-12 col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-dark mb-4">Completa</h5>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <i class="fa-solid fa-truck-front fa-3x"></i>
+                            </div>
+                            <div class="display-6">
+                                {{ graficaOrdenMes.completa }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="row">
+        <div class="col-12 col-md-6">
+            <div id="goa"></div>
+        </div>
+        <div class="col-12 col-md-6">-->
+        <!--<div id="gom"></div>-->
+        <!--</div>
+        </div>-->
+    </div>
     <br />
 </div>

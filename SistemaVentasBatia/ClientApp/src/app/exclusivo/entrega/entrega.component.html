@@ -21,20 +21,29 @@
                     <label asp-for="ddlmes">Mes</label>
                 </div>
             </div>
+            <div class="col-md-3 col-6 mb-3">
+                <div class="form-floating box-shadow">
+                    <select class="form-select" [(ngModel)]="idStatus" (change)="obtenerListados()">
+                        <option value="0">Selecciona una opción...</option>
+                        <option *ngFor="let s of statusl" [ngValue]="s.id">{{ s.descripcion }}</option>
+                    </select>
+                    <label asp-for="ddlmes">Estatus</label>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row box-shadow" style="border-radius: 10px; overflow-x: hidden;">
         <div style="max-height: 450px; overflow-y: auto;">
             <div class="row">
                 <table class="table table-borderless table-striped table-responsive text-center">
-                    <thead class="sticky-top text-white d-md-none" style="background-color: #4a92fe; color: #fff;">
-                        <tr class="text-start text-white sticky-top">
+                    <thead class="sticky-top d-md-none">
+                        <tr class="text-start sticky-top">
                             <th>Listados</th>
                             <th></th>
                         </tr>
                     </thead>
                     <thead class="sticky-top text-white">
-                        <tr style="background-color: #4a92fe; color: #fff;">
+                        <tr>
                             <td>
                                 <div class="row" style="font-weight: bold;">
                                     <div class="col-md-1 col-sm-6 col-2">

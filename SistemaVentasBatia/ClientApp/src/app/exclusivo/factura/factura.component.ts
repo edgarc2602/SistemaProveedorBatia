@@ -4,6 +4,7 @@ import { fadeInOut } from 'src/app/fade-in-out';
 import { StoreUser } from 'src/app/stores/StoreUser';
 import { ListadoOrdenCompra } from 'src/app/models/listadoordencompra';
 import { CargarFacturaWidget } from 'src/app/widgets/cargarfactura/cargarfactura.widget';
+import { Catalogo } from '../../models/catalogo';
 @Component({
     selector: 'factura-comp',
     templateUrl: './factura.component.html',
@@ -17,8 +18,14 @@ export class FacturaComponent {
     idProveedor: number = 1186;
     fechaInicio: string = '';
     fechaFin: string = '';
+    statusc: Catalogo[];
+    idStatus: number = 0;
 
-    constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) { }
+    constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {
+        http.get<Catalogo[]>(`${url}api/factura/GetStatusOrdenCompra`).subscribe(response => {
+            this.statusc = response;
+        })
+    }
 
     ngOnInit() {
         this.getDias();
@@ -26,7 +33,7 @@ export class FacturaComponent {
     }   
     obtenerOrdenes() {
         this.idProveedor = this.user.idProveedor;
-        this.http.get<ListadoOrdenCompra>(`${this.url}api/factura/ObtenerOrdenesCompra/${this.idProveedor}/${this.model.pagina}/${this.fechaInicio}/${this.fechaFin}`).subscribe(response => {
+        this.http.get<ListadoOrdenCompra>(`${this.url}api/factura/ObtenerOrdenesCompra/${this.idProveedor}/${this.model.pagina}/${this.fechaInicio}/${this.fechaFin}/${this.idStatus}`).subscribe(response => {
             this.model = response;
         })
     }

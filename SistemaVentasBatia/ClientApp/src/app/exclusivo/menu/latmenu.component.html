@@ -1,4 +1,4 @@
-<nav id="sidebarMenu" class="col-md-auto d-md-block  sidebar collapse-horizontal collapse box-shadow shadow-sm translucent">
+<nav id="sidebarMenu" class="col-md-auto d-md-none  sidebar collapse-horizontal collapse box-shadow shadow-sm translucent">
     <ul class="nav d-flex flex-column justify-content-center h-100 pt-2">
         <li class="nav-item mb-3 text-sm-start text-md-center">
             <a class="nav-link" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" [routerLink]="['/exclusivo']" [routerLinkActive]='["active"]' [routerLinkActiveOptions]="{ exact: true }" aria-current="page">
@@ -36,11 +36,17 @@
                 </div>
             </a>
         </li>
+        <!--<li class="nav-item mb-3 text-sm-start text-md-center">
+            <div data-bs-toggle="tooltip" data-bs-placement="right" title="Cambiar tema">
+                <button class="btn" (click)="toggleTheme()"><i class="fa-solid fa-palette"></i></button>
+                <div class=" d-block d-md-none"><h6>Tema</h6></div>
+            </div>
+        </li>-->
     </ul>
 </nav>
 
 <!--MENU ESTATICO-->
-<nav id="sidebarMenustatic" class="col-md-auto d-md-block bg-light sidebar collapse">
+<nav id="sidebarMenustatic" class="col-md-auto d-none d-md-block sidebar collapse">
     <ul class="nav d-flex flex-column justify-content-center h-100 pt-2">
         <li class="nav-item mb-3 text-sm-start text-md-center">
             <a class="nav-link" [routerLink]="['/exclusivo']" [routerLinkActive]='["active"]' [routerLinkActiveOptions]="{ exact: true }" aria-current="page">
@@ -78,5 +84,11 @@
                 </div>
             </a>
         </li>
+        <!--<li class="nav-item mb-3 text-sm-start text-md-center">
+            <div data-bs-toggle="tooltip" data-bs-placement="right" title="Cambiar tema">
+                <button class="btn" (click)="toggleTheme()"><i class="fa-solid fa-palette"></i></button>
+            </div>
+        </li>-->
     </ul>
+
 </nav>

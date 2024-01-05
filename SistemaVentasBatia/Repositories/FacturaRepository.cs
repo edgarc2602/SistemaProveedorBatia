@@ -23,8 +23,8 @@ namespace SistemaVentasBatia.Repositories
 {
     public interface IFacturaRepository
     {
-        Task<List<OrdenCompra>> ObtenerOrdenesCompra(int idProveedor, string fechaInicio, string fechaFin, int pagina);
-        Task<int> ContarOrdenesCompra(int idProveedor, string fechaInicio, string fechaFin);
+        Task<List<OrdenCompra>> ObtenerOrdenesCompra(int idProveedor, string fechaInicio, string fechaFin, int pagina, int idStatus);
+        Task<int> ContarOrdenesCompra(int idProveedor, string fechaInicio, string fechaFin, int idStatus);
         Task<decimal> ObtenerSumaFacturas(int idOrden);
         Task<List<Factura>> ObtenerFacturas(int idOrden);
         Task<XMLData> ExtraerDatosXML(IFormFile xml, int idTipoFolio);
@@ -32,6 +32,7 @@ namespace SistemaVentasBatia.Repositories
         Task<bool> InsertarXML(string xmlString);
         Task<bool> FacturaExiste(string uuid);
         Task<bool> CambiarStatusOrdenCompleta(int idOrden);
+        Task<List<Catalogo>> GetStatusOrdenCompra();
     }
 
     public class FacturaRepository : IFacturaRepository
@@ -43,7 +44,7 @@ namespace SistemaVentasBatia.Repositories
             _ctx = context;
         }
 
-        public async Task<List<OrdenCompra>> ObtenerOrdenesCompra(int idProveedor, string fechaInicio, string fechaFin, int pagina)
+        public async Task<List<OrdenCompra>> ObtenerOrdenesCompra(int idProveedor, string fechaInicio, string fechaFin, int pagina, int idStatus)
         {
             var query = @"
 SELECT * FROM (
@@ -68,6 +69,7 @@ left outer join tb_statusc e on a.id_status = e.id_status inner join personal f 
 left outer join tb_recepcion r on r.id_orden = a.id_orden
 WHERE a.id_proveedor = @idProveedor
         AND (@fechaInicio IS NULL OR @fechaFin IS NULL OR falta BETWEEN @fechaInicio AND @fechaFin)
+        AND (@idStatus = 0 OR a.id_status = @idStatus)
     GROUP BY 
         a.id_orden, 
         a.tipo,
@@ -90,7 +92,7 @@ WHERE
             try
             {
                 using var connection = _ctx.CreateConnection();
-                ordenes = (await connection.QueryAsync<OrdenCompra>(query, new { idProveedor, fechaInicio, fechaFin, pagina })).ToList();
+                ordenes = (await connection.QueryAsync<OrdenCompra>(query, new { idProveedor, fechaInicio, fechaFin, pagina, idStatus })).ToList();
             }
             catch (Exception ex)
             {
@@ -99,7 +101,7 @@ WHERE
             return ordenes;
         }
 
-        public async Task<int> ContarOrdenesCompra(int idProveedor, string fechaInicio, string fechaFin)
+        public async Task<int> ContarOrdenesCompra(int idProveedor, string fechaInicio, string fechaFin, int idStatus)
         {
             var query = @"
 SELECT COUNT(*) AS TotalRows
@@ -123,6 +125,7 @@ left outer join tb_cliente d on a.id_cliente = d.id_cliente
 inner join tb_statusc e on a.id_status = e.id_status inner join personal f on a.ualta = f.IdPersonal
 where a.id_proveedor = @idProveedor
 AND (@fechaInicio IS NULL OR @fechaFin IS NULL OR falta BETWEEN @fechaInicio AND @fechaFin)
+AND (@idStatus = 0 OR a.id_status = @idStatus)
 )
  AS TotalRowCount;
 ";
@@ -130,7 +133,7 @@ AND (@fechaInicio IS NULL OR @fechaFin IS NULL OR falta BETWEEN @fechaInicio AND
             try
             {
                 using var connection = _ctx.CreateConnection();
-                rows = await connection.QuerySingleAsync<int>(query, new { idProveedor, fechaInicio, fechaFin });
+                rows = await connection.QuerySingleAsync<int>(query, new { idProveedor, fechaInicio, fechaFin, idStatus });
             }
             catch (Exception ex)
             {
@@ -380,6 +383,27 @@ WHERE id_orden = @idOrden
             {
                 throw ex;
             }
+        }
+
+        public async Task<List<Catalogo>> GetStatusOrdenCompra()
+        {
+            string query = @"
+SELECT
+id_status Id,
+descripcion Descripcion
+FROM tb_statusc
+";
+            var statusc = new List<Catalogo>();
+            try
+            {
+                using var connection = _ctx.CreateConnection();
+                statusc = (await connection.QueryAsync<Catalogo>(query)).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return statusc;
         }
     }
 }

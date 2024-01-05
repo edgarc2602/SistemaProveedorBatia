@@ -21,8 +21,8 @@ namespace SistemaVentasBatia.Controllers
         {
             _logic = logic;
         }
-        [HttpGet("[action]/{idProveedor}/{pagina}/{fechaInicio}/{fechaFin}")]
-        public async Task<ActionResult<ListadoOrdenCompraDTO>> ObtenerOrdenesCompra(int idProveedor = 0, int pagina = 1, string fechaInicio = null, string fechaFin = null)
+        [HttpGet("[action]/{idProveedor}/{pagina}/{fechaInicio}/{fechaFin}/{idStatus}")]
+        public async Task<ActionResult<ListadoOrdenCompraDTO>> ObtenerOrdenesCompra(int idProveedor = 0, int pagina = 1, string fechaInicio = null, string fechaFin = null, int idStatus = 0)
         {
             fechaInicio += " 00:00:00";
             fechaFin += " 23:59:59";
@@ -30,7 +30,7 @@ namespace SistemaVentasBatia.Controllers
             {
                 Pagina = pagina
             };
-            return await _logic.ObtenerOrdenesCompra(ordenescompra, idProveedor, fechaInicio, fechaFin);
+            return await _logic.ObtenerOrdenesCompra(ordenescompra, idProveedor, fechaInicio, fechaFin, idStatus);
         }
 
         [HttpGet("[action]/{idOrden}")]
@@ -136,6 +136,12 @@ namespace SistemaVentasBatia.Controllers
         public async Task<bool> CambiarStatusOrdenCompleta(int idOrden)
         {
             return await _logic.CambiarStatusOrdenCompleta(idOrden);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<List<CatalogoDTO>> GetStatusOrdenCompra()
+        {
+            return await _logic.GetStatusOrdenCompra();
         }
     }
 }

@@ -18,7 +18,9 @@ export class EntregaComponent {
         listas: [], numPaginas: 0, pagina: 1, rows: 0
     }
     meses: Catalogo[];
-    tipoListado: Catalogo[]
+    tipoListado: Catalogo[];
+    statusl: Catalogo[];
+    idStatus: number = 0;
     mes: number = 0;
     anio: number = 0;
     idEstado: number = 0;
@@ -41,6 +43,9 @@ export class EntregaComponent {
         http.get<Catalogo[]>(`${url}api/catalogo/obtenertipolistado`).subscribe(response => {
             this.tipoListado = response;
         })
+        http.get<Catalogo[]>(`${url}api/entrega/GetStatusListado`).subscribe(response => {
+            this.statusl = response;
+        })
     }
     ngOnInit() {
         const fechaActual = new Date();
@@ -51,7 +56,7 @@ export class EntregaComponent {
     }
     obtenerListados() {
         this.idProveedor = this.user.idProveedor;
-        this.http.get<ListadoMateriales>(`${this.url}api/entrega/obtenerlistados/${this.mes}/${this.anio}/${this.idProveedor}/${this.idEstado}/${this.tipo}/${this.model.pagina}`).subscribe(response => {
+        this.http.get<ListadoMateriales>(`${this.url}api/entrega/obtenerlistados/${this.mes}/${this.anio}/${this.idProveedor}/${this.idEstado}/${this.tipo}/${this.model.pagina}/${this.idStatus}`).subscribe(response => {
             this.model = response;
         }, err => console.log(err));
     }

@@ -17,13 +17,15 @@ namespace SistemaVentasBatia.Repositories
 {
     public interface IEntregaRepository
     {
-        Task<int> ContarListados(int mes, int anio, int idProveedor, int idEstado, int tipo);
-        Task<List<Listados>> ObtenerListados(int mes, int anio, int idProveedor, int idEstado, int tipo, int pagina);
+        Task<int> ContarListados(int mes, int anio, int idProveedor, int idEstado, int tipo, int idStatus);
+        Task<List<Listados>> ObtenerListados(int mes, int anio, int idProveedor, int idEstado, int tipo, int pagina,int idStatus);
         Task<List<DetalleMaterial>> ObtenerMaterialesListado(int idListado);
         Task<List<AcuseEntrega>> ObtieneAcusesListado(int idListado);
         Task<bool> InsertaAcuse(int idListado, string carpeta, string archivo);
         Task<bool> EliminarAcuse(int idListado, string carpeta, string archivo);
         Task<bool> ConcluirEntrega(int idListado, string fechaEntrega);
+        Task<List<Catalogo>> GetStatusListado();
+
     }
 
     public class EntregaRepository : IEntregaRepository
@@ -34,7 +36,7 @@ namespace SistemaVentasBatia.Repositories
         {
             _ctx = context;
         }
-        public async Task<int> ContarListados(int mes, int anio, int idProveedor, int idEstado, int tipo)
+        public async Task<int> ContarListados(int mes, int anio, int idProveedor, int idEstado, int tipo, int idStatus)
         {
             var query = @"
 SELECT COUNT(*) AS TotalRows
@@ -60,14 +62,15 @@ left outer join tb_listadomaterial b on a.id_inmueble = b.id_inmueble
 left outer join tb_listadomateriald c on b.id_listado = c.id_listado 
 left outer join tb_tipolistado d on b.tipo = d.id_tipo
 inner join tb_proveedorinmueble e ON e.id_inmueble = a.id_inmueble
-WHERE e.id_proveedor = @idProveedor and a.id_status = 1 and a.materiales = 0
--- and
---ISNULL(NULLIF(0,0), a.id_cliente) = a.id_cliente
-AND
+WHERE 
+e.id_proveedor = @idProveedor and 
+a.id_status = 1 and 
+a.materiales = 0 and 
 ISNULL(NULLIF(@idEstado,0), a.id_estado) = a.id_estado AND
 ISNULL(NULLIF(@tipo,0), d.id_tipo) = d.id_tipo AND
 ISNULL(NULLIF(@mes,0), b.mes) = b.mes AND
-ISNULL(NULLIF(@anio,0), b.anio) = b.anio
+ISNULL(NULLIF(@anio,0), b.anio) = b.anio AND
+ISNULL(NULLIF(@idStatus,0), b.id_status) = b.id_status
 group by 
 a.id_inmueble, 
 a.nombre, b.falta, 
@@ -81,7 +84,7 @@ fentrega
             try
             {
                 using var connection = _ctx.CreateConnection();
-                rows = await connection.QuerySingleAsync<int>(query, new { mes, anio, idProveedor, idEstado, tipo });
+                rows = await connection.QuerySingleAsync<int>(query, new { mes, anio, idProveedor, idEstado, tipo, idStatus });
             }
             catch (Exception ex)
             {
@@ -90,7 +93,7 @@ fentrega
             return rows;
         }
 
-        public async Task<List<Listados>> ObtenerListados(int mes, int anio, int idProveedor, int idEstado, int tipo, int pagina)
+        public async Task<List<Listados>> ObtenerListados(int mes, int anio, int idProveedor, int idEstado, int tipo, int pagina, int idStatus)
         {
             string query = @"
 SELECT * FROM (
@@ -116,14 +119,14 @@ left outer join tb_listadomaterial b on a.id_inmueble = b.id_inmueble
 left outer join tb_listadomateriald c on b.id_listado = c.id_listado 
 left outer join tb_tipolistado d on b.tipo = d.id_tipo
 inner join tb_proveedorinmueble e ON e.id_inmueble = a.id_inmueble
-WHERE e.id_proveedor = @idProveedor and a.id_status = 1 and a.materiales = 0
--- and
---ISNULL(NULLIF(0,0), a.id_cliente) = a.id_cliente
-AND
+WHERE e.id_proveedor = @idProveedor and 
+a.id_status = 1 and 
+a.materiales = 0 AND
 ISNULL(NULLIF(@idEstado,0), a.id_estado) = a.id_estado AND
 ISNULL(NULLIF(@tipo,0), d.id_tipo) = d.id_tipo AND
 ISNULL(NULLIF(@mes,0), b.mes) = b.mes AND
-ISNULL(NULLIF(@anio,0), b.anio) = b.anio
+ISNULL(NULLIF(@anio,0), b.anio) = b.anio AND
+ISNULL(NULLIF(@idStatus,0), b.id_status) = b.id_status
 group by 
 a.id_inmueble, 
 a.nombre, b.falta, 
@@ -142,7 +145,7 @@ ORDER BY RowNum
             try
             {
                 using var connection = _ctx.CreateConnection();
-                listado = (await connection.QueryAsync<Listados>(query, new { mes, anio, idProveedor, idEstado, tipo, pagina })).ToList();
+                listado = (await connection.QueryAsync<Listados>(query, new { mes, anio, idProveedor, idEstado, tipo, pagina, idStatus })).ToList();
             }
             catch (Exception ex)
             {
@@ -278,6 +281,26 @@ WHERE id_listado = @idListado
                 throw ex;
             }
             return result;
+        }
+
+        public async Task<List<Catalogo>> GetStatusListado()
+        {
+            string query = @"
+SELECT id_status Id,
+descripcion Descripcion 
+FROM tb_statusl
+";
+            var statusl = new List<Catalogo>();
+            try
+            {
+                using var connection = _ctx.CreateConnection();
+                statusl = (await connection.QueryAsync<Catalogo>(query)).ToList();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            return statusl;
         }
     }
 }

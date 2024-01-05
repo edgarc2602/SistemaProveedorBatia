@@ -15,7 +15,7 @@ namespace SistemaVentasBatia.Services
 {
     public interface IFacturaService
     {
-        Task<ListadoOrdenCompraDTO> ObtenerOrdenesCompra(ListadoOrdenCompraDTO ordenescompra, int idProveedor, string fechaInicio, string fechaFin);
+        Task<ListadoOrdenCompraDTO> ObtenerOrdenesCompra(ListadoOrdenCompraDTO ordenescompra, int idProveedor, string fechaInicio, string fechaFin, int idStatus);
         Task<decimal> ObtenerSumaFacturas(int idOrden);
         Task<List<FacturaDTO>> ObtenerFacturas(int idOrden);
         Task<XMLData> ExtraerDatosXML(IFormFile xml, int idTipoFolio);
@@ -23,6 +23,7 @@ namespace SistemaVentasBatia.Services
         Task<bool> InsertarXML(string xmlString);
         Task<bool> FacturaExiste(string uuid);
         Task<bool> CambiarStatusOrdenCompleta(int idOrden);
+        Task<List<CatalogoDTO>> GetStatusOrdenCompra();
     }
 
     public class FacturaService : IFacturaService
@@ -36,9 +37,9 @@ namespace SistemaVentasBatia.Services
             _mapper = mapper;
         }
 
-        public async Task<ListadoOrdenCompraDTO> ObtenerOrdenesCompra(ListadoOrdenCompraDTO ordenescompra, int idProveedor, string fechaInicio, string fechaFin)
+        public async Task<ListadoOrdenCompraDTO> ObtenerOrdenesCompra(ListadoOrdenCompraDTO ordenescompra, int idProveedor, string fechaInicio, string fechaFin, int idStatus)
         {
-            ordenescompra.Rows = await _FacturaRepo.ContarOrdenesCompra(idProveedor, fechaInicio, fechaFin);
+            ordenescompra.Rows = await _FacturaRepo.ContarOrdenesCompra(idProveedor, fechaInicio, fechaFin, idStatus);
             if (ordenescompra.Rows > 0)
             {
                 ordenescompra.NumPaginas = (ordenescompra.Rows / 40);
@@ -47,7 +48,7 @@ namespace SistemaVentasBatia.Services
                 {
                     ordenescompra.NumPaginas++;
                 }
-                ordenescompra.Ordenes = _mapper.Map<List<OrdenCompraDTO>>(await _FacturaRepo.ObtenerOrdenesCompra(idProveedor, fechaInicio, fechaFin, ordenescompra.Pagina));
+                ordenescompra.Ordenes = _mapper.Map<List<OrdenCompraDTO>>(await _FacturaRepo.ObtenerOrdenesCompra(idProveedor, fechaInicio, fechaFin, ordenescompra.Pagina,idStatus));
             }
             else
             {
@@ -91,6 +92,13 @@ namespace SistemaVentasBatia.Services
         public async Task<bool> CambiarStatusOrdenCompleta(int idOrden)
         {
             return await _FacturaRepo.CambiarStatusOrdenCompleta(idOrden);
+        }
+
+        public async Task<List<CatalogoDTO>> GetStatusOrdenCompra()
+        {
+            var statusc = new List<CatalogoDTO>();
+            statusc = _mapper.Map<List<CatalogoDTO>>(await _FacturaRepo.GetStatusOrdenCompra());
+            return statusc;
         }
     }
 }

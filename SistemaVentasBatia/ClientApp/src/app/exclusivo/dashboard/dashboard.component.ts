@@ -177,12 +177,12 @@ export class DashboardComponent implements OnInit {
             tooltip: {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                 pointFormat: '<tr><td style="color:{series.color};padding:0">{}Total: </td>' +
-                    '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>'
-                    + '<tr><td>Alta:</td><td>{point.alta}</td></tr>' +
-                    '<tr><td>Aprobado:</td><td>{point.aprobado}</td></tr>' +
-                    '<tr><td>Despachado:</td><td>{point.despachado}</td></tr>' +
-                    '<tr><td>Entregado:</td><td>{point.entregado}</td></tr>' +
-                    '<tr><td>Cancelado:</td><td>{point.cancelado}</td></tr>',
+                    '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
+                    //+ '<tr><td>Alta:</td><td>{point.alta}</td></tr>' +
+                    //'<tr><td>Aprobado:</td><td>{point.aprobado}</td></tr>' +
+                    //'<tr><td>Despachado:</td><td>{point.despachado}</td></tr>' +
+                    //'<tr><td>Entregado:</td><td>{point.entregado}</td></tr>' +
+                    //'<tr><td>Cancelado:</td><td>{point.cancelado}</td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true
@@ -304,7 +304,7 @@ export class DashboardComponent implements OnInit {
                 allowDecimals: false,
                 min: 0,
                 title: {
-                    text: 'Listados'
+                    text: 'Ordenes'
                 }
             },
             tooltip: {
@@ -327,7 +327,7 @@ export class DashboardComponent implements OnInit {
             }]
         });
     }
-
+   
     goBack() {
         window.history.back();
     }
@@ -337,6 +337,7 @@ export class DashboardComponent implements OnInit {
             this.listaEvaluaciones = response;
         })
     }
+
     filtroPlan(id: number) {
         if (this.listaEvaluaciones && Array.isArray(this.listaEvaluaciones) && this.listaEvaluaciones.length > 0) {
             let list = this.listaEvaluaciones.filter(item =>
@@ -349,15 +350,15 @@ export class DashboardComponent implements OnInit {
             return [];
         }
     }
+
     quitarfoco() {
         this.quitarFocoDeElementos();
     }
+
     quitarFocoDeElementos(): void {
         const elementos = document.querySelectorAll('button, input[type="text"]');
         elementos.forEach((elemento: HTMLElement) => {
             elemento.blur();
         });
     }
-
-
 }
