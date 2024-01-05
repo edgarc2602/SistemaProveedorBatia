@@ -1,14 +1,5 @@
 ﻿@import "~@fortawesome/fontawesome-free/css/all.css";
-/* You can add global styles to this file, and also import other style files */
 
-/* Provide sufficient contrast against white background */
-/*a.navbar-brand {
-    white-space: normal;
-    text-align: center;
-    word-break: break-all;
-}*/
-
-/* Provide sufficient contrast against white background */
 a {
     color: #0366d6;
 }
@@ -62,7 +53,6 @@ html {
 }
 
 body {
-    /* Margin bottom by footer height */
     margin-bottom: 60px;
 }
 
@@ -74,7 +64,8 @@ body {
     line-height: 60px; /* Vertically center the text there */
 }
 
-/***** Dashboard css ********/
+/* Dashboard CSS
+-------------------------------------------------- */
 body {
     font-size: .875rem;
 }
@@ -85,21 +76,16 @@ body {
     vertical-align: text-bottom;
 }
 
-/*
- * Sidebar
- */
-
+/* Sidebar
+-------------------------------------------------- */
 .sidebar {
+    transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     position: fixed;
     top: 0;
-    /* rtl:raw:
-  right: 0;
-  */
     bottom: 0;
-    /* rtl:remove */
     left: 0;
-    z-index: 101; /* Behind the navbar */
-    padding: 100px 0 0; /* Height of navbar */
+    z-index: 101;
+    padding: 100px 0 0;
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
 
@@ -114,7 +100,7 @@ body {
     height: calc(100vh - 48px);
     padding-top: .5rem;
     overflow-x: hidden;
-    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    overflow-y: auto;
 }
 
 .sidebar .nav-link {
@@ -141,30 +127,10 @@ body {
     text-transform: uppercase;
 }
 
-/*
- * Navbar
- */
-
-/*.navbar-brand {
-    padding-top: .75rem;
-    padding-bottom: .75rem;
-    font-size: 1rem;
-    background-color: rgba(0, 0, 0, .25);
-    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
-}
-
-.navbar .navbar-toggler {
-    top: .25rem;
-    right: 1rem;
-}
-
-.navbar .form-control {
-    padding: .75rem 1rem;
-    border-width: 0;
-    border-radius: 0;
-}*/
-
+/* Navbar
+-------------------------------------------------- */
 .navbar {
+    transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     background-color: #f8f9fa;
 }
 
@@ -179,7 +145,8 @@ body {
         box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
     }
 
-/* estilo en logo */
+/* Logo
+-------------------------------------------------- */
 /*
 .logo {
     height: 50px;
@@ -195,6 +162,7 @@ body {
 }
 */
 .logo .logo-lg {
+    color:black;
     display: block
 }
 
@@ -319,41 +287,175 @@ tbody tr:hover {
     backdrop-filter: blur(10px);
     background-color: rgba(248, 249, 250, 0.7);
 }
-#sidebarMenu {
-    background-color: #383434;
-    border: none;
-    color: #fff;
-}
 
 #sidebarMenustatic {
+    transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     background-color: #f8f9fa;
+    color: black
 }
+
 #sidebarMenu {
+    transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     background-color: #f8f9fa;
+    color: black
 }
+
 .modal-header {
+    transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     background-color: #f8f9fa;
 }
 
 .modal-body {
+    transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     background-color: #fff;
 }
 
 .modal-footer {
+    transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     background-color: #f8f9fa;
 }
 
+table thead {
+    transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+    background-color: #4a92fe;
+    color: #fff;
+}
 
+.card {
+    transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+    color: black;
+}
+
+.card-body {
+    transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+    color: black;
+}
+
+.card-title {
+    transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+    color: black;
+}
+
+body {
+    transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+    background-color: var(--background-light);
+    color: var(--text-color-light);
+}
+
+.select {
+    background-color: #fff;
+    color: black;
+    transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+}
+
+.form-select {
+    background-color: #fff;
+    color: black;
+    transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+}
+input[type="number"] {
+    background-color: #fff;
+    color: black;
+    transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+}
+input[type="date"] {
+    background-color: #fff;
+    color: black;
+    transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+}
+.badge{
+    color: black;
+}
+
+.highcharts-container {
+    background-color: #fff;
+    transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+}
+
+.highcharts-background {
+    fill: #fff;
+    transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+}
+
+.highcharts-plot-background {
+    fill: #fff;
+    transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+}
+
+
+
+/* Login Css
+-------------------------------------------------- */
+.login-card {
+    background-color: rgba(255, 255, 255, 0.00);
+}
+
+.input {
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid black;
+}
+
+.my-input-class {
+    color:black;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.bodycss {
+    margin: 0;
+    padding: 0;
+    margin-bottom: 0px;
+    border-bottom: 0px;
+    background-image: url('../src/login_fondo.png');
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    min-height: 95vh;
+}
+
+.card {
+    border: none;
+}
+
+.card-headercss, .card-bodycss, .card-footercss {
+    color: black;
+    background: none;
+    background-color: none;
+    border: none;
+}
+
+.col-mid {
+    flex: 0 0 9.166%;
+    max-width: 6.166%;
+}
+
+::placeholder,
+::-webkit-input-placeholder {
+    color: rgba(0, 0, 0, 0.2);
+}
+
+input:focus::placeholder,
+input:focus::-webkit-input-placeholder {
+    color: rgba(0, 0, 0, 0.2);
+}
+
+/* Tema obscuro
+-------------------------------------------------- */
 .dark-theme {
     --background-light: #282424;
     --text-color-light: #ffffff;
+    transition: color 1s ease, background-color 1s ease, border-color 1s ease, box-shadow 1s ease, fill 1s ease, backdrop-filter 1s ease,
+}
+.dark-theme .badge{
+    color: #fff;
 }
 
     .dark-theme input {
         background-color: #383434;
         color: #fff;
         border-color: #383434;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
+
         .dark-theme input:focus {
             color: #fff;
             background-color: #383434;
@@ -363,63 +465,69 @@ tbody tr:hover {
         background-color: #383434;
         color: #fff;
         border-color: #383434;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
+
         .dark-theme select:focus {
             background-color: #383434;
+            transition: background-color 1s ease,color 1s ease,border-color 1s ease;
         }
 
     .dark-theme table tbody tr td {
         color: #fff;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
 
     .dark-theme table.table-striped tbody tr:nth-of-type(odd) td {
         color: #fff;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
 
     .dark-theme table.table-striped tbody tr:nth-of-type(even) td {
         color: #fff;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
 
     .dark-theme .sidebar {
         background-color: #383434;
+        color: white;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
 
     .dark-theme #sidebarMenu {
         background-color: #383434;
-        border: none;
         color: #fff;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
 
     .dark-theme #sidebarMenustatic {
         background-color: #383434;
-        border: none;
         color: #fff;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
+
     .dark-theme #gla {
         background-color: #383434;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
 
-    .dark-theme .page-item {
-        background-color: #383434;
+    .dark-theme .page-item .btn {
+        background-color: #282424;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
 
-        .dark-theme .page-item .btn {
-            background-color: #282424;
-        }
     .dark-theme table thead {
         background-color: #383434;
         color: #fff;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
-table thead {
-    background-color: #4a92fe;
-    color: #fff;
-}
 
     .dark-theme tbody tr:hover {
         box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
         transition: box-shadow 0.3s ease;
         background-color: #383434;
         color: #fff;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
 
     .dark-theme tbody tr:focus {
@@ -427,72 +535,155 @@ table thead {
         transition: box-shadow 0.3s ease;
         background-color: #383434;
         color: #fff;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
+
     .dark-theme .box-shadow {
         box-shadow: 0 .25rem .75rem rgba(255, 255, 255, .05);
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
 
     .dark-theme .highcharts-container {
-        background-color: #383434;
+        background-color: #282424;
         color: #fff;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
 
     .dark-theme .highcharts-background {
-        fill: #383434;
+        fill: #282424;
+        color: #fff;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
 
     .dark-theme .highcharts-plot-background {
-        fill: #383434;
+        fill: #282424;
+        color: #fff;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
 
     .dark-theme #accordion {
         background-color: #383434;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
 
     .dark-theme .card-header {
         background-color: #383434;
         color: #fff;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
+
     .dark-theme .nav-link i {
         color: #fff;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
+
     .dark-theme .nav-link.active {
-        color: #ffcc00;
+        color: #2470dc;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
 
     .dark-theme .navbar {
-        background-color: #383434;
+        background-color: #1F1F1F;
         color: #fff;
         border-color: #383434;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
-        .dark-theme .navbar a {
-            color: #fff;
-            border-color: #383434;
-        }
 
-    .dark-theme .navbar-toggler-icon {
-    }
-    .dark-theme #navbarSupportedContent {
+    .dark-theme .modal-header {
         background-color: #383434;
         color: #fff;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
     }
 
-.dark-theme .modal-header {
-    background-color: #383434;
-    color: #fff;
+    .dark-theme .modal-body {
+        background-color: #282424;
+        color: #fff;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+    }
+
+    .dark-theme .modal-footer {
+        background-color: #383434;
+        color: #fff;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+    }
+
+    .dark-theme .card {
+        background-color: #383434;
+        color: #fff;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+    }
+
+    .dark-theme .card-body {
+        background-color: #383434;
+        color: #fff;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+    }
+
+    .dark-theme .card-title {
+        color: #fff;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+    }
+
+    .dark-theme ::-webkit-scrollbar {
+        width: 16px;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+    }
+
+    .dark-theme ::-webkit-scrollbar-track {
+        background: #383434;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+    }
+
+    .dark-theme ::-webkit-scrollbar-thumb {
+        background: #888;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+    }
+
+.dark-theme .btn {
+    padding: 10px 20px;
+    border: none;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-.dark-theme .modal-body {
-    background-color: #282424;
-    color: #fff;
-}
+    .dark-theme .btn:hover {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
 
-.dark-theme .modal-footer {
-    background-color: #383434;
-    color: #fff; 
-}
+    .dark-theme .btn:active {
+        transform: translateY(3px);
+        box-shadow: none;
+    }
 
-body {
-    background-color: var(--background-light);
-    color: var(--text-color-light);
-}
+    .dark-theme .navbar-toggler-icon {
+        color: #fff;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+    }
+
+    .dark-theme .page-link {
+        background-color: #282424;
+        border-color: #282424;
+        transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+    }
+
+        .dark-theme .page-link:hover {
+            color: #f0f0f0;
+            transition: background-color 1s ease,color 1s ease,border-color 1s ease;
+        }
+
+    .dark-theme .login-card {
+        background-color: rgba(255, 255, 255, 0.00);
+    }
+    .dark-theme .card-headercss, .card-bodycss, .card-footercss {
+        color: black;
+        background:none;
+        background-color: none;
+        border: none;
+    }
+    .dark-theme .my-input-class {
+        color: black;
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+    .dark-theme .logo .logo-lg {
+        color: #fff;
+        display: block
+    }

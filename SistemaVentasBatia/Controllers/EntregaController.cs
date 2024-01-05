@@ -46,8 +46,9 @@ namespace SistemaVentasBatia.Controllers
             return await _logic.ObtenerAcusesListado(idListado);
         }
 
-        private readonly string _imageFolderPath = "C:/Users/LAP_Sistemas5/Desktop/SINGA_NEW/Doctos/entrega/";
-        //private readonly string _imageFolderPath = "\\\\192.168.2.4\\c$\\inetpub\\wwwroot\\SINGA_APP\\Doctos\\entrega\\";
+        //private readonly string _imageFolderPath = "C:/Users/LAP_Sistemas5/Desktop/SINGA_NEW/Doctos/entrega/";
+        //private readonly string _imageFolderPath = "C:/Users/LAP_Sistemas5/Desktop/SINGA_NEW/Doctos/entrega/";                         ruta dev
+        private readonly string _imageFolderPath = "\\\\192.168.2.4\\c$\\inetpub\\wwwroot\\SINGA_APP\\Doctos\\entrega\\";
         //private readonly string _imageFolderPath = "\\\\192.168.2.4\\c$\\inetpub\\wwwroot\\SINGA_APP\\Doctos\\entrega\\";            ruta produccion
 
         [HttpGet("getimage/{archivo}/{carpeta}")]

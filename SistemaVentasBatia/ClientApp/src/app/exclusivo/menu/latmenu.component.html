@@ -36,14 +36,17 @@
                 </div>
             </a>
         </li>
-        <!--<li class="nav-item mb-3 text-sm-start text-md-center">
-            <div data-bs-toggle="tooltip" data-bs-placement="right" title="Cambiar tema">
-                <button class="btn" (click)="toggleTheme()"><i class="fa-solid fa-palette"></i></button>
-                <div class=" d-block d-md-none"><h6>Tema</h6></div>
+        <li class="nav-item mb-3 text-sm-start text-md-center">
+            <div *ngIf="isDarkTheme" data-bs-toggle="tooltip" data-bs-placement="right" title="Cambiar tema">
+                <button class="btn" (click)="toggleTheme()"><i class="fa-solid fa-sun fa-2x " style="color: white;"></i></button>
             </div>
-        </li>-->
+            <div *ngIf="!isDarkTheme" data-bs-toggle="tooltip" data-bs-placement="right" title="Cambiar tema">
+                <button class="btn" (click)="toggleTheme()"><i class="fa-solid fa-moon fa-2x" style="color: black;"></i></button>
+            </div>
+        </li>
     </ul>
 </nav>
+
 
 <!--MENU ESTATICO-->
 <nav id="sidebarMenustatic" class="col-md-auto d-none d-md-block sidebar collapse">
@@ -84,11 +87,14 @@
                 </div>
             </a>
         </li>
-        <!--<li class="nav-item mb-3 text-sm-start text-md-center">
-            <div data-bs-toggle="tooltip" data-bs-placement="right" title="Cambiar tema">
-                <button class="btn" (click)="toggleTheme()"><i class="fa-solid fa-palette"></i></button>
+        <li class="nav-item mb-3 text-sm-start text-md-center">
+            <div *ngIf="isDarkTheme" data-bs-toggle="tooltip" data-bs-placement="right" title="Tema claro">
+                <button class="btn" (click)="toggleTheme()"><i class="fa-solid fa-sun fa-2x " style="color: white;"></i></button>
             </div>
-        </li>-->
+            <div *ngIf="!isDarkTheme" data-bs-toggle="tooltip" data-bs-placement="right" title="Tema obscuro">
+                <button class="btn" (click)="toggleTheme()"><i class="fa-solid fa-moon fa-2x" style="color: black;"></i></button>
+            </div>
+        </li>
     </ul>
 
 </nav>

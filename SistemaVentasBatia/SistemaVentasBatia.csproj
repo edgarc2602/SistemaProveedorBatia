@@ -34,11 +34,13 @@
 	  <None Remove="ClientApp\src\app\models\usuario.ts" />
 	  <None Remove="ClientApp\src\app\models\usuarioregistro.ts" />
 	  <None Remove="ClientApp\src\app\stores\StoreUser.ts" />
+	  <None Remove="ClientApp\src\login_fondo.png" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Content Include="ClientApp\fondologinBatia.png" />
 	  <Content Include="ClientApp\src\app\colectivo\login\login_fondo.png" />
+	  <Content Include="ClientApp\src\login_fondo.png" />
 	</ItemGroup>
 
 	<ItemGroup>

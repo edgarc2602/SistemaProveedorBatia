@@ -6,24 +6,24 @@
             </div>
             <div class="col-12 col-md-5">
                 <div class="card login-card  card" (keydown)="review($event)">
-                    <h3 class="card-header text-center card-headercss">Sistema Integral de Gestión Administrativa (PROVEEDORES)</h3>
-                    <div class="card-body">
+                    <h3 class=" text-center card-headercss">Sistema Integral de Gestión Administrativa (PROVEEDORES)</h3>
+                    <div class="card-bodycss">
                         <div class="mb-2">
                             <div class="form-floating">
-                                <input type="text" class="form-control my-input-class translucent" [(ngModel)]="model.usuario" id="txusuario" placeholder="Usuario">
+                                <input type="text" class="form-control my-input-class " [(ngModel)]="model.usuario" id="txusuario" placeholder="Usuario">
                                 <label for="txusuario">Usuario</label>
                             </div>
                             <span *ngIf="ferr('Usuario')" class="text-danger">{{ terr('Usuario') }}</span>
                         </div>
                         <div class="mb-2">
                             <div class="form-floating">
-                                <input type="password" class="form-control my-input-class translucent" [(ngModel)]="model.contrasena" id="txpassword" placeholder="Contraseña">
+                                <input type="password" class="form-control my-input-class " [(ngModel)]="model.contrasena" id="txpassword" placeholder="Contraseña">
                                 <label for="txpassword">Contraseña</label>
                             </div>
                             <span *ngIf="ferr('Contrasena')" class="text-danger">{{ terr('Contrasena') }}</span>
                         </div>
                     </div>
-                    <div class="card-footer text-start card-footercss">
+                    <div class=" text-start card-footercss">
                         <button type="button" (click)="onLogin()" class="btn btn-primary box-shadow" isDefault="true">Entrar</button>
                     </div>
                 </div>
