@@ -7,13 +7,13 @@
     </div>
     <div class="sticky-container align-content-center align-middle">
         <div class="row">
-            <div class="col-md-3 col-7 mb-3">
+            <div class="col-md-3 col-6 mb-3">
                 <div class="form-floating box-shadow">
                     <input type="number" name="year" min="1900" max="2100" class="form-control" [(ngModel)]="anio" id="Anio" placeholder="Escriba un año" (input)="getGraficas()">
                     <label asp-for="anio">Año</label>
                 </div>
             </div>
-            <div class="col-md-3 col-5 mb-3">
+            <div class="col-md-3 col-6 mb-3">
                 <div class="form-floating box-shadow">
                     <select class="form-select" [(ngModel)]="mes" (change)="getGraficas()" id="ddlmes">
                         <option *ngFor="let m of meses" [ngValue]="m.id">{{ m.descripcion }}</option>
@@ -93,7 +93,7 @@
                     </div>
                 </div>
             </div>-->
-            <div class="col-12 col-md-3">
+            <div class="col-6 col-md-3">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title text-dark mb-4">Aprobado</h5>
@@ -123,7 +123,7 @@
                     </div>
                 </div>
             </div>-->
-            <div class="col-12 col-md-3">
+            <div class="col-6 col-md-3">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title text-dark mb-4">Entregado</h5>
@@ -156,7 +156,7 @@
             <div class="col-12 col-md-6">
                 <div id="goa"></div>
             </div>
-            <!--<div class="col-12 col-md-3">
+            <div class="col-6 col-md-3">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title text-dark mb-4">Alta</h5>
@@ -170,8 +170,8 @@
                         </div>
                     </div>
                 </div>
-            </div>-->
-            <div class="col-12 col-md-3">
+            </div>
+            <!--<div class="col-6 col-md-3">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title text-dark mb-4">Autorizada</h5>
@@ -185,7 +185,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <!--<div class="col-12 col-md-3">
                 <div class="card">
                     <div class="card-body">
@@ -201,7 +201,7 @@
                     </div>
                 </div>
             </div>-->
-            <div class="col-12 col-md-3">
+            <div class="col-6 col-md-3">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title text-dark mb-4">Completa</h5>

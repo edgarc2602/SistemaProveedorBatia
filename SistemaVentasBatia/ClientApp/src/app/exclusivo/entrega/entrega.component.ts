@@ -20,7 +20,7 @@ export class EntregaComponent {
     meses: Catalogo[];
     tipoListado: Catalogo[];
     statusl: Catalogo[];
-    idStatus: number = 0;
+    idStatus: number = 2;
     mes: number = 0;
     anio: number = 0;
     idEstado: number = 0;

@@ -24,7 +24,6 @@
             <div class="col-md-3 col-6 mb-3">
                 <div class="form-floating box-shadow">
                     <select class="form-select" [(ngModel)]="idStatus" (change)="obtenerListados()">
-                        <option value="0">Selecciona una opción...</option>
                         <option *ngFor="let s of statusl" [ngValue]="s.id">{{ s.descripcion }}</option>
                     </select>
                     <label asp-for="ddlmes">Estatus</label>

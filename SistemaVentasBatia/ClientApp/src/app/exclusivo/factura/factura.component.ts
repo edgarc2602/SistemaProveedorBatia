@@ -19,7 +19,7 @@ export class FacturaComponent {
     fechaInicio: string = '';
     fechaFin: string = '';
     statusc: Catalogo[];
-    idStatus: number = 0;
+    idStatus: number = 1;
 
     constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {
         http.get<Catalogo[]>(`${url}api/factura/GetStatusOrdenCompra`).subscribe(response => {
@@ -60,9 +60,9 @@ export class FacturaComponent {
         this.fechaInicio = this.obtenerPrimerDiaDelMes();
         this.fechaFin = this.obtenerDiaActual();
     }
-    imprimirOrden(idOrden: number) {
+    imprimirOrden(idOrden: number, tipo: string) {
         this.quitarFocoDeElementos();
-        this.http.get(`${this.url}api/report/DescargarReporteOrdenCompra/${idOrden}`, { responseType: 'arraybuffer' })
+        this.http.get(`${this.url}api/report/DescargarReporteOrdenCompra/${idOrden}/${tipo}`, { responseType: 'arraybuffer' })
             .subscribe(
                 (data: ArrayBuffer) => {
                     const pdfDataUrl = this.arrayBufferToDataUrl(data);

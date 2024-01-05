@@ -391,7 +391,7 @@ WHERE id_orden = @idOrden
 SELECT
 id_status Id,
 descripcion Descripcion
-FROM tb_statusc
+FROM tb_statusc WHERE id_status = 1 OR id_status = 4
 ";
             var statusc = new List<Catalogo>();
             try

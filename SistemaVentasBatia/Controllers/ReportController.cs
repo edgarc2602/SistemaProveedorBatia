@@ -8,21 +8,37 @@ namespace SistemaVentasBatia.Controllers
     [ApiController]
     public class ReportController : ControllerBase
     {
-        [HttpGet("[action]/{idOrden}")]
-        public IActionResult DescargarReporteOrdenCompra(int idOrden = 0)
+        [HttpGet("[action]/{idOrden}/{tipo}")]
+        public IActionResult DescargarReporteOrdenCompra(int idOrden = 0, string tipo = "")
         {
             try
             {
-                var url = ("http://192.168.2.4/Reporte?%2freporteordencompra&rs:Format=PDF&idOrden=" + idOrden.ToString());
-                WebClient wc = new WebClient
+                if (tipo == "Materiales")
                 {
-                    Credentials = new NetworkCredential("Administrador", "GrupoBatia@")
-                };
-                byte[] myDataBuffer = wc.DownloadData(url.ToString());
-                return new FileContentResult(myDataBuffer, "application/pdf")
+                    var url = ("http://192.168.2.4/Reporte?%2freporteordencompra&rs:Format=PDF&idOrden=" + idOrden.ToString());
+                    WebClient wc = new WebClient
+                    {
+                        Credentials = new NetworkCredential("Administrador", "GrupoBatia@")
+                    };
+                    byte[] myDataBuffer = wc.DownloadData(url.ToString());
+                    return new FileContentResult(myDataBuffer, "application/pdf")
+                    {
+                        FileDownloadName = "ReporteOrdenMaterial" + idOrden.ToString() + ".pdf"
+                    };
+                }
+                else
                 {
-                    FileDownloadName = "ReporteOrden" + idOrden.ToString() +".pdf"
-                };
+                    var url = ("http://192.168.2.4/Reporte?%2freporteordencompraservicio&rs:Format=PDF&idOrden=" + idOrden.ToString());
+                    WebClient wc = new WebClient
+                    {
+                        Credentials = new NetworkCredential("Administrador", "GrupoBatia@")
+                    };
+                    byte[] myDataBuffer = wc.DownloadData(url.ToString());
+                    return new FileContentResult(myDataBuffer, "application/pdf")
+                    {
+                        FileDownloadName = "ReporteOrdenServicio" + idOrden.ToString() + ".pdf"
+                    };
+                }
             }
             catch (Exception ex)
             {

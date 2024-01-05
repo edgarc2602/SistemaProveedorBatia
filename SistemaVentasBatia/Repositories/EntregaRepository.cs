@@ -289,6 +289,7 @@ WHERE id_listado = @idListado
 SELECT id_status Id,
 descripcion Descripcion 
 FROM tb_statusl
+WHERE id_status = 2 OR id_status = 4
 ";
             var statusl = new List<Catalogo>();
             try
