@@ -37,13 +37,31 @@
             </a>
         </li>
         <li class="nav-item mb-3 text-sm-start text-md-center">
+            <a *ngIf="isDarkTheme" class="nav-link"  data-bs-toggle="collapse"  data-bs-target="#sidebarMenu" (click)="toggleTheme()">
+                <div data-bs-toggle="tooltip" data-bs-placement="right">
+                    <span> <i class="fa-solid fa-sun fa-2x " style="color: white;"></i></span>
+                    <div class=" d-block d-md-none"><h6>TEMA</h6></div>
+                    <hr class="d-block d-md-none" />
+                </div>
+            </a>
+        </li>
+        <li class="nav-item mb-3 text-sm-start text-md-center">
+            <a *ngIf="!isDarkTheme" class="nav-link"  data-bs-toggle="collapse"  data-bs-target="#sidebarMenu" (click)="toggleTheme()">
+                <div data-bs-toggle="tooltip" data-bs-placement="right">
+                    <span> <i class="fa-solid fa-moon fa-2x" style="color: #333333;"></i></span>
+                    <div class=" d-block d-md-none"><h6>TEMA</h6></div>
+                    <hr class="d-block d-md-none" />
+                </div>
+            </a>
+        </li>
+        <!--<li class="nav-item mb-3 text-sm-start text-md-center text-center align-items-center">
             <div *ngIf="isDarkTheme" data-bs-toggle="tooltip" data-bs-placement="right" title="Cambiar tema">
                 <button class="btn" (click)="toggleTheme()"><i class="fa-solid fa-sun fa-2x " style="color: white;"></i></button>
             </div>
             <div *ngIf="!isDarkTheme" data-bs-toggle="tooltip" data-bs-placement="right" title="Cambiar tema">
                 <button class="btn" (click)="toggleTheme()"><i class="fa-solid fa-moon fa-2x" style="color: #333333;"></i></button>
             </div>
-        </li>
+        </li>-->
     </ul>
 </nav>
 
@@ -91,10 +109,9 @@
             <div *ngIf="isDarkTheme" data-bs-toggle="tooltip" data-bs-placement="right" title="Tema claro">
                 <button class="btn" (click)="toggleTheme()"><i class="fa-solid fa-sun fa-2x " style="color: white;"></i></button>
             </div>
-            <div *ngIf="!isDarkTheme" data-bs-toggle="tooltip" data-bs-placement="right" title="Tema obscuro">
+            <div *ngIf="!isDarkTheme" data-bs-toggle="tooltip" data-bs-placement="right" title="Tema oscuro">
                 <button class="btn" (click)="toggleTheme()"><i class="fa-solid fa-moon fa-2x" style="color: #333333;"></i></button>
             </div>
         </li>
     </ul>
-
 </nav>

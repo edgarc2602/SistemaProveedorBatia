@@ -379,12 +379,12 @@ input[type="date"] {
 
 .highcharts-background {
     fill: #fff;
-    transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
+    transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease, fill 0.3s ease;
 }
 
 .highcharts-plot-background {
     fill: #fff;
-    transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
+    transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease, fill 0.3s ease;
 }
 
 
@@ -485,7 +485,6 @@ input:focus::-webkit-input-placeholder {
     }
 
     .dark-theme table.table-striped tbody tr:nth-of-type(odd) td {
-        background-color: #383434;
         color: #fff;
         transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
     }
@@ -536,7 +535,6 @@ input:focus::-webkit-input-placeholder {
         box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
         transition: box-shadow 0.3s ease;
         background-color: #383434;
-        color: #fff;
         transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
     }
 
@@ -562,13 +560,13 @@ input:focus::-webkit-input-placeholder {
     .dark-theme .highcharts-background {
         fill: #282424;
         color: #fff;
-        transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
+        transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease, fill 0.3s ease;
     }
 
     .dark-theme .highcharts-plot-background {
         fill: #282424;
         color: #fff;
-        transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
+        transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease, fill 0.3s ease;
     }
 
     .dark-theme #accordion {
@@ -593,10 +591,11 @@ input:focus::-webkit-input-placeholder {
         border-color: #383434;
         transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
     }
-    .dark-theme .navbar i {
-        color: #fff;
-        transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
-    }
+
+        .dark-theme .navbar i {
+            color: #fff;
+            transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
+        }
 
     .dark-theme .modal-header {
         background-color: #383434;
@@ -663,11 +662,11 @@ input:focus::-webkit-input-placeholder {
             box-shadow: none;
         }
 
-.dark-theme .page-link {
-    background-color: #282424;
-    border-color: #282424;
-    transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
-}
+    .dark-theme .page-link {
+        background-color: #282424;
+        border-color: #282424;
+        transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
+    }
 
         .dark-theme .page-link:hover {
             color: #f0f0f0;
