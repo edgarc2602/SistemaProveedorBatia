@@ -65,8 +65,18 @@ export class FacturaComponent {
         this.http.get(`${this.url}api/report/DescargarReporteOrdenCompra/${idOrden}/${tipo}`, { responseType: 'arraybuffer' })
             .subscribe(
                 (data: ArrayBuffer) => {
-                    const pdfDataUrl = this.arrayBufferToDataUrl(data);
-                    window.open(pdfDataUrl, '_blank');
+                    const file = new Blob([data], { type: 'application/pdf' });
+                    const fileURL = URL.createObjectURL(file);
+                    const width = 800;
+                    const height = 550;
+                    const left = window.innerWidth / 2 - width / 2;
+                    const top = window.innerHeight / 2 - height / 2;
+                    const newWindow = window.open(fileURL, '_blank', `width=${width}, height=${height}, top=${top}, left=${left}`);
+                    if (newWindow) {
+                        newWindow.focus();
+                    } else {
+                        alert('La ventana emergente ha sido bloqueada. Por favor, permite ventanas emergentes para este sitio.');
+                    }
                 },
                 error => {
                     console.error('Error al obtener el archivo PDF', error);
