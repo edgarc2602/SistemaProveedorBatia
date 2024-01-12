@@ -11,5 +11,6 @@
     observacion: string;
     inventario: number;
     facturado: number;
+    loading: boolean;
 
 }

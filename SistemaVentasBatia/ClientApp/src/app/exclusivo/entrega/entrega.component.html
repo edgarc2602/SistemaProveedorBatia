@@ -115,13 +115,13 @@
 
                                     <div class="col-12 col-md-12 col-sm-12">
                                         <button type="button" class="btn btn-lg text-primary" (click)="obtenerMateriales(listado.idListado, listado.nombreSucursal, listado.tipo, listado.prefijo)" data-bs-toggle="tooltip" title="Ver lista">
-                                            <i class="fa-solid fa-list"></i>
+                                            <i class="fa-solid fa-list" style="color: darkslategray;"></i>
                                         </button>
                                         <button type="button" class="btn btn-lg text-secondary"
                                                 (click)="verAcuses(listado.idListado, listado.nombreSucursal, listado.tipo, listado.prefijo)"
                                                 data-bs-toggle="tooltip" title="Acuse"
                                                 [disabled]="listado.estatus === 'Entregado'">
-                                            <i class="fa-solid fa-file-circle-check"></i>
+                                            <i class="fa-solid fa-file-circle-check" style="color: #0d6efd;"></i>
                                         </button>
                                     </div>
                                 </div>

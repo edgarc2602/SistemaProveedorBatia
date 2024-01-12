@@ -36,6 +36,8 @@ namespace SistemaVentasBatia
             CreateMap<ListaEvaluacionProveedorDTO, ListaEvaluacionProveedor>();
             CreateMap<EvaluacionProveedor, EvaluacionProveedorDTO>();
             CreateMap<EvaluacionProveedorDTO, EvaluacionProveedor>();
+            CreateMap<DashOrdenMes, DashOrdenMesDTO>();
+            CreateMap<DashOrdenMesDTO, DashOrdenMes>();
         }
     }
 }

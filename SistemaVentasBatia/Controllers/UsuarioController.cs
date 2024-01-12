@@ -26,9 +26,9 @@ namespace SistemaVentasBatia.Controllers
         }
 
         [HttpGet("[action]/{anio}/{idProveedor}")]
-        public async Task<List<GraficaListado>> ObtenerGraficaListadoAnio(int anio, int idProveedor)
+        public Task<GraficaListadoAnio[]> ObtenerGraficaListadoAnio(int anio, int idProveedor)
         {
-            return await _logic.ObtenerListadosAnio(anio, idProveedor);
+            return _logic.ObtenerListadosAnio(anio, idProveedor);
         }
 
         [HttpGet("[action]/{anio}/{mes}/{idProveedor}")]
@@ -48,5 +48,11 @@ namespace SistemaVentasBatia.Controllers
         {
             return await _logic.ObtenerOrdenesAnioMes(anio, mes, idProveedor);
         }
-    } 
+
+        [HttpGet("[action]/{anio}/{mes}/{idProveedor}")]
+        public async Task<string> ObtenerEvaluacionTiempoEntrega(int anio, int mes, int idProveedor)
+        {
+            return await _logic.ObtenerEvaluacionTiempoEntrega(anio, mes, idProveedor);
+        }
+    }
 }

@@ -7,6 +7,13 @@ import { Catalogo } from '../../models/catalogo';
 import { GraficaOrden } from '../../models/graficaorden';
 import { StoreUser } from 'src/app/stores/StoreUser';
 import { ListaEvaluacionProveedor } from '../../models/listaevaluacionproveedor';
+import { DashOrdenMes } from '../../models/dashordenmes';
+import HC_exporting from 'highcharts/modules/exporting';
+import { GraficaListadoAnio } from '../../models/graficalistadoanio';
+HC_exporting(Highcharts);
+
+import { debounceTime, switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 
 @Component({
@@ -18,7 +25,7 @@ export class DashboardComponent implements OnInit {
     graficaListadoMes: GraficaListado = {
         mes: 0, totalListadosPorMes: 0, alta: 0, aprobado: 0, despachado: 0, entregado: 0, cancelado: 0
     }
-    graficaListadoAnio: GraficaListado[] = []
+    graficaListadoAnio: GraficaListadoAnio[] = []
 
     graficaOrdenMes: GraficaOrden = {
         mes: 0, totalOrdenesPorMes: 0, alta: 0, autorizada: 0, rechazada: 0, completa: 0, despachada: 0, enRequicision: 0
@@ -32,6 +39,12 @@ export class DashboardComponent implements OnInit {
     listaEvaluaciones: ListaEvaluacionProveedor = {
         evaluacion: [], idEvaluacionProveedor: 0, idProveedor: 0, idStatus: 0, fechaEvaluacion: '', numeroContrato: '', promedio: 0, textoPromedio: '', idUsuario: 0
     }
+    dashOrdenMes: DashOrdenMes = {
+        total: 0, facturado: 0
+    }
+    porcentajeTiempoEntrega: string = '';
+    listaAnios: number[] = [];
+
 
     constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {
         http.get<Catalogo[]>(`${url}api/catalogo/obtenermeses`).subscribe(response => {
@@ -44,89 +57,64 @@ export class DashboardComponent implements OnInit {
         this.anio = fechaActual.getFullYear();
         const fechaActualMes = new Date();
         this.mes = fechaActualMes.getMonth() + 1;
+        const anioActual = new Date().getFullYear();
+        for (let i = 2018; i <= anioActual + 1; i++) {
+            this.listaAnios.push(i);
+        }
+        this.getPorcentajes();
         this.getGraficas();
         this.getEvaluaciones();
     }
 
+    getPorcentajes() {
+        this.http.get<string>(`${this.url}api/usuario/ObtenerEvaluacionTiempoEntrega/${this.anio}/${this.mes}/${this.user.idProveedor}`).subscribe(response => {
+            if (response != null) {
+                this.porcentajeTiempoEntrega = response;
+            }
+        })
+    }
+
     getGraficas() {
+        this.getGraficasAnio();
+        this.getGraficasMes();
+    }
+
+    getGraficasAnio() {
         this.graficaListadoAnio = null;
-        this.graficaListadoMes = null;
-        this.http.get<GraficaListado[]>(`${this.url}api/usuario/obtenergraficalistadoanio/${this.anio}/${this.idProveedor}`).subscribe(response => {
-            this.graficaListadoAnio = response;
-            this.getGraficaListadoAnio();
-        }, err => console.log(err));
-        this.http.get<GraficaListado>(`${this.url}api/usuario/obtenergraficalistadoaniomes/${this.anio}/${this.mes}/${this.idProveedor}`).subscribe(response => {
-            this.graficaListadoMes = response;
-            this.getGraficaListadoMes();
+        this.http.get<GraficaListadoAnio[]>(`${this.url}api/usuario/obtenergraficalistadoanio/${this.anio}/${this.idProveedor}`).subscribe(response => {
+            if (response.length != 0) {
+                this.graficaListadoAnio = response;
+                this.getGraficaListadoAnio();
+            }
         }, err => console.log(err));
         this.http.get<GraficaOrden[]>(`${this.url}api/usuario/obtenerordenesanio/${this.anio}/${this.idProveedor}`).subscribe(response => {
-            this.graficaOrdenAnio = response;
-            this.getGraficaOrdenAnio();
-        }, err => console.log(err));
-        this.http.get<GraficaOrden>(`${this.url}api/usuario/obtenerordenesaniomes/${this.anio}/${this.mes}/${this.idProveedor}`).subscribe(response => {
-            this.graficaOrdenMes = response;
-            this.getGraficaOrdenMes();
+            if (response.length != 0) {
+                this.graficaOrdenAnio = response;
+                this.getGraficaOrdenAnio();
+            }
         }, err => console.log(err));
     }
 
-    getGraficaListadoMes() {
-        let container: HTMLElement = document.getElementById('glm');
-        const categories = ['Alta', 'Aprobado', 'Despachado', 'Entregado', 'Cancelado'];
-        const data = [
-            this.graficaListadoMes.alta,
-            this.graficaListadoMes.aprobado,
-            this.graficaListadoMes.despachado,
-            this.graficaListadoMes.entregado,
-            this.graficaListadoMes.cancelado
-        ];
+    getGraficasMes() {
+        this.graficaListadoMes = null;
+        this.http.get<GraficaListado>(`${this.url}api/usuario/obtenergraficalistadoaniomes/${this.anio}/${this.mes}/${this.idProveedor}`).subscribe(response => {
+            if (response != null) {
+                this.graficaListadoMes = response;
+            }
+        }, err => console.log(err));
+        this.http.get<GraficaOrden>(`${this.url}api/usuario/obtenerordenesaniomes/${this.anio}/${this.mes}/${this.idProveedor}`).subscribe(response => {
+            if (response != null) {
+                this.graficaOrdenMes = response;
+            }
+        }, err => console.log(err));
+        this.http.get<DashOrdenMes>(`${this.url}api/factura/GetDashOrdenMes/${this.user.idProveedor}/${this.anio}/${this.mes}`).subscribe(response => {
+            if (response != null) {
+                this.dashOrdenMes = response;
+            }
 
-        Highcharts.chart(container, {
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Mensual'
-            },
-            subtitle: {
-                text: `Total: ${this.graficaListadoMes.totalListadosPorMes}`,
-                align: 'center',
-                style: {
-                    fontSize: '16px'
-                }
-            },
-            xAxis: {
-                categories: categories,
-                crosshair: true
-            },
-            yAxis: {
-                allowDecimals: false,
-                min: 0,
-                title: {
-                    text: ''
-                }
-            },
-            tooltip: {
-                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                formatter: function () {
-                    return '<b>' + this.x + '</b><br/>' +
-                        'Total: ' + this.y + '<br/>';
-                },
-                footerFormat: '</table>',
-                shared: true,
-                useHTML: true
-            },
-            plotOptions: {
-                column: {
-                    pointPadding: 0.2,
-                    borderWidth: 0
-                }
-            },
-            series: [{
-                type: 'column',
-                name: 'Detalles',
-                data: data
-            }]
-        });
+
+        })
+        this.getPorcentajes();
     }
 
     getGraficaListadoAnio() {
@@ -139,12 +127,7 @@ export class DashboardComponent implements OnInit {
             total += mes.totalListadosPorMes;
             return {
                 name: meses[mes.mes - 1],
-                y: mes.totalListadosPorMes,
-                alta: mes.alta,
-                aprobado: mes.aprobado,
-                despachado: mes.despachado,
-                entregado: mes.entregado,
-                cancelado: mes.cancelado
+                y: mes.totalListadosPorMes
             };
         });
         const totalSubtitle = `Total: ${total}`;
@@ -163,6 +146,11 @@ export class DashboardComponent implements OnInit {
                     fontSize: '16px'
                 }
             },
+            plotOptions: {
+                column: {
+                    color: '#5094fc',
+                }
+            },
             xAxis: {
                 categories: meses,
                 crosshair: true
@@ -178,11 +166,6 @@ export class DashboardComponent implements OnInit {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                 pointFormat: '<tr><td style="color:{series.color};padding:0">{}Total: </td>' +
                     '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
-                    //+ '<tr><td>Alta:</td><td>{point.alta}</td></tr>' +
-                    //'<tr><td>Aprobado:</td><td>{point.aprobado}</td></tr>' +
-                    //'<tr><td>Despachado:</td><td>{point.despachado}</td></tr>' +
-                    //'<tr><td>Entregado:</td><td>{point.entregado}</td></tr>' +
-                    //'<tr><td>Cancelado:</td><td>{point.cancelado}</td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true
@@ -191,68 +174,6 @@ export class DashboardComponent implements OnInit {
                 type: 'column',
                 name: 'Meses',
                 data: seriesData
-            }]
-        });
-    }
-
-    getGraficaOrdenMes() {
-        let container: HTMLElement = document.getElementById('gom');
-        const categories = ['Alta', 'Autorizada', 'Rechazada', 'Completa', 'Despachada', 'En Requisicion'];
-        const data = [
-            this.graficaOrdenMes.alta,
-            this.graficaOrdenMes.autorizada,
-            this.graficaOrdenMes.rechazada,
-            this.graficaOrdenMes.completa,
-            this.graficaOrdenMes.despachada,
-            this.graficaOrdenMes.enRequicision
-        ];
-
-        Highcharts.chart(container, {
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Mensual'
-            },
-            subtitle: {
-                text: `Total: ${this.graficaOrdenMes.totalOrdenesPorMes}`,
-                align: 'center',
-                style: {
-                    fontSize: '16px'
-                }
-            },
-            xAxis: {
-                categories: categories,
-                crosshair: true
-            },
-            yAxis: {
-                allowDecimals: false,
-                min: 0,
-                title: {
-                    text: ''
-                }
-            },
-            tooltip: {
-                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                formatter: function () {
-                    return '<b>' + this.x + '</b><br/>' +
-                        'Total: ' + this.y + '<br/>';
-                },
-                footerFormat: '</table>',
-                shared: true,
-                useHTML: true
-            },
-            plotOptions: {
-                column: {
-                    pointPadding: 0.2,
-                    color: '#5094fc',
-                    borderWidth: 0
-                }
-            },
-            series: [{
-                type: 'column',
-                name: 'Detalles',
-                data: data
             }]
         });
     }
@@ -311,11 +232,6 @@ export class DashboardComponent implements OnInit {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                 pointFormat: '<tr><td style="color:{series.color};padding:0">{}Total: </td>' +
                     '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
-                //+'<tr><td>Alta:</td><td>{point.alta}</td></tr>' +
-                //'<tr><td>Aprobado:</td><td>{point.aprobado}</td></tr>' +
-                //'<tr><td>Despachado:</td><td>{point.despachado}</td></tr>' +
-                //'<tr><td>Entregado:</td><td>{point.entregado}</td></tr>' +
-                //'<tr><td>Cancelado:</td><td>{point.cancelado}</td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true
@@ -327,7 +243,7 @@ export class DashboardComponent implements OnInit {
             }]
         });
     }
-   
+
     goBack() {
         window.history.back();
     }

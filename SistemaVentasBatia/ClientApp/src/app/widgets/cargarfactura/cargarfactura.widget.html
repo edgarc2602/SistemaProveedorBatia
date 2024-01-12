@@ -50,11 +50,11 @@
                 <br />
                 <h5>Carga de archivos</h5>
                 <div class="row">
-                    <div class="col-md-3 col-4 mb-3 text-center">
+                    <div class="col-md-3 col-4 text-center">
                         <input type="file" accept="application/pdf" (change)="onPdfSelected($event)" style="display: none;" #pdfInput>
                         <button class="btn btn-outline-primary" (click)="pdfInput.click()">Seleccionar PDF </button>
                     </div>
-                    <div class="col-md-3 col-4 mb-3 ">
+                    <div class="col-md-3 col-4">
                         <div *ngIf="selectedPdf" class="form-floating">
                             <input type="text" class="form-control custom-input" value="{{ selectedPdf.name }}" placeholder="PDF" disabled>
                             <label asp-for="Keywords">PDF</label>
@@ -65,7 +65,7 @@
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>
-                    <div class="col-md-5 col-2 mb-3 ">
+                    <div class="col-md-5 col-2 ">
                     </div>
                 </div>
                 <div class="row">
@@ -125,15 +125,10 @@
                             <label asp-for="Keywords">UUID</label>
                         </div>
                     </div>
-                    <div *ngIf="selectedXml && selectedPdf" class="col-md-3 col-3 text-center align-middle">
-                        <button type="button" class="btn btn-outline-success" (click)="subirFacturas()">
-                            <i class="fa-solid fa-save"></i>
-                            Guardar
-                        </button>
-                    </div>
+                    
                 </div>
-                <h5>Facturas cargadas</h5>
-                <div class="row box-shadow" style="border-radius: 10px; overflow-x: hidden;">
+                <h5 *ngIf="facturas">Facturas cargadas</h5>
+                <div *ngIf="facturas" class="row box-shadow" style="border-radius: 10px; overflow-x: hidden;">
                     <div style="max-height: 200px; max-width:auto; overflow-y: auto; overflow-x: hidden">
                         <div class="row">
                             <table class="table table-borderless table-striped table-responsive text-center">
@@ -159,7 +154,12 @@
             </div>
             <!-- Modal footer -->
             <div class="modal-footer">
+                <button *ngIf="selectedXml && selectedPdf" type="button" class="btn btn-outline-success" (click)="subirFacturas()">
+                    <i class="fa-solid fa-save"></i>
+                    Guardar
+                </button>
                 <button type="button" class="btn btn-outline-secondary" (click)="close()" data-bs-dismiss="modal">Cerrar</button>
+                <div *ngIf="loading" class="progressmodal"></div>
             </div>
         </div>
     </div>

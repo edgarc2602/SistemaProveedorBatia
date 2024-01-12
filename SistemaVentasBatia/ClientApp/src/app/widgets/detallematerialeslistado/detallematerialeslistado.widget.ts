@@ -9,11 +9,12 @@ declare var bootstrap: any;
 })
 export class DetalleMaterialesListadoWidget {
     @Output('ansEvent') sendEvent = new EventEmitter<boolean>();
-    model: DetalleMaterial = {} as DetalleMaterial;
+    model: DetalleMaterial[] = [];
     sucursal: string;
     tipo: string;
     idListado: number;
     prefijo: string = '';
+    loading: boolean = false;
     constructor(@Inject('BASE_URL') private url: string, private http: HttpClient) { }
 
     open(idListado: number, sucursal: string, tipo: string, prefijo: string) {
@@ -27,7 +28,7 @@ export class DetalleMaterialesListadoWidget {
         myModal.show();
     }
     obtenerMaterialesListado(idListado: number) {
-        this.http.get<DetalleMaterial>(`${this.url}api/entrega/obtenermaterialeslistado/${idListado}`).subscribe(response => {
+        this.http.get<DetalleMaterial[]>(`${this.url}api/entrega/obtenermaterialeslistado/${idListado}`).subscribe(response => {
             this.model = response;
         })
     }
@@ -49,6 +50,7 @@ export class DetalleMaterialesListadoWidget {
 
     obtenerReporte(idListado: number, prefijo: string) {
         this.quitarFocoDeElementos();
+        this.loading = true;
         this.http.get(`${this.url}api/report/DescargarReporteListadoMaterial/${idListado}`, { responseType: 'arraybuffer' })
             .subscribe(
                 (data: ArrayBuffer) => {
@@ -64,11 +66,11 @@ export class DetalleMaterialesListadoWidget {
                     } else {
                         alert('La ventana emergente ha sido bloqueada. Por favor, permite ventanas emergentes para este sitio.');
                     }
-
-
+                    this.loading = false;
                 },
                 error => {
                     console.error('Error al obtener el archivo PDF', error);
+                    this.loading = false;
                 }
             );
     }

@@ -49,7 +49,7 @@
                                         <span class=" badge">Id:</span>
                                         <div class="ms-2">{{ orden.idOrden }}</div>
                                     </div>
-                                    <div class="col-md-3 col-sm-6 col-6">
+                                    <div class="col-md-4 col-sm-6 col-6">
                                         <span class="badge">Empresa:</span>
                                         <div class="ms-2">{{ orden.empresa }}</div>
                                     </div>
@@ -57,15 +57,15 @@
                                         <span class="badge">Cliente:</span>
                                         <div class="ms-2">{{ orden.cliente }}</div>
                                     </div>
-                                    <div class="col-md-2 col-sm-6 col-3">
+                                    <div class="col-md-1 col-sm-6 col-3 text-center">
                                         <span class="badge">Tipo:</span>
-                                        <div class="ms-2">{{ orden.tipo }}</div>
+                                        <div class="ms-2 ">{{ orden.tipo }}</div>
                                     </div>
-                                    <div class="col-md-2 col-sm-6 col-3">
+                                    <div class="col-md-2 col-sm-6 col-3 text-center">
                                         <span class="badge">Estatus:</span>
                                         <div class="ms-2">{{ orden.estatus }}</div>
                                     </div>
-                                    <div class="col-md-2 col-sm-6 col-3">
+                                    <div class="col-md-2 col-sm-6 col-3 text-center">
                                         <span class="badge">F.Alta:</span>
                                         <div class="ms-2">{{ orden.fechaAlta }}</div>
                                     </div>
@@ -77,25 +77,30 @@
                                         <span class="badge">Facturado:</span>
                                         <div class="ms-2">${{ orden.facturado | number: '1.2' }}</div>
                                     </div>
-                                    <div class="col-md-2 col-sm-6 col-8">
+                                    <div class="col-md-3 col-sm-6 col-8">
                                         <span class="badge">Elabora:</span>
                                         <div class="ms-2">{{ orden.elabora }}</div>
                                     </div>
-                                    <div class="col-md-6 col-sm-6 col-12">
+                                    <div class="col-md-5 col-sm-6 col-12">
                                         <span class="badge">Observación:</span>
-                                        <div class="ms-2">{{ orden.observacion }}</div>
+                                        <div class="ms-2" style="font-size: smaller;">{{ orden.observacion }}</div>
                                     </div>
                                 </div>
+                                <div *ngIf="orden.loading" class="progress"></div>
                             </td>
                             <td class="text-center">
-                                <button type="button" class="btn btn-lg text-primary" (click)="imprimirOrden(orden.idOrden, orden.tipo)" data-bs-toggle="tooltip" title="Imprimir orden">
-                                    <i class="fa-solid fa-print" style="color: #0d6efd;"></i>
+                                <button type="button" class="btn btn-lg text-primary" (click)="imprimirOrden(orden.idOrden, orden.tipo)"
+                                        data-bs-toggle="tooltip" title="Imprimir orden" [disabled]="orden.loading">
+                                    <span>
+                                        <i class="fa-solid fa-print" style="color: darkslategray;"></i>
+                                    </span>
+
                                 </button>
                                 <button type="button" class="btn btn-lg text-secondary"
                                         (click)="openCargarFacturas(orden.idOrden, orden.empresa, orden.cliente, orden.total)"
                                         data-bs-toggle="tooltip" title="Facturas"
                                         [disabled]="orden.estatus === 'Completa'">
-                                    <i class="fa-solid fa-file-circle-check"></i>
+                                    <i class="fa-solid fa-file-invoice-dollar" style="color: #0d6efd;"></i>
                                 </button>
                             </td>
                         </tr>

@@ -12,10 +12,11 @@ namespace SistemaVentasBatia.Repositories
     {
         Task<Usuario> Login(Acceso acceso);
         Task<bool> ConsultarUsuario(int idPersonal, string Nombres);
-        Task<List<GraficaListado>> ObtenerListadosAnio(int anio, int idProveedor);
+        Task<GraficaListadoAnio[]> ObtenerListadosAnio(int anio, int idProveedor);
         Task<GraficaListado> ObtenerListadosAnioMes(int anio,int mes, int idProveedor);
         Task<List<GraficaOrden>> ObtenerOrdenesAnio(int anio, int idProveedor);
         Task<GraficaOrden> ObtenerOrdenesAnioMes(int anio, int mes, int idProveedor);
+        Task<string> ObtenerEvaluacionTiempoEntrega(int anio, int mes, int idProveedor);
     }
 
     public class UsuarioRepository : IUsuarioRepository
@@ -72,44 +73,56 @@ FROM personal where per_usuario = @Usuario and per_password = @Contrasena
             return result;
         }
 
-        public async Task<List<GraficaListado>> ObtenerListadosAnio(int anio, int idProveedor)
+        public async Task<GraficaListadoAnio[]> ObtenerListadosAnio(int anio, int idProveedor)
         {
             string query = @"
-	SELECT 
-    b.mes,
-    COUNT(*) AS TotalListadosPorMes,
-    SUM(CASE WHEN b.id_status = 1 THEN 1 ELSE 0 END) AS Alta,
-    SUM(CASE WHEN b.id_status = 2 THEN 1 ELSE 0 END) AS Aprobado,
-    SUM(CASE WHEN b.id_status = 3 THEN 1 ELSE 0 END) AS Despachado,
-    SUM(CASE WHEN b.id_status = 4 THEN 1 ELSE 0 END) AS Entregado,
-	SUM(CASE WHEN b.id_status = 5 THEN 1 ELSE 0 END) AS Cancelado
-FROM 
-    tb_cliente_inmueble a 
-LEFT OUTER JOIN 
-    tb_listadomaterial b ON a.id_inmueble = b.id_inmueble
-LEFT OUTER JOIN 
-    tb_proveedorinmueble e ON e.id_inmueble = a.id_inmueble
-WHERE 
-    e.id_proveedor = @idProveedor
-    AND a.id_status = 1 
-    AND a.materiales = 0
-    AND b.anio = @anio
-GROUP BY 
-    b.mes
-ORDER BY 
-    b.mes
-";
-            var listadosanio = new List<GraficaListado>();
+        SELECT 
+            b.mes,
+            COUNT(*) AS TotalListadosPorMes
+        FROM 
+            tb_cliente_inmueble a 
+        LEFT OUTER JOIN		
+            tb_listadomaterial b ON a.id_inmueble = b.id_inmueble
+        LEFT OUTER JOIN 
+            tb_proveedorinmueble e ON e.id_inmueble = a.id_inmueble
+        WHERE 
+            e.id_proveedor = @idProveedor
+            AND a.id_status = 1 
+            AND a.materiales = 0
+            AND b.anio = @anio
+        GROUP BY 
+            b.mes
+        ORDER BY 
+            b.mes
+    ";
+
             try
             {
                 using var connection = _ctx.CreateConnection();
-                listadosanio = (await connection.QueryAsync<GraficaListado>(query, new {anio, idProveedor})).ToList();
+                var listadosanio = await connection.QueryAsync<GraficaListadoAnio>(query, new { anio, idProveedor });
+
+                GraficaListadoAnio[] arreglo = new GraficaListadoAnio[12];
+                for (int i = 0; i < 12; i++)
+                {
+                    arreglo[i] = new GraficaListadoAnio
+                    {
+                        Mes = i + 1,
+                        TotalListadosPorMes = 0
+                    };
+                }
+
+                // Rellenar el arreglo con los valores de la consulta
+                foreach (var item in listadosanio)
+                {
+                    arreglo[item.Mes - 1] = item;
+                }
+
+                return arreglo;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            return listadosanio;
         }
 
         public async Task<GraficaListado> ObtenerListadosAnioMes(int anio, int mes, int idProveedor)
@@ -170,24 +183,33 @@ ORDER BY
         public async Task<List<GraficaOrden>> ObtenerOrdenesAnio(int anio, int idProveedor)
         {
             string query = @"
+WITH Meses AS (
+    SELECT 1 AS numero_mes, 'Ene' AS nombre_mes
+    UNION ALL SELECT 2, 'Feb'
+    UNION ALL SELECT 3, 'Mar'
+    UNION ALL SELECT 4, 'Abr'
+    UNION ALL SELECT 5, 'May'
+    UNION ALL SELECT 6, 'Jun'
+    UNION ALL SELECT 7, 'Jul'
+    UNION ALL SELECT 8, 'Ago'
+    UNION ALL SELECT 9, 'Sep'
+    UNION ALL SELECT 10, 'Oct'
+    UNION ALL SELECT 11, 'Nov'
+    UNION ALL SELECT 12, 'Dic'
+)
+
 SELECT 
-    m.numero_mes AS Mes,
-    COUNT(oc.mes) AS TotalOrdenesPorMes,
-    SUM(CASE WHEN oc.id_status = 1 THEN 1 ELSE 0 END) AS Alta,
-    SUM(CASE WHEN oc.id_status = 2 THEN 1 ELSE 0 END) AS Autorizada,
-    SUM(CASE WHEN oc.id_status = 3 THEN 1 ELSE 0 END) AS Rechazada,
-    SUM(CASE WHEN oc.id_status = 4 THEN 1 ELSE 0 END) AS Completa
+    Meses.numero_mes AS Mes,
+    COUNT(oc.id_orden) AS TotalOrdenesPorMes,
+    ISNULL(SUM(oc.total), 0) AS Total
 FROM 
-    (VALUES 
-        (1, 'Ene'), (2, 'Feb'), (3, 'Mar'), (4, 'Abr'), (5, 'May'), (6, 'Jun'),
-        (7, 'Jul'), (8, 'Ago'), (9, 'Sep'), (10, 'Oct'), (11, 'Nov'), (12, 'Dic')
-    ) AS m(numero_mes, nombre_mes)
+    Meses
 LEFT JOIN 
-    tb_ordencompra oc ON oc.mes = m.numero_mes AND oc.anio = @anio AND oc.id_proveedor = @idProveedor
+    tb_ordencompra oc ON MONTH(oc.falta) = Meses.numero_mes AND YEAR(oc.falta) = @anio AND oc.id_proveedor = @idProveedor
 GROUP BY 
-    m.numero_mes, m.nombre_mes
+    Meses.numero_mes
 ORDER BY 
-    m.numero_mes;
+    Meses.numero_mes;
 ";
             var ordenesanio = new List<GraficaOrden>();
             try
@@ -206,7 +228,7 @@ ORDER BY
         {
             string query = @"
 SELECT 
-    ISNULL(COUNT(oc.mes), 0) AS TotalPorMes,
+    ISNULL(COUNT(oc.falta), 0) AS TotalPorMes,
     ISNULL(SUM(CASE WHEN oc.id_status = 1 THEN 1 ELSE 0 END), 0) AS Alta,
     ISNULL(SUM(CASE WHEN oc.id_status = 2 THEN 1 ELSE 0 END), 0) AS Autorizada,
     ISNULL(SUM(CASE WHEN oc.id_status = 3 THEN 1 ELSE 0 END), 0) AS Rechazada,
@@ -214,12 +236,11 @@ SELECT
 FROM 
     tb_ordencompra oc
 WHERE 
-    oc.mes = @mes
-    AND oc.anio = @anio
+    MONTH(oc.falta) = @mes
+    AND YEAR(oc.falta) = @anio
     AND oc.id_proveedor = @idProveedor
 GROUP BY 
-    oc.mes, oc.anio;
-
+    MONTH(oc.falta), YEAR(oc.falta);
 ";
             try
             {
@@ -246,6 +267,58 @@ GROUP BY
             {
                 throw ex;
             }
+        }
+
+        public async Task<string> ObtenerEvaluacionTiempoEntrega(int anio, int mes,int idProveedor)
+        {
+            string query = @"
+DECLARE @TotalRegistros INT;
+SELECT @TotalRegistros = COUNT(*)
+FROM tb_cliente_inmueble a 
+LEFT OUTER JOIN tb_listadomaterial b ON a.id_inmueble = b.id_inmueble
+INNER JOIN tb_proveedorinmueble e ON e.id_inmueble = a.id_inmueble
+WHERE e.id_proveedor = @idProveedor AND 
+      a.id_status = 1 AND 
+      a.materiales = 0 AND
+      ISNULL(NULLIF(@mes, 0), b.mes) = b.mes AND
+      ISNULL(NULLIF(@anio, 0), b.anio) = b.anio;
+DECLARE @Iguales INT;
+SELECT @Iguales = COUNT(*)
+FROM tb_cliente_inmueble a 
+LEFT OUTER JOIN tb_listadomaterial b ON a.id_inmueble = b.id_inmueble
+INNER JOIN tb_proveedorinmueble e ON e.id_inmueble = a.id_inmueble
+WHERE e.id_proveedor = @idProveedor AND 
+      a.id_status = 1 AND 
+      a.materiales = 0 AND
+      ISNULL(NULLIF(@mes, 0), b.mes) = b.mes AND
+      ISNULL(NULLIF(@anio, 0), b.anio) = b.anio AND  
+      CONVERT(DATE, b.fcalendario) = CONVERT(DATE, b.fentrega);
+DECLARE @PorcentajeIguales DECIMAL(10, 2);
+
+IF @TotalRegistros > 0
+BEGIN
+    SET @PorcentajeIguales = (CONVERT(DECIMAL(10, 2), @Iguales) / CONVERT(DECIMAL(10, 2), @TotalRegistros)) * 100;
+END
+ELSE
+BEGIN
+    SET @PorcentajeIguales = 0;
+END
+SELECT 
+    @PorcentajeIguales AS PorcentajeIguales;
+
+";
+            decimal porcentaje = 0;
+            try
+            {
+                using var connection = _ctx.CreateConnection();
+                porcentaje = await connection.QueryFirstOrDefaultAsync<decimal>(query, new { anio, mes, idProveedor });
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            string porcentajeFormateado = porcentaje.ToString("0.##");
+            return porcentajeFormateado;
         }
     }
 }

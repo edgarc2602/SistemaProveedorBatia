@@ -30,7 +30,7 @@ export class FacturaComponent {
     ngOnInit() {
         this.getDias();
         this.obtenerOrdenes();
-    }   
+    }
     obtenerOrdenes() {
         this.idProveedor = this.user.idProveedor;
         this.http.get<ListadoOrdenCompra>(`${this.url}api/factura/ObtenerOrdenesCompra/${this.idProveedor}/${this.model.pagina}/${this.fechaInicio}/${this.fechaFin}/${this.idStatus}`).subscribe(response => {
@@ -62,26 +62,34 @@ export class FacturaComponent {
     }
     imprimirOrden(idOrden: number, tipo: string) {
         this.quitarFocoDeElementos();
-        this.http.get(`${this.url}api/report/DescargarReporteOrdenCompra/${idOrden}/${tipo}`, { responseType: 'arraybuffer' })
-            .subscribe(
-                (data: ArrayBuffer) => {
-                    const file = new Blob([data], { type: 'application/pdf' });
-                    const fileURL = URL.createObjectURL(file);
-                    const width = 800;
-                    const height = 550;
-                    const left = window.innerWidth / 2 - width / 2;
-                    const top = window.innerHeight / 2 - height / 2;
-                    const newWindow = window.open(fileURL, '_blank', `width=${width}, height=${height}, top=${top}, left=${left}`);
-                    if (newWindow) {
-                        newWindow.focus();
-                    } else {
-                        alert('La ventana emergente ha sido bloqueada. Por favor, permite ventanas emergentes para este sitio.');
+        const orden = this.model.ordenes.find((orden) => orden.idOrden === idOrden && orden.tipo === tipo);
+        if (orden) {
+            orden.loading = true;
+
+            this.http.get(`${this.url}api/report/DescargarReporteOrdenCompra/${idOrden}/${tipo}`, { responseType: 'arraybuffer' })
+                .subscribe(
+                    (data: ArrayBuffer) => {
+                        const file = new Blob([data], { type: 'application/pdf' });
+                        const fileURL = URL.createObjectURL(file);
+                        const width = 800;
+                        const height = 550;
+                        const left = window.innerWidth / 2 - width / 2;
+                        const top = window.innerHeight / 2 - height / 2;
+                        const newWindow = window.open(fileURL, '_blank', `width=${width}, height=${height}, top=${top}, left=${left}`);
+                        if (newWindow) {
+                            newWindow.focus();
+                        } else {
+                            alert('La ventana emergente ha sido bloqueada. Por favor, permite ventanas emergentes para este sitio.');
+                        }
+                        orden.loading = false;
+                    },
+                    error => {
+                        console.error('Error al obtener el archivo PDF', error);
+                        orden.loading = false;
                     }
-                },
-                error => {
-                    console.error('Error al obtener el archivo PDF', error);
-                }
-            );
+                );
+        }
+
     }
     arrayBufferToDataUrl(buffer: ArrayBuffer): string {
         const blob = new Blob([buffer], { type: 'application/pdf' });
@@ -91,7 +99,7 @@ export class FacturaComponent {
 
     openCargarFacturas(idOrden: number, empresa: string, cliente: string, total: number) {
         this.quitarFocoDeElementos();
-        this.upfact.open(idOrden, empresa, cliente,total);
+        this.upfact.open(idOrden, empresa, cliente, total);
     }
     returnModal($event) {
         this.obtenerOrdenes();

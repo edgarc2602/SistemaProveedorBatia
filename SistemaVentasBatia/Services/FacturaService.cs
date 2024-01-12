@@ -24,6 +24,7 @@ namespace SistemaVentasBatia.Services
         Task<bool> FacturaExiste(string uuid);
         Task<bool> CambiarStatusOrdenCompleta(int idOrden);
         Task<List<CatalogoDTO>> GetStatusOrdenCompra();
+        Task<DashOrdenMesDTO> GetDashOrdenMes(int idProveedor, int anio, int mes);
     }
 
     public class FacturaService : IFacturaService
@@ -97,8 +98,13 @@ namespace SistemaVentasBatia.Services
         public async Task<List<CatalogoDTO>> GetStatusOrdenCompra()
         {
             var statusc = new List<CatalogoDTO>();
-            statusc = _mapper.Map<List<CatalogoDTO>>(await _FacturaRepo.GetStatusOrdenCompra());
-            return statusc;
+            return statusc = _mapper.Map<List<CatalogoDTO>>(await _FacturaRepo.GetStatusOrdenCompra());
+        }
+
+        public async Task<DashOrdenMesDTO> GetDashOrdenMes(int idProveedor, int anio, int mes)
+        {
+            var dashOrdenMes = new DashOrdenMesDTO();
+            return dashOrdenMes = _mapper.Map<DashOrdenMesDTO>(await _FacturaRepo.GetDashOrdenMes(idProveedor, anio, mes));
         }
     }
 }

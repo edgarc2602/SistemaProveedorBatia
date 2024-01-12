@@ -39,7 +39,7 @@
         <li class="nav-item mb-3 text-sm-start text-md-center">
             <a *ngIf="isDarkTheme" class="nav-link"  data-bs-toggle="collapse"  data-bs-target="#sidebarMenu" (click)="toggleTheme()">
                 <div data-bs-toggle="tooltip" data-bs-placement="right">
-                    <span> <i class="fa-solid fa-sun fa-2x " style="color: white;"></i></span>
+                    <span> <i class="fa-solid fa-sun fa-2x " style="color: lightgray;"></i></span>
                     <div class=" d-block d-md-none"><h6>TEMA</h6></div>
                     <hr class="d-block d-md-none" />
                 </div>
@@ -48,7 +48,7 @@
         <li class="nav-item mb-3 text-sm-start text-md-center">
             <a *ngIf="!isDarkTheme" class="nav-link"  data-bs-toggle="collapse"  data-bs-target="#sidebarMenu" (click)="toggleTheme()">
                 <div data-bs-toggle="tooltip" data-bs-placement="right">
-                    <span> <i class="fa-solid fa-moon fa-2x" style="color: #333333;"></i></span>
+                    <span> <i class="fa-solid fa-moon fa-2x" style="color: #fff;"></i></span>
                     <div class=" d-block d-md-none"><h6>TEMA</h6></div>
                     <hr class="d-block d-md-none" />
                 </div>
@@ -107,7 +107,7 @@
         </li>
         <li class="nav-item mb-3 text-sm-start text-md-center">
             <div *ngIf="isDarkTheme" data-bs-toggle="tooltip" data-bs-placement="right" title="Tema claro">
-                <button class="btn" (click)="toggleTheme()"><i class="fa-solid fa-sun fa-2x " style="color: white;"></i></button>
+                <button class="btn" (click)="toggleTheme()"><i class="fa-solid fa-sun fa-2x " style="color: #fff;"></i></button>
             </div>
             <div *ngIf="!isDarkTheme" data-bs-toggle="tooltip" data-bs-placement="right" title="Tema oscuro">
                 <button class="btn" (click)="toggleTheme()"><i class="fa-solid fa-moon fa-2x" style="color: #333333;"></i></button>

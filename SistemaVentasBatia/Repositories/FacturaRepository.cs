@@ -33,6 +33,7 @@ namespace SistemaVentasBatia.Repositories
         Task<bool> FacturaExiste(string uuid);
         Task<bool> CambiarStatusOrdenCompleta(int idOrden);
         Task<List<Catalogo>> GetStatusOrdenCompra();
+        Task<DashOrdenMes> GetDashOrdenMes(int idProveedor, int anio, int mes);
     }
 
     public class FacturaRepository : IFacturaRepository
@@ -404,6 +405,45 @@ FROM tb_statusc WHERE id_status = 1 OR id_status = 4
                 throw ex;
             }
             return statusc;
+        }
+        public async Task<DashOrdenMes> GetDashOrdenMes(int idProveedor, int anio, int mes)
+        {
+            string query = @"
+SELECT 
+    SUM(Total) AS Total,
+    SUM(Facturado) AS Facturado
+FROM (
+    SELECT 
+        a.Total AS Total,
+        CAST(SUM(ISNULL(r.total, 0)) AS decimal(18, 2)) AS Facturado
+    FROM 
+        tb_ordencompra a 
+    INNER JOIN 
+        tb_empresa b ON a.id_empresa = b.id_empresa
+    LEFT OUTER JOIN 
+        tb_recepcion r ON r.id_orden = a.id_orden
+    WHERE 
+        a.id_proveedor = @idProveedor
+        AND MONTH(a.falta) = @mes
+        AND YEAR(a.falta) = @anio
+    GROUP BY 
+        a.id_orden,
+        a.Total,
+        a.observacion,
+        a.inventario
+) AS Subquery;
+    ";
+            var dashOrdenMes = new DashOrdenMes();
+            try
+            {
+                using var connection = _ctx.CreateConnection();
+                dashOrdenMes = await connection.QueryFirstAsync<DashOrdenMes>(query, new {idProveedor, anio, mes});
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            return dashOrdenMes;
         }
     }
 }

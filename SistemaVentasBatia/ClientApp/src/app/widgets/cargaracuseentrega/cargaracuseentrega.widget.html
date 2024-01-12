@@ -80,12 +80,13 @@
                         </div>
                     </div>
                     <div class="col-5 col-md-7">
-                        <button type="button" class="btn btn-outline-success" (click)="concluirEntrega()" id="concluirEntrega"><i class="fa-solid fa-box-open"></i> Concluir Entrega</button>
+                        <button type="button" class="btn btn-outline-success" (click)="concluirEntrega()" id="concluirEntrega"><i class="fa-solid fa-boxes-stacked"></i> Concluir Entrega</button>
                     </div>
                     <div class="col-3 col-md-2">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i> Cerrar</button>
                     </div>
                 </div>
+                <div *ngIf="loading" class="progressmodal"></div>
             </div>
         </div>
     </div>

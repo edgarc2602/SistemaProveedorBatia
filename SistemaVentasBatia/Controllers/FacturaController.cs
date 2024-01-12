@@ -39,7 +39,9 @@ namespace SistemaVentasBatia.Controllers
             return await _logic.ObtenerSumaFacturas(idOrden);
         }
 
+        //private readonly string FolderPath = "\\\\192.168.2.4\\c$\\inetpub\\wwwroot\\SINGA_APP\\Doctos\\compras\\";
         private readonly string FolderPath = "C:\\Users\\LAP_Sistemas5\\Desktop\\SINGA_NEW\\Doctos\\compras\\";
+
 
         [HttpPost("[action]/{idOrden}")]
         public async Task<bool> InsertarFacturasCarpeta([FromForm] IFormFile xml, [FromForm] IFormFile pdf, int idOrden)
@@ -142,6 +144,12 @@ namespace SistemaVentasBatia.Controllers
         public async Task<List<CatalogoDTO>> GetStatusOrdenCompra()
         {
             return await _logic.GetStatusOrdenCompra();
+        }
+
+        [HttpGet("[action]/{idProveedor}/{anio}/{mes}")]
+        public async Task<DashOrdenMesDTO> GetDashOrdenMes(int idProveedor, int anio, int mes)
+        {
+            return await _logic.GetDashOrdenMes(idProveedor, anio, mes);
         }
     }
 }

@@ -29,6 +29,7 @@ export class CargarAcuseEntregaWidget {
     archivo: string = '';
     carpeta: string = '';
     fechaEntrega: string = '';
+    loading: boolean = false;
 
     constructor(@Inject('BASE_URL') private url: string, private http: HttpClient) { }
     nuevo() {
@@ -79,6 +80,7 @@ export class CargarAcuseEntregaWidget {
         this.quitarFocoDeElementos();
     }
     guardarArchivo(): void {
+        this.loading = true;
         if (this.selectedFileName) {
             if (this.selectedFile) {
                 const formData = new FormData();
@@ -90,14 +92,17 @@ export class CargarAcuseEntregaWidget {
                     this.selectedFile = null;
                     this.obtenerAcusesListado(this.idListado);
                     this.resetFileInput();
+                    this.loading = false;
                 }, (error) => {
                     console.error('Error al guardar el archivo:', error);
+                    this.loading = false;
                 });
             } else {
                 console.error('No se ha seleccionado ningún archivo.');
             }
         }
         this.quitarFocoDeElementos();
+        this.loading = false;
     }
     eliminaAcuse() {
         this.http.delete<boolean>(`${this.url}api/entrega/eliminaacuse/${this.archivo}/${this.carpeta}/${this.idListado}`).subscribe(response => {
@@ -127,6 +132,7 @@ export class CargarAcuseEntregaWidget {
     }
 
     getImage(archivo: string, carpeta: string) {
+        this.loading = true;
         this.http.get(`${this.url}api/entrega/getimage/${archivo}/${carpeta}`, { responseType: 'blob' })
             .subscribe((data: Blob) => {
                 const extension = this.obtenerExtension(archivo);
@@ -170,10 +176,13 @@ export class CargarAcuseEntregaWidget {
                 } else {
                     alert('La ventana emergente ha sido bloqueada. Por favor, permite ventanas emergentes para este sitio.');
                 }
+                this.loading = false;
             }, error => {
                 console.error('Error al obtener el documento', error);
+                this.loading = false;
             });
         this.quitarFocoDeElementos();
+        this.loading = false;
     }
     obtenerExtension(archivo: string): string {
         const partes = archivo.split('.');

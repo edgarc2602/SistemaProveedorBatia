@@ -17,10 +17,11 @@ namespace SistemaVentasBatia.Services
     {
         Task<UsuarioDTO> Login(AccesoDTO dto);
         Task<bool> Existe(AccesoDTO dto);
-        Task<List<GraficaListado>> ObtenerListadosAnio(int anio, int idProveedor);
-        Task<GraficaListado> ObtenerListadosAnioMes(int anio,int mes, int idProveedor);
+        Task<GraficaListadoAnio[]> ObtenerListadosAnio(int anio, int idProveedor);
+        Task<GraficaListado> ObtenerListadosAnioMes(int anio, int mes, int idProveedor);
         Task<List<GraficaOrden>> ObtenerOrdenesAnio(int anio, int idProveedor);
         Task<GraficaOrden> ObtenerOrdenesAnioMes(int anio, int mes, int idProveedor);
+        Task<string> ObtenerEvaluacionTiempoEntrega(int anio, int mes, int idProveedor);
     }
     public class UsuarioService : IUsuarioService
     {
@@ -77,9 +78,9 @@ namespace SistemaVentasBatia.Services
             return usu;
         }
 
-        public async Task<List<GraficaListado>> ObtenerListadosAnio(int anio, int idProveedor)
+        public  Task<GraficaListadoAnio[]> ObtenerListadosAnio(int anio, int idProveedor)
         {
-            return await _repo.ObtenerListadosAnio(anio,idProveedor);
+            return  _repo.ObtenerListadosAnio(anio, idProveedor);
         }
 
         public async Task<GraficaListado> ObtenerListadosAnioMes(int anio, int mes, int idProveedor)
@@ -94,7 +95,12 @@ namespace SistemaVentasBatia.Services
 
         public async Task<GraficaOrden> ObtenerOrdenesAnioMes(int anio, int mes, int idProveedor)
         {
-            return await _repo.ObtenerOrdenesAnioMes(anio,mes,idProveedor);
+            return await _repo.ObtenerOrdenesAnioMes(anio, mes, idProveedor);
+        }
+
+        public async Task<string> ObtenerEvaluacionTiempoEntrega(int anio, int mes, int idProveedor)
+        {
+            return await _repo.ObtenerEvaluacionTiempoEntrega(anio, mes, idProveedor);
         }
     }
 }

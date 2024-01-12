@@ -33,7 +33,7 @@ export class CargarFacturaWidget {
     cliente: string = '';
     selectedPdf: File | null = null;
     selectedXml: File | null = null;
-    facturas: Factura = {} as Factura;
+    facturas: Factura[];
     xmldata: XMLData = {
         subTotal: 0, iva: 0, total: 0, fechaFactura: '', factura: '', uuid: ''
     }
@@ -46,6 +46,7 @@ export class CargarFacturaWidget {
         factura: '', idCliente: 0, idOrden: 0, idPersonal: 0, fechaFactura: '', dias: 0, subTotal: 0, iva: 0, total: 0, pdfName: '', xmlName: '', uuid: ''
     }
     total: number = 0;
+    loading: boolean = false;
 
     constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) { }
     nuevo() {
@@ -83,6 +84,8 @@ export class CargarFacturaWidget {
     }
 
     close() {
+        this.limpiarPDF();
+        this.limpiarXML();
         let docModal = document.getElementById('modalCargarFactura');
         let myModal = bootstrap.Modal.getOrCreateInstance(docModal);
         myModal.hide();
@@ -172,6 +175,7 @@ export class CargarFacturaWidget {
     }
 
     subirFacturas() {
+        this.loading = true;
         if (this.selectedPdf && this.selectedXml) {
             this.getDataInsertar();
             const formData = new FormData();
@@ -190,6 +194,7 @@ export class CargarFacturaWidget {
                 this.limpiarPDF();
                 this.limpiarXML();
                 this.obtenerDetallesOrden();
+                this.loading = false;
                 
             })
         }
@@ -227,8 +232,13 @@ export class CargarFacturaWidget {
     }
 
     obtenerListadoFacturas() {
-        this.http.get<Factura>(`${this.url}api/factura/obtenerfacturas/${this.idOrden}`).subscribe(response => {
-            this.facturas = response;
+        this.http.get<Factura[]>(`${this.url}api/factura/obtenerfacturas/${this.idOrden}`).subscribe(response => {
+            if (response.length == 0) {
+                this.facturas = null;
+            }
+            else {
+                this.facturas = response;
+            }
         })
     }
 
