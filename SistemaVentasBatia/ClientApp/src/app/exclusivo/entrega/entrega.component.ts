@@ -18,7 +18,6 @@ export class EntregaComponent {
         listas: [], numPaginas: 0, pagina: 1, rows: 0
     }
     meses: Catalogo[];
-    tipoListado: Catalogo[];
     statusl: Catalogo[];
     idStatus: number = 2;
     mes: number = 0;
@@ -39,9 +38,6 @@ export class EntregaComponent {
         
         http.get<Catalogo[]>(`${url}api/catalogo/obtenermeses`).subscribe(response => {
             this.meses = response;
-        })
-        http.get<Catalogo[]>(`${url}api/catalogo/obtenertipolistado`).subscribe(response => {
-            this.tipoListado = response;
         })
         http.get<Catalogo[]>(`${url}api/entrega/GetStatusListado`).subscribe(response => {
             this.statusl = response;

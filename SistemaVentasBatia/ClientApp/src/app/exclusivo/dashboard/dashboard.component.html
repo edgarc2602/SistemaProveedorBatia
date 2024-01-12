@@ -16,17 +16,15 @@
             <div class="col-md-6 col-sm-10"></div>
             <div class="col-md-3 col-6 mb-3 sticky-top">
                 <div class="form-floating box-shadow">
-
                     <select id="selectYear" class="form-select" [(ngModel)]="anio" (change)="getGraficas()">
                         <option *ngFor="let year of listaAnios" [value]="year">{{ year }}</option>
                     </select>
                     <label asp-for="selectYear">Año</label>
                 </div>
             </div>
-
             <div class="col-md-3 col-6 mb-3 sticky-top">
                 <div class="form-floating box-shadow">
-                    <select class="form-select" [(ngModel)]="mes" (change)="getGraficasMes()" id="ddlmes">
+                    <select id="ddlmes" class="form-select" [(ngModel)]="mes" (change)="getGraficasMes()" >
                         <option *ngFor="let m of meses" [ngValue]="m.id">{{ m.descripcion }}</option>
                     </select>
                     <label asp-for="ddlmes">Mes</label>

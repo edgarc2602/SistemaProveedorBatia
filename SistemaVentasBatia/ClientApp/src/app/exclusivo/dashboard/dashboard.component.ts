@@ -46,11 +46,7 @@ export class DashboardComponent implements OnInit {
     listaAnios: number[] = [];
 
 
-    constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {
-        http.get<Catalogo[]>(`${url}api/catalogo/obtenermeses`).subscribe(response => {
-            this.meses = response;
-        })
-    }
+    constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {}
     ngOnInit(): void {
         this.idProveedor = this.user.idProveedor;
         const fechaActual = new Date();
@@ -61,9 +57,15 @@ export class DashboardComponent implements OnInit {
         for (let i = 2018; i <= anioActual + 1; i++) {
             this.listaAnios.push(i);
         }
+        this.obtenerMeses();
         this.getPorcentajes();
         this.getGraficas();
         this.getEvaluaciones();
+    }
+    obtenerMeses() {
+        this.http.get<Catalogo[]>(`${this.url}api/catalogo/obtenermeses`).subscribe(response => {
+            this.meses = response;
+        })
     }
 
     getPorcentajes() {
@@ -96,7 +98,6 @@ export class DashboardComponent implements OnInit {
     }
 
     getGraficasMes() {
-        this.graficaListadoMes = null;
         this.http.get<GraficaListado>(`${this.url}api/usuario/obtenergraficalistadoaniomes/${this.anio}/${this.mes}/${this.idProveedor}`).subscribe(response => {
             if (response != null) {
                 this.graficaListadoMes = response;
