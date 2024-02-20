@@ -15,7 +15,7 @@
             </div>
             <div class="col-md-3 col-4 mb-3">
                 <div class="form-floating box-shadow">
-                    <select class="form-select" [(ngModel)]="mes" (change)="obtenerListados()" id="ddlmes">
+                    <select id="ddlmes" class="form-select" [(ngModel)]="mes" (change)="obtenerListados()">
                         <option *ngFor="let m of meses" [ngValue]="m.id">{{ m.descripcion }}</option>
                     </select>
                     <label asp-for="ddlmes">Mes</label>

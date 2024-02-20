@@ -1,4 +1,7 @@
-﻿<div [@fadeInOut]>
+﻿<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<div [@fadeInOut]>
     <br />
     <div class="col-12 mt-1 " style="position: relative;">
         <h1 class="h2" style="position: absolute; top: 0; left: 0; z-index: 1;">Dashboard</h1>
@@ -24,8 +27,8 @@
             </div>
             <div class="col-md-3 col-6 mb-3 sticky-top">
                 <div class="form-floating box-shadow">
-                    <select id="ddlmes" class="form-select" [(ngModel)]="mes" (change)="getGraficasMes()" >
-                        <option *ngFor="let m of meses" [ngValue]="m.id">{{ m.descripcion }}</option>
+                    <select id="ddlmes" class="form-select" [(ngModel)]="mes" (change)="getGraficasMes()">
+                        <option *ngFor="let m of mesesc" [ngValue]="m.id">{{ m.descripcion }}</option>
                     </select>
                     <label asp-for="ddlmes">Mes</label>
                 </div>
@@ -36,16 +39,16 @@
 
     <br />
     <div class="row mb-3">
-        <div class="col-6 col-md-3" data-toggle="tooltip" data-placement="top" title="Evaluación general">
+        <div class="col-6 col-md-3 mb-3" data-toggle="tooltip" data-placement="top" title="Evaluación general">
             <div class="card box-shadow">
                 <div class="card-body">
                     <h5 class="card-title mb-4">Mi evaluación final</h5>
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <i class="fa-solid fa-user-check fa-3x"></i>
+                            <i class="fa-solid fa-user-check fa-3x"style="color:royalblue" ></i>
                         </div>
-                        <div class="display-6">
-                            %{{ graficaListadoMes.aprobado }}
+                        <div class="display-6">0%
+                            <!--%{{ graficaListadoMes.aprobado }}-->
                         </div>
                     </div>
                 </div>
@@ -57,10 +60,10 @@
                     <h5 class="card-title mb-4">Entregas en tiempo</h5>
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <i class="fa-solid fa-truck-front fa-3x"></i>
+                            <i class="fa-solid fa-truck-front fa-3x"style="color: brown;"></i>
                         </div>
                         <div class="display-6">
-                            %{{ porcentajeTiempoEntrega }}
+                            {{ porcentajeTiempoEntrega }}%
                         </div>
                     </div>
                 </div>
@@ -72,10 +75,10 @@
                     <h5 class="card-title mb-4">Carga de acuses</h5>
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <i class="fa-solid fa-upload fa-3x"></i>
+                            <i class="fa-solid fa-upload fa-3x"style="color: aqua;"></i>
                         </div>
-                        <div class="display-6">
-                            %{{ graficaListadoMes.entregado }}
+                        <div class="display-6">0%
+                            <!--%{{ graficaListadoMes.entregado }}-->
                         </div>
                     </div>
                 </div>
@@ -87,8 +90,7 @@
 
     <h5>Historial de evaluaciones</h5>
     <br />
-    <div class="row box-shadow" style="border-radius: 10px; overflow-x: hidden;">
-        <div style="max-height: 320px; overflow-y: auto;">
+    
             <br />
             <div id="accordion">
                 <div *ngFor="let eva of listaEvaluaciones" class="btn col-md-12 text-start" data-bs-toggle="collapse" [attr.href]="'#dvDetalleEvaluacion' + eva.idEvaluacionProveedor" style="cursor: pointer;">
@@ -100,40 +102,43 @@
                             </h6>
                         </div>
                     </div>
-                    <div [id]="'dvDetalleEvaluacion' + eva.idEvaluacionProveedor" class="collapse" data-bs-parent="#accordion">
-                        <div class="card-body">
-                            <br />
-                            <div style="border-radius: 10px; overflow-x: hidden;">
-                                <table class="table table-borderless table-responsive table-striped" id="tbOperarios">
-                                    <tbody>
-                                        <tr *ngFor="let det of filtroPlan(eva.idEvaluacionProveedor)" id="tr{{ det.idEvaluacionProveedor }}">
-                                            <td>
-                                                <div class="row">
-                                                    <div class="col-8 col-sm-3 col-md-3">
-                                                        <span class="badge">Descripcion:</span>
-                                                        <div class="ms-1">{{ det.descripcion }}</div>
-                                                    </div>
-                                                    <div class="col-4 col-sm-2 col-md-2">
-                                                        <span class="badge">Calificacion:</span>
-                                                        <div class="ms-4">{{ det.calificacion }}</div>
-                                                    </div>
-                                                    <div class="col-12 col-sm-7 col-md-7">
-                                                        <span class="badge">Criterios:</span>
-                                                        <div class="ms-1" style="font-size: smaller;">{{ det.criterios }}</div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                    <div class="row box-shadow" style="border-radius: 10px; overflow-x: hidden;">
+                        <div style="max-height: 400px; overflow-y: auto;">
+                            <div [id]="'dvDetalleEvaluacion' + eva.idEvaluacionProveedor" class="collapse" data-bs-parent="#accordion">
+                                <div class="card-body">
+                                    <br />
+                                    <div style="border-radius: 10px; overflow-x: hidden;">
+                                        <table class="table table-borderless table-responsive table-striped" id="tbOperarios">
+                                            <tbody>
+                                                <tr *ngFor="let det of filtroPlan(eva.idEvaluacionProveedor)" id="tr{{ det.idEvaluacionProveedor }}">
+                                                    <td>
+                                                        <div class="row">
+                                                            <div class="col-8 col-sm-3 col-md-3">
+                                                                <span class="badge">Descripcion:</span>
+                                                                <div class="ms-1">{{ det.descripcion }}</div>
+                                                            </div>
+                                                            <div class="col-4 col-sm-2 col-md-2">
+                                                                <span class="badge">Calificacion:</span>
+                                                                <div class="ms-4">{{ det.calificacion }}</div>
+                                                            </div>
+                                                            <div class="col-12 col-sm-7 col-md-7">
+                                                                <span class="badge">Criterios:</span>
+                                                                <div class="ms-1" style="font-size: smaller;">{{ det.criterios }}</div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <br />
-        </div>
-    </div>
+
     <br />
     <hr>
     <br />
@@ -151,7 +156,7 @@
                         <h5 class="card-title mb-4">Aprobado</h5>
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
-                                <i class="fa-solid fa-check fa-3x"></i>
+                                <i class="fa-solid fa-check fa-3x" style="color: yellowgreen"></i>
                             </div>
                             <div class="display-6">
                                 {{ graficaListadoMes.aprobado }}
@@ -166,7 +171,7 @@
                         <h5 class="card-title mb-4">Entregado</h5>
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
-                                <i class="fa-solid fa-truck-front fa-3x"></i>
+                                <i class="fa-solid fa-truck-front fa-3x"style="color: brown;"></i>
                             </div>
                             <div class="display-6">
                                 {{ graficaListadoMes.entregado }}
@@ -208,7 +213,7 @@
                                 <h5 class="card-title mb-4">Completa</h5>
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div>
-                                        <i class="fa-solid fa-truck-front fa-3x"></i>
+                                        <i class="fa-solid fa-truck-front fa-3x"style="color: brown;"></i>
                                     </div>
                                     <div class="display-6">
                                         {{ graficaOrdenMes.completa }}
@@ -225,7 +230,7 @@
                                 <h5 class="card-title mb-4">Total</h5>
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div>
-                                        <i class="fa-solid fa-money-bills fa-3x"></i>
+                                        <i class="fa-solid fa-money-bills fa-3x"style="color: green"></i>
                                     </div>
                                     <div style="font-size: x-large;">
                                         ${{ dashOrdenMes.total | number: '1.2' }}
@@ -240,7 +245,7 @@
                                 <h5 class="card-title mb-4">Facturado</h5>
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div>
-                                        <i class="fa-solid fa-file-invoice-dollar fa-3x"></i>
+                                        <i class="fa-solid fa-file-invoice-dollar fa-3x"style="color: purple;"></i>
                                     </div>
                                     <div style="font-size: x-large;">
                                         ${{ dashOrdenMes.facturado | number: '1.2' }}

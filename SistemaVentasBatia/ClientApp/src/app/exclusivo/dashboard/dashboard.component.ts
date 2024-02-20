@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit, Inject } from '@angular/core';
-import * as Highcharts from 'highcharts';
+    import * as Highcharts from 'highcharts';
 import { fadeInOut } from 'src/app/fade-in-out';
 import { HttpClient } from '@angular/common/http';
 import { GraficaListado } from '../../models/graficalistado';
@@ -8,12 +8,8 @@ import { GraficaOrden } from '../../models/graficaorden';
 import { StoreUser } from 'src/app/stores/StoreUser';
 import { ListaEvaluacionProveedor } from '../../models/listaevaluacionproveedor';
 import { DashOrdenMes } from '../../models/dashordenmes';
-import HC_exporting from 'highcharts/modules/exporting';
 import { GraficaListadoAnio } from '../../models/graficalistadoanio';
-HC_exporting(Highcharts);
 
-import { debounceTime, switchMap } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 
 
 @Component({
@@ -22,6 +18,7 @@ import { Subject } from 'rxjs';
     animations: [fadeInOut],
 })
 export class DashboardComponent implements OnInit {
+    mesesc: Catalogo[];
     graficaListadoMes: GraficaListado = {
         mes: 0, totalListadosPorMes: 0, alta: 0, aprobado: 0, despachado: 0, entregado: 0, cancelado: 0
     }
@@ -34,7 +31,7 @@ export class DashboardComponent implements OnInit {
     mes: number = 0;
     anio: number = 0;
     idProveedor: number = 0;
-    meses: Catalogo[];
+   
 
     listaEvaluaciones: ListaEvaluacionProveedor = {
         evaluacion: [], idEvaluacionProveedor: 0, idProveedor: 0, idStatus: 0, fechaEvaluacion: '', numeroContrato: '', promedio: 0, textoPromedio: '', idUsuario: 0
@@ -46,9 +43,12 @@ export class DashboardComponent implements OnInit {
     listaAnios: number[] = [];
 
 
-    constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {}
+    constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {
+        http.get<Catalogo[]>(`${url}api/catalogo/obtenermeses`).subscribe(response => {
+            this.mesesc = response;
+        })
+    }
     ngOnInit(): void {
-        this.idProveedor = this.user.idProveedor;
         const fechaActual = new Date();
         this.anio = fechaActual.getFullYear();
         const fechaActualMes = new Date();
@@ -57,15 +57,9 @@ export class DashboardComponent implements OnInit {
         for (let i = 2018; i <= anioActual + 1; i++) {
             this.listaAnios.push(i);
         }
-        this.obtenerMeses();
         this.getPorcentajes();
         this.getGraficas();
         this.getEvaluaciones();
-    }
-    obtenerMeses() {
-        this.http.get<Catalogo[]>(`${this.url}api/catalogo/obtenermeses`).subscribe(response => {
-            this.meses = response;
-        })
     }
 
     getPorcentajes() {
@@ -83,13 +77,13 @@ export class DashboardComponent implements OnInit {
 
     getGraficasAnio() {
         this.graficaListadoAnio = null;
-        this.http.get<GraficaListadoAnio[]>(`${this.url}api/usuario/obtenergraficalistadoanio/${this.anio}/${this.idProveedor}`).subscribe(response => {
+        this.http.get<GraficaListadoAnio[]>(`${this.url}api/usuario/obtenergraficalistadoanio/${this.anio}/${this.user.idProveedor}`).subscribe(response => {
             if (response.length != 0) {
                 this.graficaListadoAnio = response;
                 this.getGraficaListadoAnio();
             }
         }, err => console.log(err));
-        this.http.get<GraficaOrden[]>(`${this.url}api/usuario/obtenerordenesanio/${this.anio}/${this.idProveedor}`).subscribe(response => {
+        this.http.get<GraficaOrden[]>(`${this.url}api/usuario/obtenerordenesanio/${this.anio}/${this.user.idProveedor}`).subscribe(response => {
             if (response.length != 0) {
                 this.graficaOrdenAnio = response;
                 this.getGraficaOrdenAnio();
@@ -98,12 +92,12 @@ export class DashboardComponent implements OnInit {
     }
 
     getGraficasMes() {
-        this.http.get<GraficaListado>(`${this.url}api/usuario/obtenergraficalistadoaniomes/${this.anio}/${this.mes}/${this.idProveedor}`).subscribe(response => {
+        this.http.get<GraficaListado>(`${this.url}api/usuario/obtenergraficalistadoaniomes/${this.anio}/${this.mes}/${this.user.idProveedor}`).subscribe(response => {
             if (response != null) {
                 this.graficaListadoMes = response;
             }
         }, err => console.log(err));
-        this.http.get<GraficaOrden>(`${this.url}api/usuario/obtenerordenesaniomes/${this.anio}/${this.mes}/${this.idProveedor}`).subscribe(response => {
+        this.http.get<GraficaOrden>(`${this.url}api/usuario/obtenerordenesaniomes/${this.anio}/${this.mes}/${this.user.idProveedor}`).subscribe(response => {
             if (response != null) {
                 this.graficaOrdenMes = response;
             }

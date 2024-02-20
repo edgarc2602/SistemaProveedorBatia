@@ -33,7 +33,7 @@ namespace SistemaVentasBatia.Repositories
             string query = @"
 SELECT * FROM (
 SELECT
-ROW_NUMBER() over (order by b.razonsocial desc ) as rownum, 
+ROW_NUMBER() over (order by a.fregistro desc ) as rownum, 
     b.razonsocial AS Nombre,
     a.factura AS Factura,
     a.total AS Total,
@@ -47,7 +47,7 @@ ROW_NUMBER() over (order by b.razonsocial desc ) as rownum,
         ELSE 0
     END AS DiasVencido,
     CASE
-        WHEN FLOOR(DATEDIFF(day, a.fvence, GETDATE())) = 0 THEN (a.total - a.pago)
+        WHEN a.fvence >= GETDATE() THEN (a.total - a.pago)
         ELSE 0
     END AS Corriente,
     CASE
@@ -66,6 +66,7 @@ ROW_NUMBER() over (order by b.razonsocial desc ) as rownum,
         WHEN FLOOR(DATEDIFF(day, a.fvence, GETDATE())) >= 91 THEN (a.total - a.pago)
         ELSE 0
     END AS Mes4
+	
 FROM
     tb_provision a
 INNER JOIN
