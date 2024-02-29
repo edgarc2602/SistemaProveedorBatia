@@ -38,6 +38,7 @@ export class LoginComponent {
 
                 
             }, err => {
+                this.isLoading = false;
                 console.log(err);
                 if (err.error) {
                     if (err.error.errors) {
@@ -50,6 +51,7 @@ export class LoginComponent {
                 }
             });
         }
+        this.isLoading = false;
     }
 
     review(event: any) {

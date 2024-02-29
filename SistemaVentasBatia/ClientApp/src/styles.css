@@ -282,7 +282,7 @@ tbody tr:hover {
     position: sticky;
     top: 65px;
     background-color: transparent;
-    z-index: 102;
+    z-index: 100;
 }
 
 .translucent {
