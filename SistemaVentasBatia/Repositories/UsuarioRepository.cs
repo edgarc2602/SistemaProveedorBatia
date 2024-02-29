@@ -17,6 +17,8 @@ namespace SistemaVentasBatia.Repositories
         Task<List<GraficaOrden>> ObtenerOrdenesAnio(int anio, int idProveedor);
         Task<GraficaOrden> ObtenerOrdenesAnioMes(int anio, int mes, int idProveedor);
         Task<string> ObtenerEvaluacionTiempoEntrega(int anio, int mes, int idProveedor);
+        Task<int> ObtenerTotalListadosPorAnioMes(int anio, int mes, int idProveedor);
+        Task<int> ObtenerTotalAcusesPorAnioMes(int anio, int mes, int idProveedor);
     }
 
     public class UsuarioRepository : IUsuarioRepository
@@ -87,9 +89,10 @@ FROM personal where per_usuario = @Usuario and per_password = @Contrasena
             tb_proveedorinmueble e ON e.id_inmueble = a.id_inmueble
         WHERE 
             e.id_proveedor = @idProveedor
-            AND a.id_status = 1 
+            AND a.id_status = 1
             AND a.materiales = 0
             AND b.anio = @anio
+	        AND b.id_status IN (2,4)
         GROUP BY 
             b.mes
         ORDER BY 
@@ -148,6 +151,7 @@ FROM personal where per_usuario = @Usuario and per_password = @Contrasena
             AND a.materiales = 0
             AND b.anio = @anio
             AND b.mes = @mes
+	        AND b.id_status IN (2,4)
         GROUP BY 
             b.mes
         ORDER BY 
@@ -319,6 +323,61 @@ SELECT
             }
             string porcentajeFormateado = porcentaje.ToString("0.##");
             return porcentajeFormateado;
+        }
+
+        public async Task<int> ObtenerTotalListadosPorAnioMes(int anio, int mes, int idProveedor)
+        {
+            string query = @"
+                SELECT COUNT(*) AS TotalRegistros
+                FROM tb_listadomaterial a
+                inner join tb_proveedorinmueble e ON e.id_inmueble = a.id_inmueble
+                WHERE
+                e.id_proveedor = @idProveedor and 
+                a.id_status IN (2,4) AND
+                ISNULL(NULLIF(@mes,0), a.mes) = a.mes AND
+                ISNULL(NULLIF(@anio,0), a.anio) = a.anio
+                ";
+            int rows;
+            try
+            {
+                using (var connection = _ctx.CreateConnection())
+                {
+                    rows = await connection.QuerySingleAsync<int>(query, new { anio,mes, idProveedor });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return rows;
+        }
+        public async Task<int> ObtenerTotalAcusesPorAnioMes(int anio, int mes, int idProveedor)
+        {
+            string query = @"
+                SELECT 
+                COUNT(*) AS AcusesCargados
+                FROM tb_listadomaterial a
+                INNER JOIN tb_listadomateriala b ON b.id_listado = a.id_listado
+                inner join tb_proveedorinmueble e ON e.id_inmueble = a.id_inmueble
+                WHERE
+                e.id_proveedor = @idProveedor and 
+                a.id_status IN (2,4) AND
+                ISNULL(NULLIF(@mes,0), a.mes) = a.mes AND
+                ISNULL(NULLIF(@anio,0), a.anio) = a.anio 
+            ";
+            int rows;
+            try
+            {
+                using (var connection = _ctx.CreateConnection())
+                {
+                    rows = await connection.QuerySingleAsync<int>(query, new { anio, mes, idProveedor });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return rows;
         }
     }
 }

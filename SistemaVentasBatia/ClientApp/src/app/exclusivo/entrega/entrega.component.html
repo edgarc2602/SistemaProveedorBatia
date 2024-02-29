@@ -9,13 +9,13 @@
         <div class="row">
             <div class="col-md-3 col-4 mb-3">
                 <div class="form-floating box-shadow">
-                    <input type="number" class="form-control" [(ngModel)]="anio" id="Anio" placeholder="Escriba un año" (input)="obtenerListados()">
+                    <input type="number" class="form-control" [(ngModel)]="anio" id="Anio" placeholder="Escriba un año" (input)="obtenerListados(1)">
                     <label asp-for="anio">Año</label>
                 </div>
             </div>
             <div class="col-md-3 col-4 mb-3">
                 <div class="form-floating box-shadow">
-                    <select id="ddlmes" class="form-select" [(ngModel)]="mes" (change)="obtenerListados()">
+                    <select id="ddlmes" class="form-select" [(ngModel)]="mes" (change)="obtenerListados(1)">
                         <option *ngFor="let m of meses" [ngValue]="m.id">{{ m.descripcion }}</option>
                     </select>
                     <label asp-for="ddlmes">Mes</label>
@@ -23,7 +23,7 @@
             </div>
             <div class="col-md-3 col-4 mb-3">
                 <div class="form-floating box-shadow">
-                    <select class="form-select" [(ngModel)]="idStatus" (change)="obtenerListados()">
+                    <select class="form-select" [(ngModel)]="idStatus" (change)="obtenerListados(1)">
                         <option *ngFor="let s of statusl" [ngValue]="s.id">{{ s.descripcion }}</option>
                     </select>
                     <label asp-for="ddlmes">Estatus</label>
@@ -31,10 +31,19 @@
             </div>
         </div>
     </div>
-    <div class="row box-shadow" style="border-radius: 10px; overflow-x: hidden;">
+    <div *ngIf="isLoading || (model.listas && model.listas.length === 0)" class="row-12 text-center">
+        <hr />
+        <br />
+        <h6 *ngIf="isLoading">Cargando...</h6>
+        <h6 *ngIf="!isLoading && model.listas && model.listas.length === 0">No se encontraron registros</h6>
+    </div>
+    <div *ngIf="isLoading" class="text-center ">
+        <i class="fas fa-spinner fa-spin fa-3x"></i>
+    </div>
+    <div *ngIf="model.listas && model.listas.length > 0" class="row box-shadow" style="border-radius: 10px; overflow-x: hidden;">
         <div style="max-height: 450px; overflow-y: auto;">
             <div class="row">
-                <table class="table table-borderless table-striped table-responsive text-center">
+                <table class="table table-borderless table-striped table-responsive">
                     <thead class="sticky-top d-md-none">
                         <tr class="text-start sticky-top">
                             <th>Listados</th>
@@ -45,25 +54,29 @@
                         <tr>
                             <td>
                                 <div class="row" style="font-weight: bold;">
-                                    <div class="col-md-1 col-sm-6 col-2">
-                                        <span class="text-white d-none d-md-block">Id</span>
-                                    </div>
-                                    <div class="col-md-2 col-sm-6 col-8">
-                                        <span class="text-white d-none d-md-block">Sucursal</span>
-                                    </div>
+
                                     <div class="col-md-1 col-sm-6 col-2">
                                         <span class="text-white d-none d-md-block">Listado</span>
                                     </div>
+                                    <div class="col-md-3 col-sm-6 col-8">
+                                        <span class="text-white d-none d-md-block">Cliente</span>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6 col-8">
+                                        <span class="text-white d-none d-md-block">Sucursal</span>
+                                    </div>
+                                    <!--<div class="col-md-1 col-sm-6 col-2">
+                                        <span class="text-white d-none d-md-block">Id</span>
+                                    </div>-->
                                     <div class="col-md-2 col-sm-6 col-3">
                                         <span class="text-white d-none d-md-block">Tipo</span>
                                     </div>
-                                    <div class="col-md-2 col-sm-6 col-3">
+                                    <!--<div class="col-md-2 col-sm-6 col-3">
                                         <span class="text-white d-none d-md-block">Estatus</span>
-                                    </div>
+                                    </div>-->
                                     <div class="col-md-2 col-sm-6 col-3">
                                         <span class="text-white d-none d-md-block">F.Creación</span>
                                     </div>
-                                    <div class="col-md-2 col-sm-6 col-3">
+                                    <div class="col-md-1 col-sm-6  col-3">
                                         <span class="text-white d-none d-md-block">F.Entrega</span>
                                     </div>
                                 </div>
@@ -81,32 +94,39 @@
                             <td>
                                 <div class="row">
                                     <div class="col-md-1 col-sm-6 col-2">
-                                        <span class="badge d-md-none">Id:</span>
-                                        <div class=" ms-2">{{ listado.idInmueble }}</div>
-                                    </div>
-                                    <div class="col-md-2 col-sm-6 col-8">
-                                        <span class="badge d-md-none">Sucursal:</span>
-                                        <div class="ms-2">{{ listado.nombreSucursal }}</div>
-                                    </div>
-                                    <div class="col-md-1 col-sm-6 col-2">
                                         <span class="badge d-md-none">Listado:</span>
-                                        <div class="ms-2">{{ listado.idListado }}</div>
+                                        <div>{{ listado.idListado }}</div>
                                     </div>
-                                    <div class="col-md-2 col-sm-6 col-3">
+                                    <div class="col-md-3 col-sm-6 col-4">
+                                        <span class="badge d-md-none">Cliente:</span>
+                                        <div>{{ listado.cliente }}</div>
+                                        <!--<small>{{ listado.cliente }}</small>-->
+                                    </div>
+                                    <div class="col-md-3 col-sm-6 col-6">
+                                        <span class="badge d-md-none">Sucursal:</span>
+                                        <!--<small>{{ listado.nombreSucursal }}</small>-->
+                                        <div>{{ listado.nombreSucursal }}</div>
+                                    </div>
+                                    <!--<div class="col-md-1 col-sm-6 col-2">
+                                        <span class="badge d-md-none">Id:</span>
+                                        <div >{{ listado.idInmueble }}</div>
+                                    </div>-->
+                                    <div class="col-md-2 col-sm-6 col-4">
                                         <span class="badge d-md-none">Tipo:</span>
-                                        <div class="ms-2">{{ listado.tipo }}</div>
+                                        <div>{{ listado.tipo }}</div>
                                     </div>
-                                    <div class="col-md-2 col-sm-6 col-3">
+                                    <!--<div class="col-md-2 col-sm-6 col-3">
                                         <span class="badge d-md-none">Estatus:</span>
                                         <div class="ms-2">{{ listado.estatus }}</div>
-                                    </div>
-                                    <div class="col-md-2 col-sm-6 col-3">
+                                    </div>-->
+
+                                    <div class="col-md-2 col-sm-6 col-4">
                                         <span class="badge d-md-none">F.Creacion:</span>
-                                        <div class="ms-2">{{ listado.fechaAlta }}</div>
+                                        <div>{{ listado.fechaAlta }}</div>
                                     </div>
-                                    <div class="col-md-2 col-sm-6 col-3">
+                                    <div class="col-md-1 col-sm-6 col-4">
                                         <span class="badge d-md-none">F.Entrega:</span>
-                                        <div class="ms-2">{{ listado.fechaEntrega }}</div>
+                                        <div>{{ listado.fechaEntrega }}</div>
                                     </div>
                                 </div>
                             </td>
@@ -118,9 +138,8 @@
                                             <i class="fa-solid fa-list" style="color: darkslategray;"></i>
                                         </button>
                                         <button type="button" class="btn btn-lg text-secondary"
-                                                (click)="verAcuses(listado.idListado, listado.nombreSucursal, listado.tipo, listado.prefijo)"
-                                                data-bs-toggle="tooltip" title="Acuse"
-                                                [disabled]="listado.estatus === 'Entregado'">
+                                                (click)="verAcuses(listado.idListado, listado.nombreSucursal, listado.tipo, listado.prefijo, listado.estatus, listado.fechaEntrega)"
+                                                data-bs-toggle="tooltip" title="Acuse">
                                             <i class="fa-solid fa-file-circle-check" style="color: #0d6efd;"></i>
                                         </button>
                                     </div>
@@ -132,8 +151,10 @@
             </div>
         </div>
     </div>
-    <br />
-    <pagina-widget [pagina]="model.pagina" [numPaginas]="model.numPaginas" [rows]="model.rows" (chgEvent)="muevePagina($event)"></pagina-widget>
+    <div *ngIf="model.listas && model.listas.length > 0">
+        <br />
+        <pagina-widget [pagina]="model.pagina" [numPaginas]="model.numPaginas" [rows]="model.rows" (chgEvent)="muevePagina($event)"></pagina-widget>
+    </div>
 </div>
 <detallematerialeslistado-widget></detallematerialeslistado-widget>
 <cargaracuseentrega-widget (ansEvent)="openConfirmacion($event)" (entregado)="entregado($event)"></cargaracuseentrega-widget>

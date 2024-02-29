@@ -54,5 +54,11 @@ namespace SistemaVentasBatia.Controllers
         {
             return await _logic.ObtenerEvaluacionTiempoEntrega(anio, mes, idProveedor);
         }
+        
+        [HttpGet("[action]/{anio}/{mes}/{idProveedor}")]
+        public async Task<decimal> ObtenerPorcentajeCargaAcuses(int anio, int mes, int idProveedor)
+        {
+            return await _logic.ObtenerPorcentajeCargaAcuses(anio, mes, idProveedor);
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿import { Component, Inject, ViewChild } from '@angular/core';
+﻿    import { Component, Inject, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { fadeInOut } from 'src/app/fade-in-out';
 import { StoreUser } from 'src/app/stores/StoreUser';
@@ -33,6 +33,9 @@ export class EntregaComponent {
     sucursal: string = '';
     tipostring: string = '';
     prefijo: string = '';
+    estatus: string = '';
+    fechaEntrega: string = '';
+    isLoading: boolean = false;
 
     constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {
         
@@ -48,20 +51,32 @@ export class EntregaComponent {
         this.anio = fechaActual.getFullYear();
         const fechaActualMes = new Date();
         this.mes = fechaActualMes.getMonth() + 1;
-        this.obtenerListados();
+        this.obtenerListados(1);
     }
-    obtenerListados() {
+    obtenerListados(filtro: number) {
+        if (filtro == 1) {
+            this.model.listas = [];
+            this.model.pagina = 1;
+            this.isLoading = true;
+        }
         this.idProveedor = this.user.idProveedor;
         this.http.get<ListadoMateriales>(`${this.url}api/entrega/obtenerlistados/${this.mes}/${this.anio}/${this.idProveedor}/${this.idEstado}/${this.tipo}/${this.model.pagina}/${this.idStatus}`).subscribe(response => {
-            this.model = response;
-        }, err => console.log(err));
+            setTimeout(() => {
+                this.model = response;
+                this.isLoading = false;
+            }, 300);
+        }, err => {
+            setTimeout(() => {
+                this.isLoading = false;
+            }, 300);
+        });
     }
     goBack() {
         window.history.back();
     }
     muevePagina(event) {
         this.model.pagina = event;
-        this.obtenerListados();
+        this.obtenerListados(2);
     }
 
     obtenerMateriales(idListado: number, sucursal: string, tipo: string, prefijo: string) {
@@ -69,20 +84,22 @@ export class EntregaComponent {
         this.matLis.open(idListado, sucursal, tipo, prefijo);
     }
 
-    verAcuses(idListado: number, sucursal: string, tipo: string, prefijo: string) {
+    verAcuses(idListado: number, sucursal: string, tipo: string, prefijo: string, estatus: string, fechaEntrega: string) {
         this.idListado = idListado;
         this.sucursal = sucursal;
         this.tipostring = tipo;
         this.prefijo = prefijo;
+        this.estatus = estatus;
+        this.fechaEntrega = fechaEntrega; 
         this.quitarFocoDeElementos();
-        this.acuse.open(idListado, sucursal, tipo, prefijo);
+        this.acuse.open(idListado, sucursal, tipo, prefijo, estatus, fechaEntrega);
     }
 
     returnConfirmacion($event) {
         if ($event == true) {
             this.acuse.eliminaAcuse();
         }
-        this.acuse.open(this.idListado, this.sucursal, this.tipostring, this.prefijo);
+        this.acuse.open(this.idListado, this.sucursal, this.tipostring, this.prefijo, this.estatus, this.fechaEntrega);
     }
 
     openConfirmacion($event) {
@@ -93,7 +110,7 @@ export class EntregaComponent {
         }
     }
     entregado($event) {
-        this.obtenerListados();
+        this.obtenerListados(2);
     }
     quitarFocoDeElementos(): void {
         const elementos = document.querySelectorAll('button, input[type="text"]');

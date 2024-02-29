@@ -22,6 +22,7 @@ namespace SistemaVentasBatia.Services
         Task<List<GraficaOrden>> ObtenerOrdenesAnio(int anio, int idProveedor);
         Task<GraficaOrden> ObtenerOrdenesAnioMes(int anio, int mes, int idProveedor);
         Task<string> ObtenerEvaluacionTiempoEntrega(int anio, int mes, int idProveedor);
+        Task<decimal> ObtenerPorcentajeCargaAcuses(int anio, int mes, int idProveedor);
     }
     public class UsuarioService : IUsuarioService
     {
@@ -101,6 +102,20 @@ namespace SistemaVentasBatia.Services
         public async Task<string> ObtenerEvaluacionTiempoEntrega(int anio, int mes, int idProveedor)
         {
             return await _repo.ObtenerEvaluacionTiempoEntrega(anio, mes, idProveedor);
+        }
+
+        public async Task<decimal> ObtenerPorcentajeCargaAcuses(int anio, int mes, int idProveedor)
+        {
+            int totalListados;
+            int totalAcuses;
+            decimal porcentajeCargaAcuses;
+            totalListados = await _repo.ObtenerTotalListadosPorAnioMes(anio, mes, idProveedor);
+            totalAcuses = await _repo.ObtenerTotalAcusesPorAnioMes (anio, mes, idProveedor);
+            porcentajeCargaAcuses = ((decimal)totalAcuses / totalListados) * 100M;
+            string porcentajeFormateado = porcentajeCargaAcuses.ToString("0.00");
+            decimal porcentajeFormateadoDecimal = decimal.Parse(porcentajeFormateado);
+
+            return porcentajeFormateadoDecimal;
         }
     }
 }

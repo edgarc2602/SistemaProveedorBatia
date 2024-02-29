@@ -25,7 +25,6 @@ namespace SistemaVentasBatia.Repositories
         Task<bool> EliminarAcuse(int idListado, string carpeta, string archivo);
         Task<bool> ConcluirEntrega(int idListado, string fechaEntrega);
         Task<List<Catalogo>> GetStatusListado();
-
     }
 
     public class EntregaRepository : IEntregaRepository
@@ -99,7 +98,8 @@ fentrega
 SELECT * FROM (
 SELECT 
 ROW_NUMBER() OVER ( ORDER BY b.id_listado desc ) AS RowNum,
-a.id_inmueble AS IdInmueble, 
+a.id_inmueble AS IdInmueble,
+f.nombre Cliente,
 a.nombre AS NombreSucursal,
 a.prefijo AS Prefijo,
 isnull(b.id_listado,0) AS IdListado, 
@@ -119,6 +119,7 @@ left outer join tb_listadomaterial b on a.id_inmueble = b.id_inmueble
 left outer join tb_listadomateriald c on b.id_listado = c.id_listado 
 left outer join tb_tipolistado d on b.tipo = d.id_tipo
 inner join tb_proveedorinmueble e ON e.id_inmueble = a.id_inmueble
+INNER JOIN tb_cliente f ON f.id_cliente = a.id_cliente
 WHERE e.id_proveedor = @idProveedor and 
 a.id_status = 1 and 
 a.materiales = 0 AND
@@ -134,7 +135,8 @@ b.id_listado,
 b.id_status, 
 d.descripcion, 
 fentrega,
-a.prefijo
+a.prefijo,
+f.nombre
 ) as Listado
 WHERE   RowNum >= ((@pagina - 1) * 40) + 1
 AND RowNum <= (@pagina * 40)

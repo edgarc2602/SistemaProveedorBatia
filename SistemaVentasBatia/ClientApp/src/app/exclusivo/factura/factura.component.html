@@ -9,19 +9,19 @@
         <div class="row">
             <div class="col-md-3 col-4 mb-3">
                 <div class="form-floating box-shadow">
-                    <input type="date" class="form-control" [(ngModel)]="fechaInicio" id="fechaInicio" (input)="obtenerOrdenes()">
+                    <input type="date" class="form-control" [(ngModel)]="fechaInicio" id="fechaInicio" (input)="obtenerOrdenes(1)">
                     <label asp-for="fechaInicio">F.Inicio</label>
                 </div>
             </div>
             <div class="col-md-3 col-4 mb-3">
                 <div class="form-floating box-shadow">
-                    <input type="date" class="form-control" [(ngModel)]="fechaFin" id="fechaFin" (input)="obtenerOrdenes()">
+                    <input type="date" class="form-control" [(ngModel)]="fechaFin" id="fechaFin" (input)="obtenerOrdenes(1)">
                     <label asp-for="fechaFin">F.Fin</label>
                 </div>
             </div>
             <div class="col-md-3 col-4 mb-3">
                 <div class="form-floating box-shadow">
-                    <select class="form-select" [(ngModel)]="idStatus" (change)="obtenerOrdenes()">
+                    <select class="form-select" [(ngModel)]="idStatus" (change)="obtenerOrdenes(1)">
                         <!--<option value="0">Selecciona una opción...</option>-->
                         <option *ngFor="let s of statusc" [ngValue]="s.id">{{ s.descripcion }}</option>
                     </select>
@@ -30,7 +30,16 @@
             </div>
         </div>
     </div>
-    <div class="row box-shadow" style="border-radius: 10px; overflow-x: hidden;">
+    <div *ngIf="isLoading || (model.ordenes && model.ordenes.length === 0)" class="row-12 text-center">
+        <hr />
+        <br />
+        <h6 *ngIf="isLoading">Cargando...</h6>
+        <h6 *ngIf="!isLoading && model.ordenes && model.ordenes.length === 0">No se encontraron registros</h6>
+    </div>
+    <div *ngIf="isLoading" class="text-center ">
+        <i class="fas fa-spinner fa-spin fa-3x"></i>
+    </div>
+    <div *ngIf="model.ordenes && model.ordenes.length > 0" class="row box-shadow" style="border-radius: 10px; overflow-x: hidden;">
         <div style="max-height: 450px; overflow-y: auto;">
             <div class="row">
                 <table class="table table-borderless table-striped table-responsive text-start">
@@ -110,6 +119,8 @@
         </div>
     </div>
     <br />
-    <pagina-widget [pagina]="model.pagina" [numPaginas]="model.numPaginas" [rows]="model.rows" (chgEvent)="muevePagina($event)"></pagina-widget>
-</div>
-<cargarfactura-widget (ansEvent)="returnModal($event)"></cargarfactura-widget>
+    <div *ngIf="model.ordenes && model.ordenes.length > 0">
+        <br />
+        <pagina-widget [pagina]="model.pagina" [numPaginas]="model.numPaginas" [rows]="model.rows" (chgEvent)="muevePagina($event)"></pagina-widget>
+    </div></div>
+    <cargarfactura-widget (ansEvent)="returnModal($event)"></cargarfactura-widget>

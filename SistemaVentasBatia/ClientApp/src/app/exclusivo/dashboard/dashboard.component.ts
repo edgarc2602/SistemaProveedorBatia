@@ -40,6 +40,7 @@ export class DashboardComponent implements OnInit {
         total: 0, facturado: 0
     }
     porcentajeTiempoEntrega: string = '';
+    porcentajeCargaAcuses: number = 0;
     listaAnios: number[] = [];
 
 
@@ -66,6 +67,11 @@ export class DashboardComponent implements OnInit {
         this.http.get<string>(`${this.url}api/usuario/ObtenerEvaluacionTiempoEntrega/${this.anio}/${this.mes}/${this.user.idProveedor}`).subscribe(response => {
             if (response != null) {
                 this.porcentajeTiempoEntrega = response;
+            }
+        })
+        this.http.get<number>(`${this.url}api/usuario/ObtenerPorcentajeCargaAcuses/${this.anio}/${this.mes}/${this.user.idProveedor}`).subscribe(response => {
+            if (response != null) {
+                this.porcentajeCargaAcuses = response;
             }
         })
     }
@@ -169,7 +175,10 @@ export class DashboardComponent implements OnInit {
                 type: 'column',
                 name: 'Meses',
                 data: seriesData
-            }]
+            }],
+            credits: {
+                enabled: false
+            }
         });
     }
 
@@ -235,7 +244,10 @@ export class DashboardComponent implements OnInit {
                 type: 'column',
                 name: 'Meses',
                 data: seriesData
-            }]
+            }],
+            credits: {
+                enabled: false
+            }
         });
     }
 

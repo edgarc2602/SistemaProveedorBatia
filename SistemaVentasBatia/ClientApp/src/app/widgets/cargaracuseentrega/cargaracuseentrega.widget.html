@@ -4,16 +4,58 @@
         <div class="modal-content">
             <meta charset="UTF-8">
             <!-- Modal Header -->
-            <div class="modal-header justify-content-center">
+            <div *ngIf="estatus == false" class="modal-header justify-content-center">
                 <h4 class="modal-title">Cargar acuse de entrega</h4>
+            </div>
+            <div *ngIf="estatus == true" class="modal-header justify-content-center">
+                <h4 class="modal-title">Ver acuse de entrega</h4>
             </div>
             <!-- Modal body -->
             <div class="modal-body ">
-                <h6 class="modal-title">Listado: {{idListado  }} {{  prefijo}}</h6>
-                <h6 class="modal-title">Punto de atención: {{sucursal}}</h6>
-                <h6 class="modal-title">Tipo: {{tipo}}</h6>
-                <br />
-                <div *ngIf="model.acuses[0] != null" class="row box-shadow" style="border-radius: 10px; overflow-x: hidden;">
+                <div class="row">
+                    <div class="col-md-2">
+                        <h6 class="modal-title">Listado </h6><span>{{ idListado  }}</span>
+                    </div>
+                    <div  class="col-md-2">
+                        <h6 class="modal-title">Estatus </h6><span>{{ estatusListado }}</span>
+                    </div>
+                    <div class="col-md-8">
+                        <h6 class="modal-title">Punto de atención</h6><span> {{ sucursal }}</span>
+                    </div>
+                </div>
+                <hr />
+                <div *ngIf="estatus == false" class="row text-center">
+                    <div class="col-md-4 col-4 mb-3">
+                        <input type="file" (change)="onFileSelected($event)" #fileInput style="display:none" accept="image/*, application/pdf, .doc, .docx, .txt">
+                        <button type="button" class="btn btn-outline-primary" (click)="fileInput.click(); chgbtn()">
+                            <i class="fa-solid fa-magnifying-glass me-1"></i>
+                            Seleccionar
+                        </button>
+                    </div>
+                    <div class="col-md-4 col-4">
+                        <button *ngIf="selectedFileName" type="button" class="btn btn-outline-danger" (click)="limpiarDocumento()">
+                            {{ selectedFileName }}  <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                    <div class="col-md-4 col-4">
+                        <button *ngIf="selectedFileName" type="button" class="btn btn-outline-success" (click)="guardarArchivo()">
+                            <i class="fa-solid fa-upload"></i>
+                            Cargar
+                        </button>
+                    </div>
+                    <hr />
+                </div>
+                
+
+                <div *ngIf="isLoading || (model.acuses && model.acuses.length === 0)" class="row-12 text-center">
+
+                    <h6 *ngIf="isLoading">Cargando...</h6>
+                    <h6 *ngIf="!isLoading && model.acuses && model.acuses.length === 0">No se encontraron acuses</h6>
+                </div>
+                <div *ngIf="isLoading" class="text-center ">
+                    <i class="fas fa-spinner fa-spin fa-3x"></i>
+                </div>
+                <div *ngIf="model.acuses && model.acuses.length > 0" class="row box-shadow" style="border-radius: 10px; overflow-x: hidden;">
                     <div style="max-height: 250px; max-width:auto; overflow-y: auto; overflow-x: hidden">
                         <div class="row">
                             <table class="table table-borderless table-striped table-responsive text-center">
@@ -32,7 +74,7 @@
                                                     <button type="button" class="btn btn-lg text-primary" (click)="getImage(acu.archivo, acu.carpeta)" data-bs-toggle="tooltip" title="Ver">
                                                         <i class="fa-solid fa-eye" style="color: #565658;"></i>
                                                     </button>
-                                                    <button type="button" class="btn btn-lg text-secondary" (click)="elimina(acu.archivo, acu.carpeta)" data-bs-toggle="tooltip" title="Eliminar">
+                                                    <button *ngIf="estatus == false" type="button" class="btn btn-lg text-secondary" (click)="elimina(acu.archivo, acu.carpeta)" data-bs-toggle="tooltip" title="Eliminar">
                                                         <i class="fa-solid fa-trash" style="color: #ff0000;"></i>
                                                     </button>
                                                 </div>
@@ -45,44 +87,25 @@
                     </div>
                 </div>
                 <br />
-                <div class="row text-center">
-                    <div class="col-md-4 col-4">
-                        <input type="file" (change)="onFileSelected($event)" #fileInput style="display:none" accept="image/*, application/pdf, .doc, .docx, .txt">
-                        <button type="button" class="btn btn-outline-primary" (click)="fileInput.click(); chgbtn()">
-                            <i class="fa-solid fa-magnifying-glass me-1"></i>
-                            Seleccionar acuse
-                        </button>
-                    </div>
-                    <div class="col-md-3 col-4">
-                        <div *ngIf="selectedFileName" class="text-center">
-                            {{ selectedFileName }}
-                        </div>
-                        <button *ngIf="selectedFileName" type="button" class="btn btn-outline-danger" (click)="limpiarDocumento()">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </div>
-                    <div class="col-md-4 col-4">
-                        <button type="button" class="btn btn-outline-success" (click)="guardarArchivo()">
-                            <i class="fa-solid fa-plus"></i>
-                            Agregar
-                        </button>
-                    </div>
-                </div>
+
             </div>
             <!-- Modal footer -->
             <div class="modal-footer justify-content-start">
 
                 <div class="row col-lg-12">
-                    <div class="col-4 col-md-3">
+                    <div *ngIf="estatus == false" class="col-4 col-md-3">
                         <div class="form-floating">
                             <input type="date" class="form-control" [(ngModel)]="fechaEntrega" id="fechaEntrega">
                             <label asp-for="fechaEntrega">Fec.Entrega</label>
                         </div>
                     </div>
-                    <div class="col-5 col-md-7">
+                    <div *ngIf="estatus == false" class="col-5 col-md-7">
                         <button type="button" class="btn btn-outline-success" (click)="concluirEntrega()" id="concluirEntrega"><i class="fa-solid fa-boxes-stacked"></i> Concluir Entrega</button>
                     </div>
-                    <div class="col-3 col-md-2">
+                    <div *ngIf="estatus == false" class="col-3 col-md-2">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i> Cerrar</button>
+                    </div>
+                    <div *ngIf="estatus == true" class="col-12 col-md-12 text-end">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i> Cerrar</button>
                     </div>
                 </div>

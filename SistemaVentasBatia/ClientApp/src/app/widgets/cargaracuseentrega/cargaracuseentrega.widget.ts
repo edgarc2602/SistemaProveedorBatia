@@ -30,6 +30,11 @@ export class CargarAcuseEntregaWidget {
     carpeta: string = '';
     fechaEntrega: string = '';
     loading: boolean = false;
+    estatus: boolean = false;
+    estatusListado: string = '';
+    fechaEntrega2: string = '';
+    isLoading: boolean = false;
+
 
     constructor(@Inject('BASE_URL') private url: string, private http: HttpClient) { }
     nuevo() {
@@ -41,7 +46,15 @@ export class CargarAcuseEntregaWidget {
         this.resetFileInput();
     }
 
-    open(idListado: number, sucursal: string, tipo: string, prefijo: string) {
+    open(idListado: number, sucursal: string, tipo: string, prefijo: string, estatus: string, fechaEntrega: string) {
+        this.fechaEntrega2 = fechaEntrega;
+        this.estatusListado = estatus;
+        if (estatus == 'Entregado') {
+            this.estatus = true;
+        }
+        else {
+            this.estatus = false;
+        }
         this.nuevo();
         this.idListado = idListado;
         this.sucursal = sucursal;
@@ -53,9 +66,18 @@ export class CargarAcuseEntregaWidget {
         myModal.show();
     }
     obtenerAcusesListado(idListado: number) {
+        this.isLoading = true;
+
         this.http.get<ListadoAcuseEntrega>(`${this.url}api/entrega/obteneracuseslistado/${idListado}`).subscribe(response => {
-            this.model = response;
-        })
+            setTimeout(() => {
+                this.model = response;
+                this.isLoading = false;
+            }, 300);
+        }, err => {
+            setTimeout(() => {
+                this.isLoading = false;
+            }, 300);
+        });
     }
 
     acepta() {
@@ -191,8 +213,11 @@ export class CargarAcuseEntregaWidget {
     }
 
     resetFileInput(): void {
-        this.fileInput.nativeElement.value = '';
+        if (this.fileInput && this.fileInput.nativeElement) {
+            this.fileInput.nativeElement.value = '';
+        }
     }
+
     elimina(archivo: string, carpeta: string) {
         this.archivo = archivo;
         this.carpeta = carpeta;

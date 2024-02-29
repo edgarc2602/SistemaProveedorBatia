@@ -9,10 +9,21 @@
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-                <h6 class="modal-title">Listado: {{idListado}}</h6>
+                <div class="row mb-3">
+                    <div class="col-md-2 col-2">
+                        <h6 class="modal-title">Listado: </h6><span>{{ idListado  }}</span>
+                    </div>
+                    <div class="col-md-2 col-4">
+                        <h6 class="modal-title">Tipo: </h6><span>{{ tipo }}</span>
+                    </div>
+                    <div class="col-md-8 col-6">
+                        <h6 class="modal-title">Punto de atención: </h6><span> {{ sucursal }}</span>
+                    </div>
+                </div>
+                <!--<h6 class="modal-title">Listado: {{idListado}}</h6>
                 <h6 class="modal-title">Punto de atención: {{sucursal}}</h6>
                 <h6 class="modal-title">Tipo: {{tipo}}</h6>
-                <br />
+                <br />-->
                 <div class="row box-shadow" style="border-radius: 10px; overflow-x: hidden;">
                     <div style="max-height: 250px; overflow-y: auto;">
                         <div class="row">

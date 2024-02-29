@@ -20,6 +20,7 @@ export class FacturaComponent {
     fechaFin: string = '';
     statusc: Catalogo[];
     idStatus: number = 1;
+    isLoading: boolean = false;
 
     constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {
         http.get<Catalogo[]>(`${url}api/factura/GetStatusOrdenCompra`).subscribe(response => {
@@ -29,20 +30,32 @@ export class FacturaComponent {
 
     ngOnInit() {
         this.getDias();
-        this.obtenerOrdenes();
+        this.obtenerOrdenes(1);
     }
-    obtenerOrdenes() {
+    obtenerOrdenes(filtro: number) {
+        if (filtro == 1) {
+            this.model.ordenes = [];
+            this.model.pagina = 1;
+            this.isLoading = true;
+        }
         this.idProveedor = this.user.idProveedor;
         this.http.get<ListadoOrdenCompra>(`${this.url}api/factura/ObtenerOrdenesCompra/${this.idProveedor}/${this.model.pagina}/${this.fechaInicio}/${this.fechaFin}/${this.idStatus}`).subscribe(response => {
-            this.model = response;
-        })
+            setTimeout(() => {
+                this.model = response;
+                this.isLoading = false;
+            }, 300);
+        }, err => {
+            setTimeout(() => {
+                this.isLoading = false;
+            }, 300);
+        });
     }
     goBack() {
         window.history.back();
     }
     muevePagina(event) {
         this.model.pagina = event;
-        this.obtenerOrdenes();
+        this.obtenerOrdenes(2);
     }
 
     obtenerPrimerDiaDelMes(): string {
@@ -102,7 +115,7 @@ export class FacturaComponent {
         this.upfact.open(idOrden, empresa, cliente, total);
     }
     returnModal($event) {
-        this.obtenerOrdenes();
+        this.obtenerOrdenes(2);
     }
     quitarFocoDeElementos(): void {
         const elementos = document.querySelectorAll('button, input[type="text"]');

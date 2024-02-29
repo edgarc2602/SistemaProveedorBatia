@@ -1,4 +1,4 @@
-﻿@import "~@fortawesome/fontawesome-free/css/all.css";
+﻿
 
 a {
     color: #0366d6;
@@ -37,7 +37,7 @@ html {
 }
 
 .box-shadow {
-    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .06);
 }
 
 button.accept-policy {
@@ -126,7 +126,8 @@ html {
 -------------------------------------------------- */
 .navbar {
     transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
-    background-color: #f8f9fa;
+    background-color: rgba(248, 249, 250, 0.8);
+    backdrop-filter: blur(8px);
 }
 
 .form-control-dark {
@@ -169,10 +170,6 @@ html {
 
 .table tbody td {
     vertical-align: middle;
-}
-
-.table tbody {
-    backdrop-filter: blur(5px);
 }
 
 thead.sticky-top {
@@ -279,7 +276,13 @@ tbody tr:hover {
     position: sticky;
     top: 0;
     background-color: transparent;
-    z-index: 100;
+    z-index: 102;
+}
+.sticky-container-dash {
+    position: sticky;
+    top: 65px;
+    background-color: transparent;
+    z-index: 102;
 }
 
 .translucent {
@@ -368,33 +371,33 @@ body {
 
 
 .select {
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.8);
     color: black;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(8px);
 }
 
 
 .form-select {
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.8);
     color: black;
     transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(8px);
 }
 
 
 input[type="number"] {
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.8);
     color: black;
     transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(8px);
 }
 
 input[type="date"] {
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.8);
     color: black;
     transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(8px);
 }
 
 .badge {
@@ -480,16 +483,16 @@ input:focus::-webkit-input-placeholder {
     transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, fill 0.3s ease, backdrop-filter 0.3s ease,
 }
     .dark-theme .form-select {
-        background-color: rgba(56, 52, 52, 0.5);
+        background-color: rgba(56, 52, 52, 0.8);
         color: #fff;
-        backdrop-filter: blur(5px);
+        backdrop-filter: blur(8px);
     }
     .dark-theme .badge {
         color: #fff;
     }
 
     .dark-theme input {
-        background-color: #383434;
+        background-color: rgba(56, 52, 52, 0.8);
         color: #fff;
         border-color: #383434;
         transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
@@ -498,7 +501,9 @@ input:focus::-webkit-input-placeholder {
         .dark-theme input:focus {
             color: #fff;
             background-color: #383434;
+            border-color: black;
         }
+
 
     .dark-theme select {
         background-color: #383434;
@@ -509,6 +514,7 @@ input:focus::-webkit-input-placeholder {
 
         .dark-theme select:focus {
             background-color: #383434;
+            border-color: black;
             transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
         }
 
@@ -566,14 +572,14 @@ input:focus::-webkit-input-placeholder {
     }
 
     .dark-theme tbody tr:hover {
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        box-shadow: 0 0 20px rgba(0, 0, 0, .3);
         transition: box-shadow 0.3s ease;
         background-color: #383434;
         transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
     }
 
     .dark-theme tbody tr:focus {
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        box-shadow: 0 0 20px rgba(0, 0, 0, .3);
         transition: box-shadow 0.3s ease;
         background-color: #383434;
         color: #fff;
@@ -581,7 +587,7 @@ input:focus::-webkit-input-placeholder {
     }
 
     .dark-theme .box-shadow {
-        box-shadow: 0 .25rem .75rem rgba(255, 255, 255, .05);
+        box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .3);
         transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
     }
 
@@ -620,7 +626,7 @@ input:focus::-webkit-input-placeholder {
     }
 
     .dark-theme .navbar {
-        background-color: #151515;
+        background-color: rgba(21, 21, 21, 0.8);
         color: #fff;
         border-color: #383434;
         transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
@@ -688,7 +694,7 @@ input:focus::-webkit-input-placeholder {
     }
 
         .dark-theme .btn:hover {
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 10px rgba(0, 0, 0, .3);
         }
 
         .dark-theme .btn:active {
