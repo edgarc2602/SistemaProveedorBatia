@@ -16,7 +16,11 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-8 col-sm-10"></div>
+            <div class="col-md-8 col-sm-10 text-end">
+                <div *ngIf="isLoading">
+                    <i class="fas fa-spinner fa-spin fa-2x"></i>
+                </div>
+            </div>
 
             <div class="col-md-2 col-6 ">
                 <div class="form-floating box-shadow">
@@ -88,7 +92,7 @@
     <br />
     <h5>Historial de evaluaciones</h5>
     <hr />
-    <div id="accordion" class="box-shadow">
+    <div  *ngIf="listaEvaluaciones && listaEvaluaciones.length > 0" id="accordion" class="box-shadow">
         <div *ngFor="let eva of listaEvaluaciones" class="btn col-md-12 col-12 text-start" data-bs-toggle="collapse" [attr.href]="'#dvDetalleEvaluacion' + eva.idEvaluacionProveedor" style="cursor: pointer;">
             <div class="row card-header">
                 <div class="col-md-12">

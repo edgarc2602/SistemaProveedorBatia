@@ -51,7 +51,6 @@ export class LoginComponent {
                 }
             });
         }
-        this.isLoading = false;
     }
 
     review(event: any) {

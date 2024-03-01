@@ -31,11 +31,10 @@ export class DashboardComponent implements OnInit {
     mes: number = 0;
     anio: number = 0;
     idProveedor: number = 0;
+    isLoading: boolean = false;
    
 
-    listaEvaluaciones: ListaEvaluacionProveedor = {
-        evaluacion: [], idEvaluacionProveedor: 0, idProveedor: 0, idStatus: 0, fechaEvaluacion: '', numeroContrato: '', promedio: 0, textoPromedio: '', idUsuario: 0
-    }
+    listaEvaluaciones: ListaEvaluacionProveedor  [];
     dashOrdenMes: DashOrdenMes = {
         total: 0, facturado: 0
     }
@@ -50,6 +49,7 @@ export class DashboardComponent implements OnInit {
         })
     }
     ngOnInit(): void {
+        this.isLoading = true;
         const fechaActual = new Date();
         this.anio = fechaActual.getFullYear();
         const fechaActualMes = new Date();
@@ -61,9 +61,11 @@ export class DashboardComponent implements OnInit {
         this.getPorcentajes();
         this.getGraficas();
         this.getEvaluaciones();
+        this.isLoading = false;
     }
 
     getPorcentajes() {
+        this.isLoading = true;
         this.http.get<string>(`${this.url}api/usuario/ObtenerEvaluacionTiempoEntrega/${this.anio}/${this.mes}/${this.user.idProveedor}`).subscribe(response => {
             if (response != null) {
                 this.porcentajeTiempoEntrega = response;
@@ -74,11 +76,14 @@ export class DashboardComponent implements OnInit {
                 this.porcentajeCargaAcuses = response;
             }
         })
+        this.isLoading = false;
     }
 
     getGraficas() {
+        this.isLoading = true;
         this.getGraficasAnio();
         this.getGraficasMes();
+        this.isLoading = false;
     }
 
     getGraficasAnio() {
@@ -98,6 +103,7 @@ export class DashboardComponent implements OnInit {
     }
 
     getGraficasMes() {
+        this.isLoading = true;
         this.http.get<GraficaListado>(`${this.url}api/usuario/obtenergraficalistadoaniomes/${this.anio}/${this.mes}/${this.user.idProveedor}`).subscribe(response => {
             if (response != null) {
                 this.graficaListadoMes = response;
@@ -116,6 +122,7 @@ export class DashboardComponent implements OnInit {
 
         })
         this.getPorcentajes();
+        this.isLoading = false;
     }
 
     getGraficaListadoAnio() {
@@ -256,7 +263,7 @@ export class DashboardComponent implements OnInit {
     }
 
     getEvaluaciones() {
-        this.http.get<ListaEvaluacionProveedor>(`${this.url}api/cuenta/GetListadoEvaluacionProveedor/${this.user.idProveedor}`).subscribe(response => {
+        this.http.get<ListaEvaluacionProveedor[]>(`${this.url}api/cuenta/GetListadoEvaluacionProveedor/${this.user.idProveedor}`).subscribe(response => {
             this.listaEvaluaciones = response;
         })
     }
