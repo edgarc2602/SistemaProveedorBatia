@@ -276,16 +276,19 @@ GROUP BY
         public async Task<string> ObtenerEvaluacionTiempoEntrega(int anio, int mes,int idProveedor)
         {
             string query = @"
+--Obtiene el total de entregas completadas que tienen fCalendario
 DECLARE @TotalRegistros INT;
 SELECT @TotalRegistros = COUNT(*)
 FROM tb_cliente_inmueble a 
-LEFT OUTER JOIN tb_listadomaterial b ON a.id_inmueble = b.id_inmueble
+INNER JOIN tb_listadomaterial b ON a.id_inmueble = b.id_inmueble
 INNER JOIN tb_proveedorinmueble e ON e.id_inmueble = a.id_inmueble
 WHERE e.id_proveedor = @idProveedor AND 
       a.id_status = 1 AND 
-      a.materiales = 0 AND
       ISNULL(NULLIF(@mes, 0), b.mes) = b.mes AND
-      ISNULL(NULLIF(@anio, 0), b.anio) = b.anio;
+      ISNULL(NULLIF(@anio, 0), b.anio) = b.anio
+	  AND b.id_status = 4
+	  AND b.fcalendario IS NOT NULL;
+	  PRINT @TotalRegistros
 DECLARE @Iguales INT;
 SELECT @Iguales = COUNT(*)
 FROM tb_cliente_inmueble a 
@@ -293,10 +296,13 @@ LEFT OUTER JOIN tb_listadomaterial b ON a.id_inmueble = b.id_inmueble
 INNER JOIN tb_proveedorinmueble e ON e.id_inmueble = a.id_inmueble
 WHERE e.id_proveedor = @idProveedor AND 
       a.id_status = 1 AND 
-      a.materiales = 0 AND
       ISNULL(NULLIF(@mes, 0), b.mes) = b.mes AND
-      ISNULL(NULLIF(@anio, 0), b.anio) = b.anio AND  
-      CONVERT(DATE, b.fcalendario) = CONVERT(DATE, b.fentrega);
+      ISNULL(NULLIF(@anio, 0), b.anio) = b.anio
+	  AND b.fcalendario IS NOT NULL
+      --AND CONVERT(DATE, b.fcalendario) >= CONVERT(DATE, b.fentrega)
+	  AND CONVERT(DATE, b.fentrega) <= CONVERT(DATE, b.fcalendario)
+	  AND b.id_status = 4
+	  PRINT @Iguales
 DECLARE @PorcentajeIguales DECIMAL(10, 2);
 
 IF @TotalRegistros > 0
@@ -308,8 +314,7 @@ BEGIN
     SET @PorcentajeIguales = 0;
 END
 SELECT 
-    @PorcentajeIguales AS PorcentajeIguales;
-
+    @PorcentajeIguales AS PorcentajeIguales
 ";
             decimal porcentaje = 0;
             try
