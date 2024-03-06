@@ -184,7 +184,7 @@ export class CargarFacturaWidget {
             this.http.post<boolean>(`${this.url}api/factura/insertarfacturascarpeta/${this.idOrden}`, formData).subscribe(response => {
 
             })
-            this.http.post<boolean>(`${this.url}api/factura/insertarfacturasxml`, this.xmlgraba).subscribe(response => {
+            this.http.post<boolean>(`${this.url}api/factura/insertarfacturasxml/${this.user.idProveedor}`, this.xmlgraba).subscribe(response => {
                 Swal.fire({
                     icon: 'success',
                     timer: 1000,

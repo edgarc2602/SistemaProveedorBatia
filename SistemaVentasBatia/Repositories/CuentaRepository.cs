@@ -33,7 +33,7 @@ namespace SistemaVentasBatia.Repositories
             string query = @"
 SELECT * FROM (
 SELECT
-ROW_NUMBER() over (order by a.fregistro desc, a.factura desc) as rownum, 
+ROW_NUMBER() over (order by a.fregistro, a.factura) as rownum, 
     b.razonsocial AS Nombre,
     a.factura AS Factura,
     a.total AS Total,

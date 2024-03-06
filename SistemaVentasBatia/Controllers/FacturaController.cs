@@ -73,8 +73,8 @@ namespace SistemaVentasBatia.Controllers
             return result;
         }
 
-        [HttpPost("[action]")]
-        public async Task<bool> InsertarFacturasXML([FromBody] XMLGraba xml)
+        [HttpPost("[action]/{idProveedor}")]
+        public async Task<bool> InsertarFacturasXML([FromBody] XMLGraba xml, int idProveedor = 0)
         {
             string[] documentos = new string[2];
             documentos[0] = xml.PdfName;
@@ -91,7 +91,7 @@ namespace SistemaVentasBatia.Controllers
             salidaElement.SetAttribute("orden", xml.IdOrden.ToString());
             salidaElement.SetAttribute("usuario", xml.IdPersonal.ToString());
             salidaElement.SetAttribute("fecfac", xml.FechaFactura);
-            salidaElement.SetAttribute("idproveedor", xml.IdPersonal.ToString());
+            salidaElement.SetAttribute("idproveedor", idProveedor.ToString());
             salidaElement.SetAttribute("dias", xml.Dias.ToString());
             salidaElement.SetAttribute("sub", xml.SubTotal.ToString());
             salidaElement.SetAttribute("iva", xml.Iva.ToString());
