@@ -24,34 +24,29 @@
                 <h6 class="modal-title">Punto de atención: {{sucursal}}</h6>
                 <h6 class="modal-title">Tipo: {{tipo}}</h6>
                 <br />-->
-                <div class="row box-shadow" style="border-radius: 10px; overflow-x: hidden;">
-                    <div style="max-height: 250px; overflow-y: auto;">
-                        <div class="row">
-                            <table class="table table-borderless table-striped table-responsive text-center">
-                                <thead class="sticky-top text-white" style=" border-radius: 10px; ">
-                                    <tr class="col-1 text-center">
-                                        <th>Clave</th>
-                                        <th>Descripción</th>
-                                        <th>Unidad</th>
-                                        <th>Cantidad</th>
-                                        <th>Precio</th>
-                                        <th>Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let mat of model">
-                                        <td> {{mat.clave}}</td>
-                                        <td> {{mat.descripcion}}</td>
-                                        <td> {{mat.unidad}}</td>
-                                        <td> {{mat.cantidad}}</td>
-                                        <td class="text-end"> ${{mat.precio | number: '1.2'}}</td>
-                                        <td class="text-end"> ${{mat.total | number: '1.2'}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
+                <div class="row box-shadow table-container">
+                    <table class="table table-borderless table-striped table-responsive text-center">
+                        <thead class="sticky-top text-white" style=" border-radius: 10px; ">
+                            <tr class="col-1 text-center">
+                                <th>Clave</th>
+                                <th>Descripción</th>
+                                <th>Unidad</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let mat of model">
+                                <td> {{mat.clave}}</td>
+                                <td> {{mat.descripcion}}</td>
+                                <td> {{mat.unidad}}</td>
+                                <td> {{mat.cantidad}}</td>
+                                <td class="text-end"> ${{mat.precio | number: '1.2'}}</td>
+                                <td class="text-end"> ${{mat.total | number: '1.2'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <!-- Modal footer -->

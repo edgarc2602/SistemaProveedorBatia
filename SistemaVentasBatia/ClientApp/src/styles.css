@@ -278,6 +278,7 @@ tbody tr:hover {
     background-color: transparent;
     z-index: 102;
 }
+
 .sticky-container-dash {
     position: sticky;
     top: 65px;
@@ -475,6 +476,45 @@ input:focus::-webkit-input-placeholder {
     color: rgba(0, 0, 0, 0.2);
 }
 
+tfoot.sticky-bottom {
+    z-index: 99;
+}
+
+tfoot {
+    transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
+    background-color: #4a92fe;
+    color: #fff;
+    font-weight: bold;
+}
+table {
+    margin-bottom: 0; /* Elimina el margen inferior */
+    border-spacing: 0; /* Elimina el espacio entre las celdas de la tabla */
+    border-collapse: collapse; /* Fusiona los bordes de las celdas adyacentes */
+}
+
+.table-container {
+    border-radius: 10px;
+    overflow-x: hidden;
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+    .table-container table {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+.no-click {
+    pointer-events: none;
+}
 /* Tema obscuro
 -------------------------------------------------- */
 .dark-theme {
@@ -482,11 +522,13 @@ input:focus::-webkit-input-placeholder {
     --text-color-light: #ffffff;
     transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, fill 0.3s ease, backdrop-filter 0.3s ease,
 }
+
     .dark-theme .form-select {
         background-color: rgba(56, 52, 52, 0.8);
         color: #fff;
         backdrop-filter: blur(8px);
     }
+
     .dark-theme .badge {
         color: #fff;
     }
@@ -752,6 +794,13 @@ input:focus::-webkit-input-placeholder {
             color: inherit;
         }
 
+    .dark-theme tfoot {
+        background-color: #151515;
+        color: #fff;
+        transition: background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease;
+        border: none;
+    }
+
 .loading-bar {
     position: relative;
     display: inline-block;
@@ -766,6 +815,7 @@ input:focus::-webkit-input-placeholder {
     transform-origin: left center;
     animation: fillProgress 0.5s linear forwards;
 }
+
 .progressmodal {
     position: absolute;
     bottom: -4px;

@@ -40,116 +40,112 @@
     <div *ngIf="isLoading" class="text-center ">
         <i class="fas fa-spinner fa-spin fa-3x"></i>
     </div>
-    <div *ngIf="model.listas && model.listas.length > 0" class="row box-shadow" style="border-radius: 10px; overflow-x: hidden;">
-        <div style="max-height: 450px; overflow-y: auto;">
-            <div class="row">
-                <table class="table table-borderless table-striped table-responsive">
-                    <thead class="sticky-top d-md-none">
-                        <tr class="text-start sticky-top">
-                            <th>Listados</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <thead class="sticky-top text-white">
-                        <tr>
-                            <td>
-                                <div class="row" style="font-weight: bold;">
+    <div *ngIf="model.listas && model.listas.length > 0" class="row box-shadow table-container">
+        <table class="table table-borderless table-striped table-responsive">
+            <thead class="sticky-top d-md-none">
+                <tr class="text-start sticky-top">
+                    <th>Listados</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <thead class="sticky-top text-white">
+                <tr>
+                    <td>
+                        <div class="row d-flex align-items-center" style="font-weight: bold;">
 
-                                    <div class="col-md-1 col-sm-6 col-2">
-                                        <span class="text-white d-none d-md-block">Listado</span>
-                                    </div>
-                                    <div class="col-md-3 col-sm-6 col-8">
-                                        <span class="text-white d-none d-md-block">Cliente</span>
-                                    </div>
-                                    <div class="col-md-3 col-sm-6 col-8">
-                                        <span class="text-white d-none d-md-block">Sucursal</span>
-                                    </div>
-                                    <!--<div class="col-md-1 col-sm-6 col-2">
-                                        <span class="text-white d-none d-md-block">Id</span>
-                                    </div>-->
-                                    <div class="col-md-2 col-sm-6 col-3">
-                                        <span class="text-white d-none d-md-block">Tipo</span>
-                                    </div>
-                                    <!--<div class="col-md-2 col-sm-6 col-3">
-                                        <span class="text-white d-none d-md-block">Estatus</span>
-                                    </div>-->
-                                    <div class="col-md-2 col-sm-6 col-3">
-                                        <span class="text-white d-none d-md-block">F.Creación</span>
-                                    </div>
-                                    <div class="col-md-1 col-sm-6  col-3">
-                                        <span class="text-white d-none d-md-block">F.Entrega</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <div class="col-md-12 col-sm-12 col-12">
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let listado of model.listas">
-                            <td>
-                                <div class="row">
-                                    <div class="col-md-1 col-sm-6 col-2">
-                                        <span class="badge d-md-none">Listado:</span>
-                                        <div>{{ listado.idListado }}</div>
-                                    </div>
-                                    <div class="col-md-3 col-sm-6 col-4">
-                                        <span class="badge d-md-none">Cliente:</span>
-                                        <div>{{ listado.cliente }}</div>
-                                        <!--<small>{{ listado.cliente }}</small>-->
-                                    </div>
-                                    <div class="col-md-3 col-sm-6 col-6">
-                                        <span class="badge d-md-none">Sucursal:</span>
-                                        <!--<small>{{ listado.nombreSucursal }}</small>-->
-                                        <div>{{ listado.nombreSucursal }}</div>
-                                    </div>
-                                    <!--<div class="col-md-1 col-sm-6 col-2">
-                                        <span class="badge d-md-none">Id:</span>
-                                        <div >{{ listado.idInmueble }}</div>
-                                    </div>-->
-                                    <div class="col-md-2 col-sm-6 col-4">
-                                        <span class="badge d-md-none">Tipo:</span>
-                                        <div>{{ listado.tipo }}</div>
-                                    </div>
-                                    <!--<div class="col-md-2 col-sm-6 col-3">
-                                        <span class="badge d-md-none">Estatus:</span>
-                                        <div class="ms-2">{{ listado.estatus }}</div>
-                                    </div>-->
+                            <div class="col-md-1 col-sm-6 col-2">
+                                <span class="text-white d-none d-md-block">Listado</span>
+                            </div>
+                            <div class="col-md-3 col-sm-6 col-8">
+                                <span class="text-white d-none d-md-block">Cliente</span>
+                            </div>
+                            <div class="col-md-3 col-sm-6 col-8">
+                                <span class="text-white d-none d-md-block">Sucursal</span>
+                            </div>
+                            <!--<div class="col-md-1 col-sm-6 col-2">
+                                <span class="text-white d-none d-md-block">Id</span>
+                            </div>-->
+                            <div class="col-md-2 col-sm-6 col-3">
+                                <span class="text-white d-none d-md-block">Tipo</span>
+                            </div>
+                            <!--<div class="col-md-2 col-sm-6 col-3">
+                                <span class="text-white d-none d-md-block">Estatus</span>
+                            </div>-->
+                            <div class="col-md-2 col-sm-6 col-3">
+                                <span class="text-white d-none d-md-block">F.Creación</span>
+                            </div>
+                            <div class="col-md-1 col-sm-6  col-3">
+                                <span class="text-white d-none d-md-block">F.Entrega</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <div class="col-md-12 col-sm-12 col-12">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let listado of model.listas">
+                    <td>
+                        <div class="row d-flex align-items-center">
+                            <div class="col-md-1 col-sm-6 col-2">
+                                <span class="badge d-md-none">Listado:</span>
+                                <div>{{ listado.idListado }}</div>
+                            </div>
+                            <div class="col-md-3 col-sm-6 col-4">
+                                <span class="badge d-md-none">Cliente:</span>
+                                <div>{{ listado.cliente }}</div>
+                                <!--<small>{{ listado.cliente }}</small>-->
+                            </div>
+                            <div class="col-md-3 col-sm-6 col-6">
+                                <span class="badge d-md-none">Sucursal:</span>
+                                <!--<small>{{ listado.nombreSucursal }}</small>-->
+                                <div>{{ listado.nombreSucursal }}</div>
+                            </div>
+                            <!--<div class="col-md-1 col-sm-6 col-2">
+                                <span class="badge d-md-none">Id:</span>
+                                <div >{{ listado.idInmueble }}</div>
+                            </div>-->
+                            <div class="col-md-2 col-sm-6 col-4">
+                                <span class="badge d-md-none">Tipo:</span>
+                                <div>{{ listado.tipo }}</div>
+                            </div>
+                            <!--<div class="col-md-2 col-sm-6 col-3">
+                                <span class="badge d-md-none">Estatus:</span>
+                                <div class="ms-2">{{ listado.estatus }}</div>
+                            </div>-->
 
-                                    <div class="col-md-2 col-sm-6 col-4">
-                                        <span class="badge d-md-none">F.Creacion:</span>
-                                        <div>{{ listado.fechaAlta }}</div>
-                                    </div>
-                                    <div class="col-md-1 col-sm-6 col-4">
-                                        <span class="badge d-md-none">F.Entrega:</span>
-                                        <div>{{ listado.fechaEntrega }}</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <div>
+                            <div class="col-md-2 col-sm-6 col-4">
+                                <span class="badge d-md-none">F.Creacion:</span>
+                                <div>{{ listado.fechaAlta }}</div>
+                            </div>
+                            <div class="col-md-1 col-sm-6 col-4">
+                                <span class="badge d-md-none">F.Entrega:</span>
+                                <div>{{ listado.fechaEntrega }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <div>
 
-                                    <div class="col-12 col-md-12 col-sm-12">
-                                        <button type="button" class="btn btn-lg text-primary" (click)="obtenerMateriales(listado.idListado, listado.nombreSucursal, listado.tipo, listado.prefijo)" data-bs-toggle="tooltip" title="Ver lista">
-                                            <i class="fa-solid fa-list" style="color: darkslategray;"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-lg text-secondary"
-                                                (click)="verAcuses(listado.idListado, listado.nombreSucursal, listado.tipo, listado.prefijo, listado.estatus, listado.fechaEntrega)"
-                                                data-bs-toggle="tooltip" title="Acuse">
-                                            <i class="fa-solid fa-file-circle-check" style="color: #0d6efd;"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                            <div class="col-12 col-md-12 col-sm-12">
+                                <button type="button" class="btn btn-lg text-primary" (click)="obtenerMateriales(listado.idListado, listado.nombreSucursal, listado.tipo, listado.prefijo)" data-bs-toggle="tooltip" title="Ver lista">
+                                    <i class="fa-solid fa-list" style="color: darkslategray;"></i>
+                                </button>
+                                <button type="button" class="btn btn-lg text-secondary"
+                                        (click)="verAcuses(listado.idListado, listado.nombreSucursal, listado.tipo, listado.prefijo, listado.estatus, listado.fechaEntrega)"
+                                        data-bs-toggle="tooltip" title="Acuse">
+                                    <i class="fa-solid fa-file-circle-check" style="color: #0d6efd;"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div *ngIf="model.listas && model.listas.length > 0">
         <br />

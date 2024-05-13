@@ -5,85 +5,122 @@
             <h1 class="h2">Estado de cuenta</h1>
         </div>
     </div>
-    <div class="d-md-none row box-shadow" style="border-radius: 10px; overflow-x: hidden;">
-        <div style="max-height: 450px; overflow-y: auto;">
-            <div class="row">
-                <table class="table table-borderless table-striped table-responsive text-start">
-                    <thead class="sticky-top">
-                        <tr class="text-white">
-                            <th class="ps-2 text-start">Ordenes de compra</th>
-                            <th class="col-md-2">
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let f of model.estadosDeCuenta">
-                            <td>
-                                <div class="row mt-2 mb-2">
-                                    <div class="col-md-2 col-sm-6 col-3 mb-2">
-                                        <span class="badge">No. factura:</span>
-                                        <div class="ms-2">{{ f.factura }}</div>
-                                    </div>
-                                    <div class="col-md-2 col-sm-6 col-3 mb-2">
-                                        <span class="badge">Monto factura:</span>
-                                        <div class="ms-2">${{ f.total | number: '1.2'  }}</div>
-                                    </div>
-                                    <div class="col-md-1 col-sm-6 col-3 mb-2">
-                                        <span class="badge">Pagos:</span>
-                                        <div class="ms-2">${{ f.pago | number: '1.2'  }}</div>
-                                    </div>
-                                    <div class="col-md-2 col-sm-6 col-3 mb-2">
-                                        <span class="badge">Saldo actual:</span>
-                                        <div class="ms-2">${{ f.saldo | number: '1.2'  }}</div>
-                                    </div>
-                                    <div class="col-md-2 col-sm-6 col-3 mb-2">
-                                        <span class="badge">F.Factura:</span>
-                                        <div class="ms-2">{{ f.ffactura | date: 'dd/MM/yyyy' }}</div>
-                                    </div>
-                                    <div class="col-md-1 col-sm-6 col-3 mb-2">
-                                        <span class="badge">Credito:</span>
-                                        <div class="ms-2">{{ f.diasCredito }}</div>
-                                    </div>
-                                    <div class="col-md-2 col-sm-6 col-3 mb-2">
-                                        <span class="badge">F.Vencimiento:</span>
-                                        <div class="ms-2">{{ f.fvencimiento | date: 'dd/MM/yyyy' }}</div>
-                                    </div>
-                                    <div class="col-md-2 col-sm-6 col-3 mb-2">
-                                        <span class="badge">Dias vencido:</span>
-                                        <div class="ms-2">{{ f.diasVencido }}</div>
-                                    </div>
-                                    <div class="col-md-2 col-sm-6 col-3 mb-2">
-                                        <span class="badge">Corriente:</span>
-                                        <div class="ms-2">${{ f.corriente | number: '1.2'  }}</div>
-                                    </div>
-                                    <div class="col-md-2 col-sm-6 col-3 mb-2">
-                                        <span class="badge">0 - 30 días:</span>
-                                        <div class="ms-2">${{ f.mes1 | number: '1.2'  }}</div>
-                                    </div>
-                                    <div class="col-md-2 col-sm-6 col-3 mb-2">
-                                        <span class="badge">30 a 60 días:</span>
-                                        <div class="ms-2">${{ f.mes2 | number: '1.2'  }}</div>
-                                    </div>
-                                    <div class="col-md-2 col-sm-6 col-3 mb-2">
-                                        <span class="badge">60 a 90 días:</span>
-                                        <div class="ms-2">${{ f.mes3 | number: '1.2'  }}</div>
-                                    </div>
-                                    <div class="col-md-2 col-sm-6 col-3 mb-2">
-                                        <span class="badge">Mas de 90 días:</span>
-                                        <div class="ms-2">${{ f.mes4 | number: '1.2'  }}</div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <div class="d-md-none row box-shadow table-container">
+        <table class="table table-borderless table-striped table-responsive text-start">
+            <thead class="sticky-top">
+                <tr class="text-white">
+                    <th class="ps-2 text-start">Ordenes de compra</th>
+                    <th class="col-md-2">
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let f of model.estadosDeCuenta">
+                    <td>
+                        <div class="row mt-2 mb-2">
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge">No. factura:</span>
+                                <div class="ms-2">{{ f.factura }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge">Monto factura:</span>
+                                <div class="ms-2">${{ f.total | number: '1.2'  }}</div>
+                            </div>
+                            <div class="col-md-1 col-sm-6 col-3 mb-2">
+                                <span class="badge">Pagos:</span>
+                                <div class="ms-2">${{ f.pago | number: '1.2'  }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge">Saldo actual:</span>
+                                <div class="ms-2">${{ f.saldo | number: '1.2'  }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge">F.Factura:</span>
+                                <div class="ms-2">{{ f.ffactura | date: 'dd/MM/yyyy' }}</div>
+                            </div>
+                            <div class="col-md-1 col-sm-6 col-3 mb-2">
+                                <span class="badge">Credito:</span>
+                                <div class="ms-2">{{ f.diasCredito }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge">F.Vencimiento:</span>
+                                <div class="ms-2">{{ f.fvencimiento | date: 'dd/MM/yyyy' }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge">Dias vencido:</span>
+                                <div class="ms-2">{{ f.diasVencido }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge">Corriente:</span>
+                                <div class="ms-2">${{ f.corriente | number: '1.2'  }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge">0 - 30 días:</span>
+                                <div class="ms-2">${{ f.mes1 | number: '1.2'  }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge">30 a 60 días:</span>
+                                <div class="ms-2">${{ f.mes2 | number: '1.2'  }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge">60 a 90 días:</span>
+                                <div class="ms-2">${{ f.mes3 | number: '1.2'  }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge">Mas de 90 días:</span>
+                                <div class="ms-2">${{ f.mes4 | number: '1.2'  }}</div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot class="sticky-bottom">
+                <tr>
+                    <td>
+                        <div class="row mt-2 mb-2">
+                            <div class="col-md-2 col-sm-6 col-12 mb-2 text-center">
+                                <div class="ms-2">Total:</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge" style="color: white;">Monto factura:</span>
+                                <div class="ms-2">${{ totalMontoFactura | number: '1.2'  }}</div>
+                            </div>
+                            <div class="col-md-1 col-sm-6 col-3 mb-2">
+                                <span class="badge" style="color: white;">Pagos:</span>
+                                <div class="ms-2">${{ totalPagos | number: '1.2'  }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge" style="color: white;">Saldo actual:</span>
+                                <div class="ms-2">${{ totalSaldoActual | number: '1.2'  }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge" style="color: white;">Corriente:</span>
+                                <div class="ms-2">${{ totalCorriente | number: '1.2'  }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge" style="color: white;">0 - 30 días:</span>
+                                <div class="ms-2">${{ totalPrimerMes | number: '1.2'  }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge" style="color: white;">30 a 60 días:</span>
+                                <div class="ms-2">${{ totalSegundoMes | number: '1.2'  }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge" style="color: white;">60 a 90 días:</span>
+                                <div class="ms-2">${{ totalTercerMes | number: '1.2'  }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge" style="color: white;">Mas de 90 días:</span>
+                                <div class="ms-2">${{ totalCuartoMesOMas | number: '1.2'  }}</div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
     </div>
     <!--para pantalla grande-->
-    <div class=" d-none d-md-block row box-shadow" style="border-radius: 10px; overflow-x: hidden; overflow-y: auto">
-        <div style="max-height: 450px; overflow-y: auto; overflow-x: hidden; max-width:auto">
-            <div class="row">
+    <div class=" d-none d-md-block row box-shadow table-container">
                 <table class="table table-borderless table-striped table-responsive text-center">
                     <thead class="sticky-top text-white">
                         <tr>
@@ -156,9 +193,50 @@
                             </td>
                         </tr>
                     </tbody>
+                    <tfoot class="sticky-bottom">
+                        <tr>
+                            <td>
+                                <div class="row mt-2 mb-2 d-flex align-items-center">
+                                    <div class="col-2" style="width: 100px;">
+                                        <div class="ms-2">Total:</div>
+                                    </div>
+                                    <div class="col-2 col-md-3" style="width: 100px;">
+                                        <span class="badge" style="color: white;">Monto factura:</span>
+                                        <div class="ms-2">${{ totalMontoFactura | number: '1.2'  }}</div>
+                                    </div>
+                                    <div class="col-2" style="width: 100px;">
+                                        <span class="badge" style="color: white;">Pagos:</span>
+                                        <div class="ms-2">${{ totalPagos | number: '1.2'  }}</div>
+                                    </div>
+                                    <div class="col-2" style="width: 100px;">
+                                        <span class="badge" style="color: white;">Saldo actual:</span>
+                                        <div class="ms-2">${{ totalSaldoActual | number: '1.2'  }}</div>
+                                    </div>
+                                    <div class="col-2" style="width: 100px;">
+                                        <span class="badge" style="color: white;">Corriente:</span>
+                                        <div class="ms-2">${{ totalCorriente | number: '1.2'  }}</div>
+                                    </div>
+                                    <div class="col-2" style="width: 100px;">
+                                        <span class="badge" style="color: white;">0 - 30 días:</span>
+                                        <div class="ms-2">${{ totalPrimerMes | number: '1.2'  }}</div>
+                                    </div>
+                                    <div class="col-2" style="width: 100px;">
+                                        <span class="badge" style="color: white;">30 a 60 días:</span>
+                                        <div class="ms-2">${{ totalSegundoMes | number: '1.2'  }}</div>
+                                    </div>
+                                    <div class="col-2" style="width: 100px;">
+                                        <span class="badge" style="color: white;">60 a 90 días:</span>
+                                        <div class="ms-2">${{ totalTercerMes | number: '1.2'  }}</div>
+                                    </div>
+                                    <div class="col-2" style="width: 100px;">
+                                        <span class="badge" style="color: white;">Mas de 90 días:</span>
+                                        <div class="ms-2">${{ totalCuartoMesOMas | number: '1.2'  }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
-            </div>
-        </div>
     </div>
     <br />
     <pagina-widget [pagina]="model.pagina" [numPaginas]="model.numPaginas" [rows]="model.rows" (chgEvent)="muevePagina($event)"></pagina-widget>

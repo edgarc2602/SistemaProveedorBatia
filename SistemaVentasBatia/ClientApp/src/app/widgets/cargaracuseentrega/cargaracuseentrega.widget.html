@@ -16,7 +16,7 @@
                     <div class="col-md-2">
                         <h6 class="modal-title">Listado </h6><span>{{ idListado  }}</span>
                     </div>
-                    <div  class="col-md-2">
+                    <div class="col-md-2">
                         <h6 class="modal-title">Estatus </h6><span>{{ estatusListado }}</span>
                     </div>
                     <div class="col-md-8">
@@ -45,7 +45,7 @@
                     </div>
                     <hr />
                 </div>
-                
+
 
                 <div *ngIf="isLoading || (model.acuses && model.acuses.length === 0)" class="row-12 text-center">
 
@@ -55,36 +55,32 @@
                 <div *ngIf="isLoading" class="text-center ">
                     <i class="fas fa-spinner fa-spin fa-3x"></i>
                 </div>
-                <div *ngIf="model.acuses && model.acuses.length > 0" class="row box-shadow" style="border-radius: 10px; overflow-x: hidden;">
-                    <div style="max-height: 250px; max-width:auto; overflow-y: auto; overflow-x: hidden">
-                        <div class="row">
-                            <table class="table table-borderless table-striped table-responsive text-center">
-                                <thead class="sticky-top text-white" style=" border-radius: 10px; ">
-                                    <tr class="col-1 text-center">
-                                        <th>Acuse</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let acu of model.acuses">
-                                        <td> {{acu.archivo}}</td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-12 col-md-12 col-sm-12">
-                                                    <button type="button" class="btn btn-lg text-primary" (click)="getImage(acu.archivo, acu.carpeta)" data-bs-toggle="tooltip" title="Ver">
-                                                        <i class="fa-solid fa-eye" style="color: #565658;"></i>
-                                                    </button>
-                                                    <button *ngIf="estatus == false" type="button" class="btn btn-lg text-secondary" (click)="elimina(acu.archivo, acu.carpeta)" data-bs-toggle="tooltip" title="Eliminar">
-                                                        <i class="fa-solid fa-trash" style="color: #ff0000;"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                <div *ngIf="model.acuses && model.acuses.length > 0" class="row box-shadow table-container">
+                    <table class="table table-borderless table-striped table-responsive text-center">
+                        <thead class="sticky-top text-white" style=" border-radius: 10px; ">
+                            <tr class="col-1 text-center">
+                                <th>Acuse</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let acu of model.acuses">
+                                <td> {{acu.archivo}}</td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-12 col-md-12 col-sm-12">
+                                            <button type="button" class="btn btn-lg text-primary" (click)="getImage(acu.archivo, acu.carpeta)" data-bs-toggle="tooltip" title="Ver">
+                                                <i class="fa-solid fa-eye" style="color: #565658;"></i>
+                                            </button>
+                                            <button *ngIf="estatus == false" type="button" class="btn btn-lg text-secondary" (click)="elimina(acu.archivo, acu.carpeta)" data-bs-toggle="tooltip" title="Eliminar">
+                                                <i class="fa-solid fa-trash" style="color: #ff0000;"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <br />
 
