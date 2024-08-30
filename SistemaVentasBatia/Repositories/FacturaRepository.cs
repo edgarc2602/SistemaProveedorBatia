@@ -69,7 +69,7 @@ left outer join tb_cliente d on a.id_cliente = d.id_cliente
 left outer join tb_statusc e on a.id_status = e.id_status inner join personal f on a.ualta = f.IdPersonal
 left outer join tb_recepcion r on r.id_orden = a.id_orden
 WHERE a.id_proveedor = @idProveedor
-        AND (@fechaInicio IS NULL OR @fechaFin IS NULL OR falta BETWEEN @fechaInicio AND @fechaFin)
+        AND (@fechaInicio IS NULL OR @fechaFin IS NULL OR a.falta BETWEEN @fechaInicio AND @fechaFin)
         AND (@idStatus = 0 OR a.id_status = @idStatus)
     GROUP BY 
         a.id_orden, 
@@ -112,7 +112,7 @@ ROW_NUMBER() over (order by id_orden desc ) as rownum,
 id_orden IdOrden,
 case when a.tipo = 1 then 'Materiales' else 'Servicios' end as Tipo,
 e.descripcion as Estatus, 
-convert(varchar(12), falta,103) as FechaAlta , 
+convert(varchar(12), a.falta,103) as FechaAlta , 
 b.nombre as Empresa	, 
 isnull(c.nombre,'') as Proveedor, 
 isnull(d.nombre,'') as Cliente,
@@ -125,7 +125,7 @@ left outer join tb_proveedor c on a.id_proveedor = c.id_proveedor
 left outer join tb_cliente d on a.id_cliente = d.id_cliente
 inner join tb_statusc e on a.id_status = e.id_status inner join personal f on a.ualta = f.IdPersonal
 where a.id_proveedor = @idProveedor
-AND (@fechaInicio IS NULL OR @fechaFin IS NULL OR falta BETWEEN @fechaInicio AND @fechaFin)
+AND (@fechaInicio IS NULL OR @fechaFin IS NULL OR a.falta BETWEEN @fechaInicio AND @fechaFin)
 AND (@idStatus = 0 OR a.id_status = @idStatus)
 )
  AS TotalRowCount;
