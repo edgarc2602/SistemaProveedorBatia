@@ -15,7 +15,7 @@ namespace SistemaVentasBatia.Controllers
             {
                 if (tipo == "Materiales")
                 {
-                    var url = ("http://192.168.2.4/Reporte?%2freporteordencompra&rs:Format=PDF&idOrden=" + idOrden.ToString());
+                    var url = ("http://192.168.2.3/Reporte?%2freporteordencompra&rs:Format=PDF&idOrden=" + idOrden.ToString());
                     WebClient wc = new WebClient
                     {
                         Credentials = new NetworkCredential("Administrador", "GrupoBatia@")
@@ -28,7 +28,7 @@ namespace SistemaVentasBatia.Controllers
                 }
                 else
                 {
-                    var url = ("http://192.168.2.4/Reporte?%2freporteordencompraservicio&rs:Format=PDF&idOrden=" + idOrden.ToString());
+                    var url = ("http://192.168.2.3/Reporte?%2freporteordencompraservicio&rs:Format=PDF&idOrden=" + idOrden.ToString());
                     WebClient wc = new WebClient
                     {
                         Credentials = new NetworkCredential("Administrador", "GrupoBatia@")
@@ -51,7 +51,7 @@ namespace SistemaVentasBatia.Controllers
         {
             try
             {
-                var url = ("http://192.168.2.4/Reporte?%2freportelistadomateriales&rs:Format=PDF&idListado=" + idListado.ToString());
+                var url = ("http://192.168.2.3/Reporte?%2freportelistadomateriales&rs:Format=PDF&idListado=" + idListado.ToString());
                 WebClient wc = new WebClient
                 {
                     Credentials = new NetworkCredential("Administrador", "GrupoBatia@")
