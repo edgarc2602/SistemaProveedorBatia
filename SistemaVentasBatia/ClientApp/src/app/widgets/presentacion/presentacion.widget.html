@@ -1,0 +1,34 @@
+<meta charset="UTF-8">
+<div class="modal fade modal-lg" id="modalPresentacion" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <meta charset="UTF-8">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="row col-md-12 col-12 col-sm-12">
+                    <div class="col-10 col-sm-10 col-md-10 col-xl-10 col-lg-10 text-start">
+                        <h4 class="modal-title">Dar un paseo con Grubit</h4>
+                    </div>
+                    <div class="col-2 col-sm-2 col-md-2 col-xl-2 col-lg-2 text-end">
+                        <button type="button" class="btn btn-outline-secondary" (click)="cancela()" data-bs-dismiss="modal"><i class="fa fa-close text-center"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <video class="w-100" controls>
+                            <source [src]="videoUrl" type="video/mp4" />
+                            Tu navegador no soporta la reproducción de video.
+                        </video>
+                    </div>
+                </div>
+                
+            </div>
+            <!-- Modal footer -->
+            <!--<div class="modal-footer justify-content-end">
+                <button type="button" class="btn btn-outline-secondary" (click)="cancela()" data-bs-dismiss="modal">Cerrar</button>
+            </div>-->
+        </div>
+    </div>
+</div>

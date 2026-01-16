@@ -32,7 +32,7 @@ export class DashboardComponent implements OnInit {
     anio: number = 0;
     idProveedor: number = 0;
     isLoading: boolean = false;
-   
+
 
     listaEvaluaciones: ListaEvaluacionProveedor  [];
     dashOrdenMes: DashOrdenMes = {

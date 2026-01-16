@@ -1,0 +1,193 @@
+﻿<div [@fadeInOut]>
+    <br />
+    <div class="row pt-1 mb-3">
+        <div>
+            <h1 class="h2">Requisiones</h1>
+        </div>
+
+        <div>
+            <div class="row">
+                <div class="col-md-3 col-4 mb-3">
+                    <div class="form-floating box-shadow">
+                        <input type="number" class="form-control" id="IdRequision" placeholder="Escriba el numero de requisición">
+                        <label asp-for="IdRequisicion">No. Requisición</label>
+                    </div>
+                </div>
+                <div class="col-md-3 col-4 mb-3">
+                    <div class="form-floating box-shadow">
+                        <select id="ddlmes" class="form-select">
+                            <option value="0">Seleccione...</option>
+                        </select>
+                        <label asp-for="ddlmes">Mes</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla para pantallas pequeñas -->
+    <div class="d-md-none row box-shadow table-container">
+        <table class="table table-borderless table-striped table-responsive text-start">
+            <thead class="sticky-top">
+                <tr class="text-white">
+                    <th class="ps-2 text-start">Requisiciones</th>
+                    <th class="col-md-2">
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let requisicion of model.requisiciones">
+                    <td>
+                        <div class="row mt-2 mb-2">
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge">No. Requisión:</span>
+                                <div class="ms-2">{{ requisicion.idRequisicion }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge">Comprador:</span>
+                                <div class="ms-2">{{ requisicion.comprador }}</div>
+                            </div>
+                            <div class="col-md-1 col-sm-6 col-3 mb-2">
+                                <span class="badge">Comentarios:</span>
+                                <div class="ms-2">{{ requisicion.comentarios }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge">Fecha de alta:</span>
+                                <div class="ms-2">{{ requisicion.fechaAlta }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge">Total:</span>
+                                <div class="ms-2">${{ requisicion.total }}</div>
+                            </div>
+                            <div class="col-md-1 col-sm-6 col-3 mb-2">
+                                <span class="badge">Estatus:</span>
+                                <div class="ms-2">{{ requisicion.estatus }}</div>
+                            </div>
+
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <!--<tfoot class="sticky-bottom">
+                <tr>
+                    <td>
+                        <div class="row mt-2 mb-2">
+                            <div class="col-md-2 col-sm-6 col-12 mb-2 text-center">
+                                <div class="ms-2">Total:</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge" style="color: white;">Monto factura:</span>
+                                <div class="ms-2">${{ totalMontoFactura | number: '1.2'  }}</div>
+                            </div>
+                            <div class="col-md-1 col-sm-6 col-3 mb-2">
+                                <span class="badge" style="color: white;">Pagos:</span>
+                                <div class="ms-2">${{ totalPagos | number: '1.2'  }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge" style="color: white;">Saldo actual:</span>
+                                <div class="ms-2">${{ totalSaldoActual | number: '1.2'  }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge" style="color: white;">Corriente:</span>
+                                <div class="ms-2">${{ totalCorriente | number: '1.2'  }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge" style="color: white;">0 - 30 días:</span>
+                                <div class="ms-2">${{ totalPrimerMes | number: '1.2'  }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge" style="color: white;">30 a 60 días:</span>
+                                <div class="ms-2">${{ totalSegundoMes | number: '1.2'  }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge" style="color: white;">60 a 90 días:</span>
+                                <div class="ms-2">${{ totalTercerMes | number: '1.2'  }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-3 mb-2">
+                                <span class="badge" style="color: white;">Mas de 90 días:</span>
+                                <div class="ms-2">${{ totalCuartoMesOMas | number: '1.2'  }}</div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>-->
+        </table>
+    </div>
+
+
+    <!-- Tabla para pantallas pequeñas -->
+    <div class="drow box-shadow table-container">
+        <table class="table table-borderless table-striped table-responsive text-start">
+            <thead class="sticky-top">
+                <tr class="text-white">
+                    <th>No. Requisión</th>
+                    <th>Comprador</th>
+                    <th>Comentarios</th>
+                    <th>Fecha de alta</th>
+                    <th>Total</th>
+                    <th>Estatus</th>
+                    <th class="text-center" colspan="2">Detalle</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let requisicion of model.requisiciones">
+                    <td>
+                        <div>
+                            <div>{{ requisicion.idRequisicion }}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <div>{{ requisicion.comprador }}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <div>{{ requisicion.comentarios }}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <div>{{ requisicion.fechaAlta }}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <div>${{ requisicion.total }}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <div>{{ requisicion.estatus }}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="text-center">
+                            <button class="btn btn-info text-light" title="Detalle requisicion" (click)="openRequisicionDetalle(requisicion)">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </div>
+                    </td> 
+
+                    <td>
+                        <div class="text-center">
+                            <button class="btn text-light"
+                                    [ngClass]="requisicion.idOrdenCompra > 0 ? 'btn-info' : 'btn-danger'"
+                                    data-bs-toggle="tooltip"
+                                    title="Orden de compra"
+                                    (click)="openOrdenCompraDetalle(requisicion.idOrdenCompra)">
+                                <i class="fa-solid fa-clipboard-list"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <br />
+    <pagina-widget [pagina]="model.pagina" [numPaginas]="model.numPaginas" [rows]="model.rows" (chgEvent)="muevePagina($event)"></pagina-widget>
+    <requisicionDetalle-widget (supEvent)="regresaSup()"></requisicionDetalle-widget>
+    <requisicionOrdenCompraDetalle-widget (supEvent)="regresaSup()"></requisicionOrdenCompraDetalle-widget>
+</div>

@@ -1,0 +1,111 @@
+<meta charset="UTF-8">
+<div class="modal fade modal-lg" id="modalRequisicionOrdenCompraDetalle" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <meta charset="UTF-8">
+            <!-- Modal Header -->
+            <div class="modal-header justify-content-center">
+                <div class="col-10 col-sm-10 col-md-10 col-xl-10 col-lg-10 text-start">
+                    <h4 class="modal-title">Orden Compra No. {{idOrdenCompra}}</h4>
+                </div>
+                <div class="col-2 col-sm-2 col-md-2 col-xl-2 col-lg-2 text-end">
+                    <button type="button" class="btn btn-outline-secondary" (click)="cancela()" data-bs-dismiss="modal"><i class="fa fa-close text-center"></i></button>
+                </div>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <h6 class="modal-title">Iva: </h6><span>${{modelOrdenCompra.iva}}</span>
+                    </div>
+                    <div class="col-md-2">
+                        <h6 class="modal-title">Subtotal: </h6><span>${{modelOrdenCompra.subTotal}}</span>
+                    </div>
+                    <div class="col-md-2">
+                        <h6 class="modal-title">Total: </h6><span>${{modelOrdenCompra.total}}</span>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <a class="btn btn-success" (click)="openModalFacutura(idOrdenCompra, modelOrdenCompra.inventario)">Subir factura</a>
+                    </div>
+                </div>
+
+
+                <div *ngIf="isLoading" class="row-12 text-center">
+                    <h6 *ngIf="isLoading">Cargando...</h6>
+                </div>
+                <div *ngIf="isLoading" class="text-center ">
+                    <i class="fas fa-spinner fa-spin fa-3x"></i>
+                </div>
+                <div class="row box-shadow table-container">
+                    <table class="table table-borderless table-striped table-responsive text-center">
+                        <thead class="sticky-top text-white" style=" border-radius: 10px;">
+                            <tr>
+                                <th>Clave</th>
+                                <th>Producto</th>
+                                <th>Unidad</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="modelResultado.estatus">
+                            <tr *ngFor="let producto of modelOrdenCompraDetalle.productos; let i = index">
+                                <td>
+                                    <div>
+                                        <div>{{ producto.clave }}</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <div>{{ producto.producto }}</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <div>{{ producto.unidadMedida }}</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <div>{{ producto.cantidad }}</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <div>{{ producto.precio }}</div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr *ngIf="modelOrdenCompraDetalle.productos.length <= 0">
+                                <td colspan="5">
+                                    <div>
+                                        <div>No se encontraron productos</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+
+
+                        <tbody *ngIf="!modelResultado.estatus">
+                            <tr>
+                                <td>
+                                    <div>
+                                        <div>No se encontraron productos</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+                <br />
+
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer justify-content-start">
+            </div>
+        </div>
+    </div>
+</div>
+<requisicionOrdenCompraDetalleFactura-widget (supEvent)="regresaSup()"></requisicionOrdenCompraDetalleFactura-widget>
+<!--<confirma-widget [titulo]="" [mensaje]="" (ansEvent)="returnConfirmacion($event)"></confirma-widget>-->

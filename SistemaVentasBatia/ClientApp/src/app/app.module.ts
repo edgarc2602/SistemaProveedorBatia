@@ -26,6 +26,11 @@ import { DetalleMaterialesListadoWidget } from './widgets/detallematerialeslista
 import { CargarAcuseEntregaWidget } from './widgets/cargaracuseentrega/cargaracuseentrega.widget';
 import { CargarFacturaWidget } from './widgets/cargarfactura/cargarfactura.widget';
 import { ConfirmaWidget } from './widgets/confirma/confirma.widget';
+import { RequisicionesComponent } from './exclusivo/requisiciones/requisiciones.component';
+import { PresentacionWidget } from './widgets/presentacion/presentacion.widget';
+import { RequisicionDetalleWidget } from './widgets/requisiciondetalle/requisiciondetalle.widget';
+import { RequisicionOrdenCompraDetalleWidget } from './widgets/requisicionordencompradetalle/requisicionordencompradetalle.widget';
+import { RequisicionOrdenCompraDetalleFacturaWidget } from './widgets/requisicionordencompradetallefactura/requisicionordencompradetallefactura.widget';
  
 
 @NgModule({
@@ -44,13 +49,17 @@ import { ConfirmaWidget } from './widgets/confirma/confirma.widget';
         DetalleMaterialesListadoWidget,
         CargarAcuseEntregaWidget,
         CargarFacturaWidget,
+        RequisicionesComponent,
 
         DashboardComponent,
         EstadoDeCuentaComponent,
         EntregaComponent,
         FacturaComponent,  
         ConfirmaWidget,
-        
+        PresentacionWidget,
+        RequisicionDetalleWidget,
+        RequisicionOrdenCompraDetalleWidget,
+        RequisicionOrdenCompraDetalleFacturaWidget
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -72,7 +81,8 @@ import { ConfirmaWidget } from './widgets/confirma/confirma.widget';
                     { path: 'entrega', component: EntregaComponent },
                     { path: 'factura', component: FacturaComponent },
                     //{ path: 'prospecto/:id', component: ProsNuevoComponent }, ejemplo ruta a componente con id
-                    { path: 'estadodecuenta', component: EstadoDeCuentaComponent}
+                    { path: 'estadodecuenta', component: EstadoDeCuentaComponent },
+                    { path: 'requisiciones', component: RequisicionesComponent}
                 ]
             }
         ])

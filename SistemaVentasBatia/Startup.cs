@@ -79,6 +79,9 @@ namespace SistemaVentasBatia
             services.AddScoped<IEntregaService, EntregaService>();
             services.AddScoped<IFacturaService, FacturaService>();
             services.AddScoped<ICuentaService, CuentaService>();
+            services.AddScoped<IRequisicionService, RequisicionService>();
+            services.AddScoped<ICorreoService, CorreoService>();
+            services.AddScoped<IOrdenCompraService, OrdenCompraService>();
 
             // Repositories
             services.AddScoped<ICatalogosRepository, CatalogosRepository>();
@@ -86,8 +89,9 @@ namespace SistemaVentasBatia
             services.AddScoped<IEntregaRepository, EntregaRepository>();
             services.AddScoped<IFacturaRepository, FacturaRepository>();
             services.AddScoped<ICuentaRepository, CuentaRepository>();
-
-
+            services.AddScoped<IRequisicionRepository, RequisicionRepository>();
+            services.AddScoped<IOrdenCompraRepository, OrdenCompraRepository>();
+            services.AddScoped<ICorreoRepository, CorreoRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

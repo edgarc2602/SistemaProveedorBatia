@@ -1,0 +1,101 @@
+<meta charset="UTF-8">
+<div class="modal fade modal-lg" id="modalRequisicionOrdenCompraDetalleFactura" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <meta charset="UTF-8">
+            <!-- Modal Header -->
+            <div class="modal-header justify-content-center">
+                <div class="col-10 col-sm-10 col-md-10 col-xl-10 col-lg-10 text-start">
+                    <h4 class="modal-title">Orden Compra No. {{idOrdenCompra}}</h4>
+                </div>
+                <div class="col-2 col-sm-2 col-md-2 col-xl-2 col-lg-2 text-end">
+                    <button type="button" class="btn btn-outline-secondary" (click)="cancela()" data-bs-dismiss="modal"><i class="fa fa-close text-center"></i></button>
+                </div>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div *ngIf="isLoading" class="row-12 text-center">
+                    <h6 *ngIf="isLoading">Cargando...</h6>
+                </div>
+                <div *ngIf="isLoading" class="text-center ">
+                    <i class="fas fa-spinner fa-spin fa-3x"></i>
+                </div>
+                <!--<div class="row box-shadow table-container">
+                    <div class="row">
+                        <div class="col-6 text-start">
+                            <label for="CFDI_PDF"><b>Factura CFDI PDF:</b></label>
+                            <input class="form-control" type="file" accept=".pdf" id="CFDI_PDF" />
+                        </div>
+                        <div class="col-6 text-start">
+                            <label for="CFDI_XML"><b>Factura CFDI XML:</b></label>
+                            <input class="form-control" type="file" accept=".xml" id="CFDI_XML" (change)="verificaFacturaCFDI($event)" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-2">
+                            <button class="btn btn-primary">Subir documentos</button>
+                        </div>
+                    </div>
+                </div>-->
+                <h5>Carga de archivos</h5>
+
+                <br />
+
+                <!-- Subida de la factura CFDI archivo PDF -->
+                <div class="row">
+                    <div class="col-md-3 col-4 text-center">
+                        <input type="file" accept="application/pdf" (change)="verificaPDF($event)" style="display: none;" #pdfInput>
+                        <button class="btn btn-outline-primary" (click)="pdfInput.click()">Seleccionar Factura CFDI PDF </button>
+                    </div>
+                    <div class="col-md-4 col-4">
+                        <div *ngIf="selectedPdf" class="form-floating">
+                            <input type="text" class="form-control custom-input" value="{{ selectedPdf.name }}" placeholder="PDF" disabled>
+                            <label asp-for="Keywords">PDF</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1 col-2">
+                        <button *ngIf="selectedPdf" class="btn btn-outline-danger" (click)="limpiarPDF()">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                    <div class="col-md-5 col-2 ">
+                    </div>
+                </div>
+
+                <!-- Subida de la factura CFDI archivo XML -->
+                <div class="row">
+                    <div class="col-md-3 col-4 mb-3 text-center">
+                        <input type="file" accept="text/xml" (change)="verificaFacturaCFDI($event)" style="display: none;" #xmlInput>
+                        <button class="btn btn-outline-secondary" (click)="xmlInput.click()">Seleccionar Factura CFDI XML</button>
+                    </div>
+                    <div class="col-md-4 col-4 mb-3">
+                        <div *ngIf="selectedXml" class="form-floating">
+                            <input type="text" class="form-control custom-input" value="{{ selectedXml.name }}" placeholder="XML" disabled>
+                            <label asp-for="Keywords">XML</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1 col-2">
+                        <button *ngIf="selectedXml" class="btn btn-outline-danger" (click)="limpiarXML()">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                    <div class="col-md-5 col-2 mb-3">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-3">
+                        <button class="btn btn-primary" (click)="guardarFactura()">Subir documentos</button>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer justify-content-start">
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--<confirma-widget [titulo]="" [mensaje]="" (ansEvent)="returnConfirmacion($event)"></confirma-widget>-->

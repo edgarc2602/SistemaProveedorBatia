@@ -31,13 +31,22 @@
             <a class="nav-link" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" [routerLink]="['/exclusivo/estadodecuenta']" [routerLinkActive]='["active"]' aria-current="page">
                 <div data-bs-toggle="tooltip" data-bs-placement="right">
                     <span> <i class="fa-solid fa-file-invoice fa-2x mb-2"></i></span>
-                    <div class=" d-block d-md-none"><h6>CUENTA</h6></div>
+                    <div class=" d-block d-md-none"><h6>ESTADO DE CUENTA</h6></div>
                     <hr class="d-block d-md-none" />
                 </div>
             </a>
         </li>
         <li class="nav-item mb-3 text-sm-start text-md-center">
-            <a *ngIf="isDarkTheme" class="nav-link"  data-bs-toggle="collapse"  data-bs-target="#sidebarMenu" (click)="toggleTheme()">
+            <a class="nav-link" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" [routerLink]="['/exclusivo/requisiciones']" [routerLinkActive]='["active"]' aria-current="page">
+                <div data-bs-toggle="tooltip" data-bs-placement="right">
+                    <span> <i class="fa-solid fa-clipboard fa-2x mb-2"></i></span>
+                    <div class=" d-block d-md-none"><h6>REQUISIONES</h6></div>
+                    <hr class="d-block d-md-none" />
+                </div>
+            </a>
+        </li>
+        <li class="nav-item mb-3 text-sm-start text-md-center">
+            <a *ngIf="isDarkTheme" class="nav-link" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" (click)="toggleTheme()">
                 <div data-bs-toggle="tooltip" data-bs-placement="right">
                     <span> <i class="fa-solid fa-sun fa-2x mb-2" style="color: #FFF;"></i></span>
                     <div class=" d-block d-md-none"><h6>TEMA</h6></div>
@@ -46,7 +55,7 @@
             </a>
         </li>
         <li class="nav-item mb-3 text-sm-start text-md-center">
-            <a *ngIf="!isDarkTheme" class="nav-link"  data-bs-toggle="collapse"  data-bs-target="#sidebarMenu" (click)="toggleTheme()">
+            <a *ngIf="!isDarkTheme" class="nav-link" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" (click)="toggleTheme()">
                 <div data-bs-toggle="tooltip" data-bs-placement="right">
                     <span> <i class="fa-solid fa-moon fa-2x mb-2" style="color: #333333;"></i></span>
                     <div class=" d-block d-md-none"><h6>TEMA</h6></div>
@@ -106,6 +115,15 @@
             </a>
         </li>
         <li class="nav-item mb-3 text-sm-start text-md-center">
+            <a class="nav-link" [routerLink]="['/exclusivo/requisiciones']" [routerLinkActive]='["active"]' aria-current="page">
+                <div data-bs-toggle="tooltip" data-bs-placement="right" title="Requisiciones">
+                    <span> <i class="fa-solid fa-clipboard fa-2x mb-2"></i></span>
+                    <div class="float-end d-block d-sm-none"><h6>REQUISICIONES</h6></div>
+                    <hr class="d-block d-sm-none" />
+                </div>
+            </a>
+        </li>
+        <li class="nav-item mb-3 text-sm-start text-md-center">
             <div *ngIf="isDarkTheme" data-bs-toggle="tooltip" data-bs-placement="right" title="Tema claro">
                 <button class="btn" (click)="toggleTheme()"><i class="fa-solid fa-sun fa-2x " style="color: #fff;"></i></button>
             </div>
@@ -113,5 +131,12 @@
                 <button class="btn" (click)="toggleTheme()"><i class="fa-solid fa-moon fa-2x" style="color: #333333;"></i></button>
             </div>
         </li>
+
+        <li class="nav-item mb-3 text-sm-start text-md-center">
+            <a class="mat-button" (click)="openPresentacion()" data-bs-toggle="tooltip" title="Dar un paseo">
+                <img class="img-circular" src="assets/grubit2.png" alt="icono">
+            </a>
+        </li>
     </ul>
 </nav>
+<presentacion-widget></presentacion-widget>

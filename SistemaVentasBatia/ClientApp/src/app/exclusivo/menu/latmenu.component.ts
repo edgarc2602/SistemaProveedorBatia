@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { PresentacionWidget } from '../../widgets/presentacion/presentacion.widget';
 declare var bootstrap: any;
 
 @Component({
@@ -7,6 +8,9 @@ declare var bootstrap: any;
 })
 export class LatMenuComponent implements OnInit {
     isDarkTheme: boolean = false;
+
+    @ViewChild(PresentacionWidget, { static: false }) presentacionWidget: PresentacionWidget;
+
     constructor() {
     }
 
@@ -31,5 +35,9 @@ export class LatMenuComponent implements OnInit {
         elementos.forEach((elemento: HTMLElement) => {
             elemento.blur();
         });
+    }
+
+    openPresentacion() {
+        this.presentacionWidget.open();
     }
 }
