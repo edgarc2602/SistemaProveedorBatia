@@ -11,4 +11,6 @@
     pdfName: string;
     xmlName: string;
     uuid: string;
+    receptorRfc: string;
+    receptorNombre: string;
 }

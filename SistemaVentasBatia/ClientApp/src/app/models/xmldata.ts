@@ -5,4 +5,6 @@
     fechaFactura: string;
     factura: string;
     uuid: string;
+    receptorRfc: string;
+    receptorNombre: string;
 }

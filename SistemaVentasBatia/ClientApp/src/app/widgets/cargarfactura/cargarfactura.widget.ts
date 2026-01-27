@@ -35,7 +35,7 @@ export class CargarFacturaWidget {
     selectedXml: File | null = null;
     facturas: Factura[];
     xmldata: XMLData = {
-        subTotal: 0, iva: 0, total: 0, fechaFactura: '', factura: '', uuid: ''
+        subTotal: 0, iva: 0, total: 0, fechaFactura: '', factura: '', uuid: '', receptorNombre: '', receptorRfc: ''
     }
     detallefact: DetalleOrdenCompra = {
         idOrden: 0, idRequisicion: 0, idProveedor: 0, idCliente: 0, proveedor: '', empresa: '', cliente: '', subTotal: 0, iva: 0, total: 0, status: 0, dias: 0, facturado: 0
@@ -43,7 +43,7 @@ export class CargarFacturaWidget {
     fechaActual: Date;
     idTipoFolio: number = null;
     xmlgraba: XMLGraba = {
-        factura: '', idCliente: 0, idOrden: 0, idPersonal: 0, fechaFactura: '', dias: 0, subTotal: 0, iva: 0, total: 0, pdfName: '', xmlName: '', uuid: ''
+        factura: '', idCliente: 0, idOrden: 0, idPersonal: 0, fechaFactura: '', dias: 0, subTotal: 0, iva: 0, total: 0, pdfName: '', xmlName: '', uuid: '', receptorNombre: '', receptorRfc: ''
     }
     total: number = 0;
     loading: boolean = false;
@@ -115,6 +115,8 @@ export class CargarFacturaWidget {
         this.xmlgraba.pdfName = this.selectedPdf.name;
         this.xmlgraba.xmlName = this.selectedXml.name;
         this.xmlgraba.uuid = this.xmldata.uuid;
+        this.xmlgraba.receptorNombre = this.xmldata.receptorNombre;
+        this.xmlgraba.receptorRfc = this.xmldata.receptorRfc;
     }
 
     openDocument(archivo: string, carpeta: string) {
@@ -250,7 +252,7 @@ export class CargarFacturaWidget {
         this.selectedXml = null;
         this.xmlInput.nativeElement.value = '';
         this.xmldata = {
-            subTotal: 0, iva: 0, total: 0, fechaFactura: '', factura: '', uuid: ''
+            subTotal: 0, iva: 0, total: 0, fechaFactura: '', factura: '', uuid: '', receptorNombre: '', receptorRfc: ''
         }
     }
 

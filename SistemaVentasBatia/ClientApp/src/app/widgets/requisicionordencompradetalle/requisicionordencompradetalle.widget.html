@@ -4,9 +4,9 @@
         <div class="modal-content">
             <meta charset="UTF-8">
             <!-- Modal Header -->
-            <div class="modal-header justify-content-center">
-                <div class="col-10 col-sm-10 col-md-10 col-xl-10 col-lg-10 text-start">
-                    <h4 class="modal-title">Orden Compra No. {{idOrdenCompra}}</h4>
+            <div class="modal-header justify-content-start">
+                <div class="col-10 col-sm-3 col-md-10 col-xl-10 col-lg-10 text-start">
+                    <h4 class="modal-title">Orden Compra No. {{idOrdenCompra}} - ({{modelOrdenCompra.estatus}})</h4>
                 </div>
                 <div class="col-2 col-sm-2 col-md-2 col-xl-2 col-lg-2 text-end">
                     <button type="button" class="btn btn-outline-secondary" (click)="cancela()" data-bs-dismiss="modal"><i class="fa fa-close text-center"></i></button>
@@ -24,7 +24,7 @@
                     <div class="col-md-2">
                         <h6 class="modal-title">Total: </h6><span>${{modelOrdenCompra.total}}</span>
                     </div>
-                    <div class="col-md-6 text-end">
+                    <div class="col-md-6 text-end" *ngIf="modelOrdenCompra.estatus != 'Completa'">
                         <a class="btn btn-success" (click)="openModalFacutura(idOrdenCompra, modelOrdenCompra.inventario)">Subir factura</a>
                     </div>
                 </div>
@@ -107,5 +107,5 @@
         </div>
     </div>
 </div>
-<requisicionOrdenCompraDetalleFactura-widget (supEvent)="regresaSup()"></requisicionOrdenCompraDetalleFactura-widget>
+<requisicionOrdenCompraDetalleFactura-widget (supEvent)="regresaSup($event)"></requisicionOrdenCompraDetalleFactura-widget>
 <!--<confirma-widget [titulo]="" [mensaje]="" (ansEvent)="returnConfirmacion($event)"></confirma-widget>-->

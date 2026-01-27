@@ -5,9 +5,14 @@
             <meta charset="UTF-8">
             <!-- Modal Header -->
             <div class="modal-header justify-content-center">
-                <div class="col-10 col-sm-10 col-md-10 col-xl-10 col-lg-10 text-start">
+                <div class="col-4 col-sm-4 col-md-4 col-xl-4 col-lg-4 text-start">
                     <h4 class="modal-title">Orden Compra No. {{idOrdenCompra}}</h4>
                 </div>
+                <div
+                     class="col-4 col-sm-4 col-md-4 col-xl-4 col-lg-4 text-start">
+                    <h4 class="modal-title text-light">{{estatus}}</h4>
+                </div>
+
                 <div class="col-2 col-sm-2 col-md-2 col-xl-2 col-lg-2 text-end">
                     <button type="button" class="btn btn-outline-secondary" (click)="cancela()" data-bs-dismiss="modal"><i class="fa fa-close text-center"></i></button>
                 </div>

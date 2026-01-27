@@ -125,7 +125,13 @@
                             <label asp-for="Keywords">UUID</label>
                         </div>
                     </div>
-                    
+                    <div class="col-md-6 col-4">
+                        <div class="form-floating ">
+                            <input type="text" class="form-control custom-input" [ngModel]="xmldata.receptorRfc" placeholder="RFC Receptor" disabled>
+                            <label asp-for="Keywords">RFC Receptor</label>
+                        </div>
+                    </div>
+
                 </div>
                 <h5 *ngIf="facturas">Facturas cargadas</h5>
                 <div *ngIf="facturas" class="row box-shadow" style="border-radius: 10px; overflow-x: hidden;">

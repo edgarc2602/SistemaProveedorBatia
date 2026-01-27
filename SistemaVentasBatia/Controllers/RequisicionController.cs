@@ -31,9 +31,32 @@ namespace SistemaVentasBatia.Controllers
             return _logic.GetRequisicionDetalle(idRequisicion);
         }
 
-        [HttpPut("[action]/{ivaNuevo}/{subTotalNuevo}/{totalNuevo}")]
-        public Task<ResultadoDTO> PutActualizaRequisicionNuevoPrecio([FromBody] RequisicionDetalleDTO requisicion, float ivaNuevo, float subTotalNuevo, float totalNuevo) {
-            return _logic.PutActualizaRequisicionNuevoPrecio(requisicion, ivaNuevo, subTotalNuevo, totalNuevo);
+        [HttpPut("[action]/{ivaNuevo}/{subTotalNuevo}/{totalNuevo}/{idProveedor}")]
+        public Task<ResultadoDTO> PutActualizaRequisicionNuevoPrecio([FromBody] RequisicionDetalleDTO requisicion, float ivaNuevo, float subTotalNuevo, float totalNuevo, int idProveedor) {
+            return _logic.PutActualizaRequisicionNuevoPrecio(requisicion, ivaNuevo, subTotalNuevo, totalNuevo, idProveedor);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<bool> NuevaRequisicion(
+            [FromForm] int idProveedor,
+            [FromForm] int idOrdenCompra,
+            [FromForm] int idPersonal,
+            [FromForm] string diasCredito,
+            [FromForm] string xmlMovimiento,
+            [FromForm] string xmlComprobante,
+            [FromForm] IFormFile pdf,
+            [FromForm] IFormFile xmlFile) {
+            return await _logic.NuevaRequisicion(
+                idOrdenCompra,
+                idProveedor,
+                idPersonal,
+                diasCredito,
+                xmlMovimiento,
+                xmlComprobante,
+                pdf,
+                xmlFile
+            );
+            //return _logic.NuevaRequisicion(requisicionNueva);
         }
     }
 }

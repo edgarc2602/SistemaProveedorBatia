@@ -85,7 +85,7 @@ export class RequisicionDetalleWidget {
                     this.calculaTotales();
 
                     // Se encarga de actualizar los precios de la requisicion por el proveedor
-                    this.http.put<Resultado>(`${this.url}api/requisicion/putactualizarequisicionnuevoprecio/${this.modelRequisicion.ivaNuevo}/${this.modelRequisicion.subtotalNuevo}/${this.modelRequisicion.totalNuevo}`, this.model)
+                    this.http.put<Resultado>(`${this.url}api/requisicion/putactualizarequisicionnuevoprecio/${this.modelRequisicion.ivaNuevo}/${this.modelRequisicion.subtotalNuevo}/${this.modelRequisicion.totalNuevo}/${this.modelRequisicion.idProveedor}`, this.model)
                         .subscribe(response => {
                             console.log(response);
                             this.isLoading = false;

@@ -7,8 +7,7 @@ import { User } from 'oidc-client';
 import { OrdenCompraDetalle } from '../../models/ordenCompraDetalle';
 import { OrdenCompra } from '../../models/ordencompra';
 import { ConceptoCFDI, EmisorCFDI, FacturaCFDI, ImpuestosCFDI, ImpuestosConceptoCFDI, ReceptorCFDI, RetencionConceptoCFDI, RetencionGlobalCFDI, TimbreFiscalCFDI, TrasladoCFDI } from '../../models/FacturaCFDI';
-import { Recepcion } from '../../models/Recepcion';
-import { parseString } from 'xml2js';
+//import { parseString } from 'xml2js';
 declare var bootstrap: any;
 
 @Component({
@@ -148,7 +147,7 @@ export class RequisicionOrdenCompraDetalleFacturaWidget {
     close() {
         this.limpiarPDF();
         this.limpiarXML();
-        let docModal = document.getElementById('modalPresentacion');
+        let docModal = document.getElementById('modalRequisicionOrdenCompraDetalleFactura');
         let myModal = bootstrap.Modal.getOrCreateInstance(docModal);
         myModal.hide();
     }
@@ -218,168 +217,168 @@ export class RequisicionOrdenCompraDetalleFacturaWidget {
     }
 
     // ******** Funciones para mapeo de datos
-    mapearFactura(json: any): FacturaCFDI {
-        const c = json['cfdi:Comprobante'];
+    //mapearFactura(json: any): FacturaCFDI {
+    //    const c = json['cfdi:Comprobante'];
 
-        return {
-            version: c.$.Version,
-            fecha: c.$.Fecha,
-            sello: c.$.Sello,
-            noCertificado: c.$.NoCertificado,
-            certificado: c.$.Certificado,
-            condicionesDePago: c.$.CondicionesDePago,
+    //    return {
+    //        version: c.$.Version,
+    //        fecha: c.$.Fecha,
+    //        sello: c.$.Sello,
+    //        noCertificado: c.$.NoCertificado,
+    //        certificado: c.$.Certificado,
+    //        condicionesDePago: c.$.CondicionesDePago,
 
-            serie: c.$.Serie,
-            folio: c.$.Folio,
+    //        serie: c.$.Serie,
+    //        folio: c.$.Folio,
 
-            formaPago: c.$.FormaPago,
-            metodoPago: c.$.MetodoPago,
-            tipoDeComprobante: c.$.TipoDeComprobante,
-            exportacion: c.$.Exportacion,
-            moneda: c.$.Moneda,
+    //        formaPago: c.$.FormaPago,
+    //        metodoPago: c.$.MetodoPago,
+    //        tipoDeComprobante: c.$.TipoDeComprobante,
+    //        exportacion: c.$.Exportacion,
+    //        moneda: c.$.Moneda,
 
-            subtotal: c.$.SubTotal,
-            descuento: c.$.Descuento,
-            total: c.$.Total,
-            lugarExpedicion: c.$.LugarExpedicion,
+    //        subtotal: c.$.SubTotal,
+    //        descuento: c.$.Descuento,
+    //        total: c.$.Total,
+    //        lugarExpedicion: c.$.LugarExpedicion,
 
-            emisor: this.mapearEmisor(c['cfdi:Emisor']),
-            receptor: this.mapearReceptor(c['cfdi:Receptor']),
+    //        emisor: this.mapearEmisor(c['cfdi:Emisor']),
+    //        receptor: this.mapearReceptor(c['cfdi:Receptor']),
 
-            conceptos: this.mapearConceptos(c['cfdi:Conceptos']),
+    //        conceptos: this.mapearConceptos(c['cfdi:Conceptos']),
 
-            impuestos: this.mapearImpuestos(c['cfdi:Impuestos']),
+    //        impuestos: this.mapearImpuestos(c['cfdi:Impuestos']),
 
-            timbreFiscal: this.mapearTimbre(c['cfdi:Complemento'])
-        };
-    }
+    //        timbreFiscal: this.mapearTimbre(c['cfdi:Complemento'])
+    //    };
+    //}
 
-    mapearEmisor(e: any): EmisorCFDI {
-        return {
-            rfc: e.$.Rfc,
-            nombre: e.$.Nombre,
-            regimenFiscal: e.$.RegimenFiscal
-        };
-    }
+    //mapearEmisor(e: any): EmisorCFDI {
+    //    return {
+    //        rfc: e.$.Rfc,
+    //        nombre: e.$.Nombre,
+    //        regimenFiscal: e.$.RegimenFiscal
+    //    };
+    //}
 
-    mapearReceptor(r: any): ReceptorCFDI {
-        return {
-            rfc: r.$.Rfc,
-            nombre: r.$.Nombre,
-            usoCFDI: r.$.UsoCFDI,
-            regimenFiscalReceptor: r.$.RegimenFiscalReceptor,
-            domicilioFiscal: r.$.DomicilioFiscalReceptor
-        };
-    }
+    //mapearReceptor(r: any): ReceptorCFDI {
+    //    return {
+    //        rfc: r.$.Rfc,
+    //        nombre: r.$.Nombre,
+    //        usoCFDI: r.$.UsoCFDI,
+    //        regimenFiscalReceptor: r.$.RegimenFiscalReceptor,
+    //        domicilioFiscal: r.$.DomicilioFiscalReceptor
+    //    };
+    //}
 
-    mapearConceptos(cs: any): ConceptoCFDI[] {
-        const conceptos = cs['cfdi:Concepto'];
+    //mapearConceptos(cs: any): ConceptoCFDI[] {
+    //    const conceptos = cs['cfdi:Concepto'];
 
-        // Si solo viene 1 concepto, xml2js NO lo convierte en array
-        const lista = Array.isArray(conceptos) ? conceptos : [conceptos];
+    //    // Si solo viene 1 concepto, xml2js NO lo convierte en array
+    //    const lista = Array.isArray(conceptos) ? conceptos : [conceptos];
 
-        return lista.map((c: any) => ({
-            claveProdServ: c.$.ClaveProdServ,
-            noIdentificacion: c.$.NoIdentificacion,
-            cantidad: c.$.Cantidad,
-            claveUnidad: c.$.ClaveUnidad,
-            unidad: c.$.Unidad,
-            descripcion: c.$.Descripcion,
-            valorUnitario: c.$.ValorUnitario,
-            importe: c.$.Importe,
-            descuento: c.$.Descuento,
-            objetoImp: c.$.ObjetoImp,
+    //    return lista.map((c: any) => ({
+    //        claveProdServ: c.$.ClaveProdServ,
+    //        noIdentificacion: c.$.NoIdentificacion,
+    //        cantidad: c.$.Cantidad,
+    //        claveUnidad: c.$.ClaveUnidad,
+    //        unidad: c.$.Unidad,
+    //        descripcion: c.$.Descripcion,
+    //        valorUnitario: c.$.ValorUnitario,
+    //        importe: c.$.Importe,
+    //        descuento: c.$.Descuento,
+    //        objetoImp: c.$.ObjetoImp,
 
-            impuestos: this.mapearImpuestosConcepto(c['cfdi:Impuestos']),
-            cuentaPredial: c['cfdi:CuentaPredial']
-                ? { numero: c['cfdi:CuentaPredial'].$.Numero }
-                : undefined
-        }));
-    }
+    //        impuestos: this.mapearImpuestosConcepto(c['cfdi:Impuestos']),
+    //        cuentaPredial: c['cfdi:CuentaPredial']
+    //            ? { numero: c['cfdi:CuentaPredial'].$.Numero }
+    //            : undefined
+    //    }));
+    //}
 
-    mapearImpuestosConcepto(i: any): ImpuestosConceptoCFDI | undefined {
-        if (!i) return undefined;
+    //mapearImpuestosConcepto(i: any): ImpuestosConceptoCFDI | undefined {
+    //    if (!i) return undefined;
 
-        return {
-            traslados: i['cfdi:Traslados']
-                ? this.mapearTraslados(i['cfdi:Traslados']['cfdi:Traslado'])
-                : undefined,
+    //    return {
+    //        traslados: i['cfdi:Traslados']
+    //            ? this.mapearTraslados(i['cfdi:Traslados']['cfdi:Traslado'])
+    //            : undefined,
 
-            retenciones: i['cfdi:Retenciones']
-                ? this.mapearRetencionesConcepto(i['cfdi:Retenciones']['cfdi:Retencion'])
-                : undefined
-        };
-    }
+    //        retenciones: i['cfdi:Retenciones']
+    //            ? this.mapearRetencionesConcepto(i['cfdi:Retenciones']['cfdi:Retencion'])
+    //            : undefined
+    //    };
+    //}
 
-    mapearImpuestos(i: any): ImpuestosCFDI | undefined {
-        if (!i) return undefined;
+    //mapearImpuestos(i: any): ImpuestosCFDI | undefined {
+    //    if (!i) return undefined;
 
-        return {
-            totalTrasladados: i.$ ? i.$.TotalImpuestosTrasladados : undefined,
-            totalRetenidos: i.$ ? i.$.TotalImpuestosRetenidos : undefined,
-            traslados: i['cfdi:Traslados']
-                ? this.mapearTraslados(i['cfdi:Traslados']['cfdi:Traslado'])
-                : undefined,
+    //    return {
+    //        totalTrasladados: i.$ ? i.$.TotalImpuestosTrasladados : undefined,
+    //        totalRetenidos: i.$ ? i.$.TotalImpuestosRetenidos : undefined,
+    //        traslados: i['cfdi:Traslados']
+    //            ? this.mapearTraslados(i['cfdi:Traslados']['cfdi:Traslado'])
+    //            : undefined,
 
-            retenciones: i['cfdi:Retenciones']
-                ? this.mapearRetencionesGlobales(i['cfdi:Retenciones']['cfdi:Retencion'])
-                : undefined
-        };
-    }
+    //        retenciones: i['cfdi:Retenciones']
+    //            ? this.mapearRetencionesGlobales(i['cfdi:Retenciones']['cfdi:Retencion'])
+    //            : undefined
+    //    };
+    //}
 
-    mapearTraslados(items: any): TrasladoCFDI[] {
-        const arr = Array.isArray(items) ? items : [items];
+    //mapearTraslados(items: any): TrasladoCFDI[] {
+    //    const arr = Array.isArray(items) ? items : [items];
 
-        return arr.map(t => ({
-            base: t.$.Base,
-            impuesto: t.$.Impuesto,
-            tipoFactor: t.$.TipoFactor,
-            tasaOCuota: t.$.TasaOCuota,
-            importe: t.$.Importe
-        }));
-    }
+    //    return arr.map(t => ({
+    //        base: t.$.Base,
+    //        impuesto: t.$.Impuesto,
+    //        tipoFactor: t.$.TipoFactor,
+    //        tasaOCuota: t.$.TasaOCuota,
+    //        importe: t.$.Importe
+    //    }));
+    //}
 
-    mapearRetencionesConcepto(items: any): RetencionConceptoCFDI[] {
-        const arr = Array.isArray(items) ? items : [items];
+    //mapearRetencionesConcepto(items: any): RetencionConceptoCFDI[] {
+    //    const arr = Array.isArray(items) ? items : [items];
 
-        return arr.map(r => ({
-            base: r.$.Base,
-            impuesto: r.$.Impuesto,
-            tipoFactor: r.$.TipoFactor,
-            tasaOCuota: r.$.TasaOCuota,
-            importe: r.$.Importe
-        }));
-    }
+    //    return arr.map(r => ({
+    //        base: r.$.Base,
+    //        impuesto: r.$.Impuesto,
+    //        tipoFactor: r.$.TipoFactor,
+    //        tasaOCuota: r.$.TasaOCuota,
+    //        importe: r.$.Importe
+    //    }));
+    //}
 
-    mapearRetencionesGlobales(items: any): RetencionGlobalCFDI[] {
-        const arr = Array.isArray(items) ? items : [items];
+    //mapearRetencionesGlobales(items: any): RetencionGlobalCFDI[] {
+    //    const arr = Array.isArray(items) ? items : [items];
 
-        return arr.map(r => ({
-            impuesto: r.$.Impuesto,
-            importe: r.$.Importe
-        }));
-    }
+    //    return arr.map(r => ({
+    //        impuesto: r.$.Impuesto,
+    //        importe: r.$.Importe
+    //    }));
+    //}
 
-    mapearTimbre(complemento: any): TimbreFiscalCFDI | undefined {
-        if (!complemento) return undefined;
+    //mapearTimbre(complemento: any): TimbreFiscalCFDI | undefined {
+    //    if (!complemento) return undefined;
 
-        const t = complemento['tfd:TimbreFiscalDigital'] &&
-            complemento['tfd:TimbreFiscalDigital'].$
-            ? complemento['tfd:TimbreFiscalDigital'].$
-            : null;
+    //    const t = complemento['tfd:TimbreFiscalDigital'] &&
+    //        complemento['tfd:TimbreFiscalDigital'].$
+    //        ? complemento['tfd:TimbreFiscalDigital'].$
+    //        : null;
 
-        if (!t) return undefined;
+    //    if (!t) return undefined;
 
-        return {
-            version: t.version,
-            uuid: t.UUID,
-            fechaTimbrado: t.FechaTimbrado,
-            rfcProvCertif: t.RfcProvCertif,
-            selloCFD: t.SelloCFD,
-            noCertificadoSAT: t.NoCertificadoSAT,
-            selloSAT: t.SelloSAT
-        };
-    }
+    //    return {
+    //        version: t.version,
+    //        uuid: t.UUID,
+    //        fechaTimbrado: t.FechaTimbrado,
+    //        rfcProvCertif: t.RfcProvCertif,
+    //        selloCFD: t.SelloCFD,
+    //        noCertificadoSAT: t.NoCertificadoSAT,
+    //        selloSAT: t.SelloSAT
+    //    };
+    //}
 
     quitarFocoDeElementos(): void {
         const elementos = document.querySelectorAll('button, input[type="text"]');
@@ -415,124 +414,124 @@ export class RequisicionOrdenCompraDetalleFacturaWidget {
             return false;
         }
 
-        const reader = new FileReader();
+        //const reader = new FileReader();
 
-        reader.onload = () => {
-            const xmlContent = reader.result as string;
+        //reader.onload = () => {
+        //    const xmlContent = reader.result as string;
 
-            parseString(xmlContent, { explicitArray: false }, (err, result) => {
-                if (err) {
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'Ocurrio un error al intentar leer la Factura CFDI. Detalle: ' + err,
-                        icon: 'error',
-                        showConfirmButton: false,
-                    });
-                    return false;
-                }
+        //    parseString(xmlContent, { explicitArray: false }, (err, result) => {
+        //        if (err) {
+        //            Swal.fire({
+        //                title: 'Error',
+        //                text: 'Ocurrio un error al intentar leer la Factura CFDI. Detalle: ' + err,
+        //                icon: 'error',
+        //                showConfirmButton: false,
+        //            });
+        //            return false;
+        //        }
 
-                console.log("XML convertido:", result);
+        //        console.log("XML convertido:", result);
 
-                this.modelFacturaCFDI = this.mapearFactura(result) as FacturaCFDI;
+        //        this.modelFacturaCFDI = this.mapearFactura(result) as FacturaCFDI;
 
-                console.log("XML mapeado", this.modelFacturaCFDI);
-            });
-        };
+        //        console.log("XML mapeado", this.modelFacturaCFDI);
+        //    });
+        //};
         this.isLoading = false;
-        reader.readAsText(file);
+        /*reader.readAsText(file);*/
     }
 
-    validaFacturaCFDI(facturaCFDI: FacturaCFDI): boolean {
-        if (facturaCFDI.folio == null) {
-            Swal.fire({
-                title: 'Error',
-                text: 'No se encontro el numero de folio',
-                icon: 'error',
-                showConfirmButton: false,
-            });
-            return false;
-        }
+    //validaFacturaCFDI(facturaCFDI: FacturaCFDI): boolean {
+    //    if (facturaCFDI.folio == null) {
+    //        Swal.fire({
+    //            title: 'Error',
+    //            text: 'No se encontro el numero de folio',
+    //            icon: 'error',
+    //            showConfirmButton: false,
+    //        });
+    //        return false;
+    //    }
 
-        if (facturaCFDI.timbreFiscal.uuid == null) {
-            Swal.fire({
-                title: 'Error',
-                text: 'No se encontro el UUID de la factura CFDI',
-                icon: 'error',
-                showConfirmButton: false,
-            });
-            return false;
-        }
+    //    if (facturaCFDI.timbreFiscal.uuid == null) {
+    //        Swal.fire({
+    //            title: 'Error',
+    //            text: 'No se encontro el UUID de la factura CFDI',
+    //            icon: 'error',
+    //            showConfirmButton: false,
+    //        });
+    //        return false;
+    //    }
 
-        if (facturaCFDI.fecha == null) {
-            Swal.fire({
-                title: 'Error',
-                text: 'No se encontro la fecha de registro de la factura',
-                icon: 'error',
-                showConfirmButton: false,
-            });
-            return false;
-        }
+    //    if (facturaCFDI.fecha == null) {
+    //        Swal.fire({
+    //            title: 'Error',
+    //            text: 'No se encontro la fecha de registro de la factura',
+    //            icon: 'error',
+    //            showConfirmButton: false,
+    //        });
+    //        return false;
+    //    }
 
-        if (facturaCFDI.impuestos.traslados[0] == null) {
-            Swal.fire({
-                title: 'Error',
-                text: 'No se encontro el importe de traslado',
-                icon: 'error',
-                showConfirmButton: false,
-            });
-            return false;
-        }
+    //    if (facturaCFDI.impuestos.traslados[0] == null) {
+    //        Swal.fire({
+    //            title: 'Error',
+    //            text: 'No se encontro el importe de traslado',
+    //            icon: 'error',
+    //            showConfirmButton: false,
+    //        });
+    //        return false;
+    //    }
 
-        return true;
-    }
+    //    return true;
+    //}
 
-    validaDocumentos(): boolean {
-        if (this.selectedPdf == null) {
-            Swal.fire({
-                title: 'Advertencia',
-                text: 'Debe subir el archivo PDF de la factura CFDI',
-                icon: 'warning',
-                showConfirmButton: false,
-            });
-            return false;
-        }
+    //validaDocumentos(): boolean {
+    //    if (this.selectedPdf == null) {
+    //        Swal.fire({
+    //            title: 'Advertencia',
+    //            text: 'Debe subir el archivo PDF de la factura CFDI',
+    //            icon: 'warning',
+    //            showConfirmButton: false,
+    //        });
+    //        return false;
+    //    }
 
-        if (this.selectedXml == null) {
-            Swal.fire({
-                title: 'Advertencia',
-                text: 'Debe subir el archivo XML de la factura CFDI',
-                icon: 'warning',
-                showConfirmButton: false,
-            });
-            return false;
-        }
+    //    if (this.selectedXml == null) {
+    //        Swal.fire({
+    //            title: 'Advertencia',
+    //            text: 'Debe subir el archivo XML de la factura CFDI',
+    //            icon: 'warning',
+    //            showConfirmButton: false,
+    //        });
+    //        return false;
+    //    }
 
-        if (!this.selectedPdf.name.toLowerCase().endsWith(".pdf")) {
-            Swal.fire({
-                title: 'Advertencia',
-                text: 'El archivo PDF de la factura CFDI no tiene la extencion correcta.',
-                icon: 'warning',
-                showConfirmButton: false,
-            });
-            return false;
-        }
+    //    if (!this.selectedPdf.name.toLowerCase().endsWith(".pdf")) {
+    //        Swal.fire({
+    //            title: 'Advertencia',
+    //            text: 'El archivo PDF de la factura CFDI no tiene la extencion correcta.',
+    //            icon: 'warning',
+    //            showConfirmButton: false,
+    //        });
+    //        return false;
+    //    }
 
-        if (!this.selectedXml.name.toLowerCase().endsWith(".xml")) {
-            Swal.fire({
-                title: 'Advertencia',
-                text: 'El archivo XML de la factura CFDI no tiene la extencion correcta.',
-                icon: 'warning',
-                showConfirmButton: false,
-            });
-            return false;
-        }
+    //    if (!this.selectedXml.name.toLowerCase().endsWith(".xml")) {
+    //        Swal.fire({
+    //            title: 'Advertencia',
+    //            text: 'El archivo XML de la factura CFDI no tiene la extencion correcta.',
+    //            icon: 'warning',
+    //            showConfirmButton: false,
+    //        });
+    //        return false;
+    //    }
 
-        if (!this.validaFacturaCFDI(this.modelFacturaCFDI)) {
-            return false;
-        }
+    //    if (!this.validaFacturaCFDI(this.modelFacturaCFDI)) {
+    //        return false;
+    //    }
 
-        return true;
-    }
+    //    return true;
+    //}
 
     // ******** Funciones para limpiar modelos
     limpiaModelo() {
@@ -680,7 +679,7 @@ export class RequisicionOrdenCompraDetalleFacturaWidget {
 
     // ******** Funciones para guardar
     guardarFactura(): void {
-        if (this.validaDocumentos()) {
+       // if (this.validaDocumentos()) {
             let xml: string;
             let xml1: string;
             let fFac: string = this.modelFacturaCFDI.fecha.split("T")[0];
@@ -692,18 +691,17 @@ export class RequisicionOrdenCompraDetalleFacturaWidget {
 
                 xml = `
             <Movimiento>
-                <salida
-                    factura="${this.modelFacturaCFDI.folio}"
-                    uuid="${this.modelFacturaCFDI.timbreFiscal.uuid}"
-                    fecfac="${fechaFactura}"
-                    usuario="0"
-                    idproveedor="${this.user.idProveedor}"
-                    dias="${this.modelOrdenCompra.diasCredito}"
-                    sub="${this.modelOrdenCompra.subTotal}"
-                    iva="${this.modelOrdenCompra.iva}"
-                    total="${this.modelOrdenCompra.total}"
-                    rfc="${this.modelFacturaCFDI.receptor.rfc}"
-                />
+                <salida orden="${this.idOrdenCompra}" 
+                factura="${this.modelFacturaCFDI.folio}" 
+                uuid="${this.modelFacturaCFDI.timbreFiscal.uuid}" 
+                fecfac="${fechaFactura}" 
+                usuario="${this.user.idPersonal}" 
+                idproveedor="${this.user.idProveedor}" 
+                dias="${this.modelOrdenCompra.diasCredito}" 
+                sub="${this.modelFacturaCFDI.subtotal}" 
+                iva="${this.modelFacturaCFDI.impuestos.totalTrasladados}" 
+                total="${this.modelFacturaCFDI.total}" 
+                rfc="${this.modelFacturaCFDI.receptor.rfc}" />
                 <archivo
                     nombre=".pdf"
                 />
@@ -728,17 +726,28 @@ export class RequisicionOrdenCompraDetalleFacturaWidget {
                 />
             </Movimiento>
             `;
-                console.log(xml);
-                console.log(xml1);
-
-            } else {
-                Swal.fire({
-                    title: 'warning',
-                    text: 'La factura CFDI no se puede subirt porque el comprador',
-                    icon: 'error',
-                    showConfirmButton: false,
-                });
-            }
-        }
+                const data = { xmlMovimiento: xml, xmlComprobante: xml1 };
+                const formData = new FormData();
+                formData.append('idOrdenCompra',this.idOrdenCompra.toString());
+                formData.append('idProveedor', this.user.idProveedor.toString());
+                formData.append('idPersonal', this.user.idPersonal.toString());
+                formData.append('diasCredito', this.modelOrdenCompra.diasCredito.toString());
+                formData.append('xmlMovimiento', xml);
+                formData.append('xmlComprobante', xml1);
+                // archivos reales 
+                formData.append('pdf', this.selectedPdf, this.selectedPdf.name);
+                formData.append('xmlFile', this.selectedXml, this.selectedXml.name);
+                var isCorrect = false;
+                this.http.post<boolean>(`${this.url}api/requisicion/NuevaRequisicion`, formData).subscribe(response => {
+                    isCorrect = response;
+                    if (isCorrect) {
+                        Swal.fire({ title: 'Guardado', text: 'Se cargar\u00F3n los documentos seleccionados', icon: 'success', timer: 3000, showConfirmButton: false, });
+                        this.close();
+                        this.limpiaModelo();
+                        this.sendEvent.emit(true);
+                    } else { Swal.fire({ title: 'Error', text: 'Ocurri\u00F3 un error al cargar los documentos', icon: 'error', timer: 3000, showConfirmButton: false, }); }
+                }, err => { var error = err.error; Swal.fire({ title: 'Error', text: 'Ocurrió un error al cargar los documentos:' + error, icon: 'error', timer: 3000, showConfirmButton: false, }); }); console.log(xml); console.log(xml1);
+            } else { Swal.fire({ title: 'warning', text: 'La factura CFDI no se puede subir porque el comprador', icon: 'error', showConfirmButton: false, }); }
+        //}
     }
 }

@@ -19,13 +19,13 @@
                         <h6 class="modal-title">Iva: </h6><span>${{modelRequisicion.iva}}</span>
                     </div>
                     <div class="col-md-2">
-                        <h6 class="modal-title">Subtotal: </h6><span>${{modelRequisicion.subTotal}}</span>
+                        <h6 class="modal-title">Subtotal: </h6><span>${{modelRequisicion.subtotal}}</span>
                     </div>
                     <div class="col-md-2">
                         <h6 class="modal-title">Total: </h6><span>${{modelRequisicion.total}}</span>
                     </div>
                     <div class="col-md-6 text-end">
-                        <a class="btn btn-primary" *ngIf="idRequisicionEstatus == 1" (click)="guardaPreciosNuevos()">Guardar</a>
+                        <a class="btn btn-primary" *ngIf="idRequisicionEstatus == 1" (click)="guardaPreciosNuevos()">Guardar y enviar notificación</a>
                     </div>
                 </div>
                 <hr />

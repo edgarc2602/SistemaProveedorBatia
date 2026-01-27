@@ -1,13 +1,14 @@
 ﻿using Dapper;
+using Microsoft.AspNetCore.Server.HttpSys;
 using SistemaVentasBatia.Context;
 using SistemaVentasBatia.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.Data;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Server.HttpSys;
 
 namespace SistemaVentasBatia.Repositories
 {
@@ -16,19 +17,19 @@ namespace SistemaVentasBatia.Repositories
         Task<ListaRequisiciones> GetRequisiciones(int idProveedor, int pagina);
         Task<RequisicionDetalle> GetRequisicionDetalle(int idRequisicion);
         Task<Resultado> PutActualizaRequisicionNuevoPrecio(RequisicionDetalle requisicion, float ivaNuevo, float subTotalNuevo, float totalNuevo);
+        Task<int> NuevaRequisicion(string requisicion);
+        Task<string> ObtenerCorreoComprador(int idProveedor);
+        Task<string> ObtenerNombreProveedor(int idProveedor);
     }
 
-    public class RequisicionRepository : IRequisicionRepository
-    {
+    public class RequisicionRepository : IRequisicionRepository {
         private readonly DapperContext _ctx;
 
-        public RequisicionRepository(DapperContext context)
-        {
+        public RequisicionRepository(DapperContext context) {
             _ctx = context;
         }
 
-        public async Task<ListaRequisiciones> GetRequisiciones(int idProveedor, int pagina)
-        {
+        public async Task<ListaRequisiciones> GetRequisiciones(int idProveedor, int pagina) {
             ListaRequisiciones requisiciones = new ListaRequisiciones();
             requisiciones.Requisiciones = new List<Requisicion>();
 
@@ -108,27 +109,22 @@ namespace SistemaVentasBatia.Repositories
                             and a.id_lineanegocio = 2
 							and a.id_proveedor = @idProveedor
 						) as resultado
-						where numero_fila between ((@pagina - 1) * @paginacion + 1) and (@pagina * @paginacion)
-                ";
+						where numero_fila between ((@pagina - 1) * @paginacion + 1) and (@pagina * @paginacion)";
 
-            try
-            {
-                using (var connection = _ctx.CreateConnection())
-                {
+            try {
+                using(var connection = _ctx.CreateConnection()) {
                     requisiciones = (await connection.QueryFirstAsync<ListaRequisiciones>(query, new { idProveedor }));
+
                     requisiciones.Requisiciones = (await connection.QueryAsync<Requisicion>(query1, new { idProveedor, paginacion, pagina })).ToList();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch(Exception ex) {
                 throw ex;
             }
             return requisiciones;
         }
 
 
-        public async Task<RequisicionDetalle> GetRequisicionDetalle(int idRequisicion)
-        {
+        public async Task<RequisicionDetalle> GetRequisicionDetalle(int idRequisicion) {
             RequisicionDetalle requisicionDetalle = new RequisicionDetalle();
             requisicionDetalle.IdRequisicion = idRequisicion;
             requisicionDetalle.Productos = new List<RequisicionProducto>();
@@ -148,34 +144,27 @@ namespace SistemaVentasBatia.Repositories
 					order by descripcion
                 ";
 
-            try
-            {
-                using (var connection = _ctx.CreateConnection())
-                {
+            try {
+                using(var connection = _ctx.CreateConnection()) {
                     requisicionDetalle.Productos = (await connection.QueryAsync<RequisicionProducto>(query, new { idRequisicion })).ToList();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch(Exception ex) {
                 throw ex;
             }
             return requisicionDetalle;
         }
 
-        public async Task<Resultado> PutActualizaRequisicionNuevoPrecio(RequisicionDetalle requisicion, float ivaNuevo, float subTotalNuevo, float totalNuevo)
-        {
+        public async Task<Resultado> PutActualizaRequisicionNuevoPrecio(RequisicionDetalle requisicion, float ivaNuevo, float subTotalNuevo, float totalNuevo) {
             Resultado resultado = new Resultado();
 
-            try
-            {
+            try {
                 using var connection = _ctx.CreateConnection();
                 connection.Open();
                 var parameters = new DynamicParameters();
 
                 Resultado XmlResultado = requisicion.ConvertirModeloXML(requisicion);
 
-                if (XmlResultado.Estatus.Value)
-                {
+                if(XmlResultado.Estatus.Value) {
                     parameters.Add("@IdRequisicion", DbType.Int32, direction: ParameterDirection.Output);
                     parameters.Add("@Cabecero", new SqlXml(new System.Xml.XmlTextReader(XmlResultado.Mensaje, System.Xml.XmlNodeType.Document, null)), DbType.Xml, ParameterDirection.Input);
                     parameters.Add("@ivaNuevo", ivaNuevo, DbType.Single, direction: ParameterDirection.Input);
@@ -186,16 +175,12 @@ namespace SistemaVentasBatia.Repositories
                     int idMov = parameters.Get<int>("@IdRequisicion");
                     resultado.Estatus = true;
                     resultado.Mensaje = "Se han actualizado los precios de los productos correctamente";
-                }
-                else
-                {
+                } else {
                     resultado.Estatus = false;
                     resultado.Mensaje = "No se pudo serializar la informacion de la requisicion";
                     resultado.MensajeError = XmlResultado.MensajeError;
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch(Exception ex) {
                 resultado.Estatus = false;
                 resultado.MensajeError = "Error: " + ex.Message;
             }
@@ -204,18 +189,16 @@ namespace SistemaVentasBatia.Repositories
         }
 
 
-        public async Task<Resultado> PostEnviarNotificacionComprador(Requisicion requisicion)
-        {
+        public async Task<Resultado> PostEnviarNotificacionComprador(Requisicion requisicion) {
             Resultado resultado = new Resultado();
 
-            string correos = "diegofernando12000@gmail.com.mx";
+            string correos = "edgarc@grupobatia.com.mx";
             string asunto = $"NOTIFICACION DE SINGA, Cambio de precios de la requisicion No: {requisicion.IdRequisicion}";
             string titulo = "Cambio de precios de requisicion";
             string mensaje = "";
             mensaje = $"Buen dia, el proveedor {{nombre del proveedor}}, a modificado los precios de la requisicion {{no.requisicion}}";
 
-            try
-            {
+            try {
                 using var connection = _ctx.CreateConnection();
                 connection.Open();
                 var parameters = new DynamicParameters();
@@ -231,14 +214,79 @@ namespace SistemaVentasBatia.Repositories
                 int idMov = parameters.Get<int>("@IdRequisicion");
                 resultado.Estatus = true;
                 resultado.Mensaje = "Se han actualizado los precios de los productos correctamente";
-            }
-            catch (Exception ex)
-            {
+            } catch(Exception ex) {
                 resultado.Estatus = false;
                 resultado.MensajeError = "Error: " + ex.Message;
             }
 
             return resultado;
+        }
+
+        public async Task<int> NuevaRequisicion(string requisicion) {
+            try {
+                int idRequisicion = 0;
+                //bool resultado = false;
+                try {
+                    using var connection = _ctx.CreateConnection();
+                    connection.Open();
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@Material", new SqlXml(new System.Xml.XmlTextReader(requisicion, System.Xml.XmlNodeType.Document, null)), DbType.Xml, ParameterDirection.Input);
+                    parameters.Add(
+                        "@IdMov",   
+                        dbType: DbType.Int32,
+                        direction: ParameterDirection.Output
+                    );
+                    await connection.ExecuteAsync("sp_recepcione", parameters, commandType: CommandType.StoredProcedure);
+                     idRequisicion = parameters.Get<int>("@IdMov");
+                    //if(idRequisicion == null) {
+                    //    resultado = true;
+                    //}
+                } catch(Exception ex) {
+                    throw ex;
+                }
+                return idRequisicion;
+            }
+            catch(Exception ex) {
+                return 0;
+                throw ex;
+            }
+            
+        }
+        public async Task<string> ObtenerCorreoComprador(int idProveedor) {
+            try {
+                using var connection = _ctx.CreateConnection();
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@idProveedor", idProveedor, DbType.Int32);
+
+                string correoComprador = await connection
+                    .QueryFirstOrDefaultAsync<string>(
+                        "sp_obtener_comprador_proveedor",
+                        parameters,
+                        commandType: CommandType.StoredProcedure
+                    );
+
+                if (correoComprador == null) {
+                    return "";
+                }
+
+                return correoComprador;
+            } catch(Exception) {
+                throw;
+            }
+        }
+        public async Task<string> ObtenerNombreProveedor(int idProveedor) {
+            try {
+
+                string query = @"SELECT ISNULL(nombre,'') AS Nombre FROM tb_proveedor WHERE id_proveedor  = @idProveedor";
+                string nombreProveedor = "";
+                using(var connection = _ctx.CreateConnection()) {
+                    nombreProveedor = await connection.QueryFirstOrDefaultAsync<string>(query, new { idProveedor });
+                }
+                return nombreProveedor;
+            } catch(Exception ex) {
+                throw ex;
+            }
         }
 
     }

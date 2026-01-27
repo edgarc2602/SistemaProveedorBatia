@@ -179,7 +179,11 @@ export class RequisicionOrdenCompraDetalleWidget {
         }
     }
 
-    regresaSup() {
+    regresaSup($event) {
+        if ($event == true) {
+            this.cargaOrdenCompra();
+            this.cargaOrdenCompraDetalle();
+        }
 
     }
 

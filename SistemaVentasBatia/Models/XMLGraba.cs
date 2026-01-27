@@ -1,4 +1,6 @@
-﻿namespace SistemaVentasBatia.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SistemaVentasBatia.Models
 {
     public class XMLGraba
     {
@@ -14,5 +16,8 @@
         public string PdfName { get; set; }
         public string XmlName { get; set; }
         public string Uuid { get; set; }
+        [Required]
+        public string ReceptorRfc { get; set; }
+        public string ReceptorNombre { get; set; }
     }
 }

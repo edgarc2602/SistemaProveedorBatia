@@ -8,5 +8,7 @@
         public string FechaFactura  { get; set; }
         public string Factura { get; set; }
         public string  Uuid { get; set; }
+        public string ReceptorRfc { get; set; }
+        public string ReceptorNombre { get; set; }
     }
 }
