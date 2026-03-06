@@ -26,6 +26,10 @@ export class RequisicionesComponent implements OnInit {
         rows: 0,
         requisiciones: []
     };
+    fltEstatus: number = 0;
+    fltMes: number = 0;
+    fltAnio: number = 0;
+
 
     constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {
     }
@@ -33,11 +37,13 @@ export class RequisicionesComponent implements OnInit {
         window.history.back();
     }
     ngOnInit() {
+        const fechaActual = new Date();
+        this.fltAnio = fechaActual.getFullYear();
         this.cargaRequisiciones(1);
     }
 
     cargaRequisiciones(pagina: number): void {
-        this.http.get<ListadoRequisiciones>(`${this.url}api/requisicion/getrequisiciones/${this.user.idProveedor}/${pagina}`).subscribe(response => {
+        this.http.get<ListadoRequisiciones>(`${this.url}api/requisicion/getrequisiciones/${this.user.idProveedor}/${pagina}/${this.fltMes}/${this.fltEstatus}/${this.fltAnio}`).subscribe(response => {
             this.model = response;
             this.model.pagina = pagina;
             console.log(this.model);

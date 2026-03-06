@@ -36,6 +36,7 @@ export class EntregaComponent {
     estatus: string = '';
     fechaEntrega: string = '';
     isLoading: boolean = false;
+    tieneAcuse: number = 0;
 
     constructor(@Inject('BASE_URL') private url: string, private http: HttpClient, public user: StoreUser) {
         
@@ -60,7 +61,7 @@ export class EntregaComponent {
             this.isLoading = true;
         }
         this.idProveedor = this.user.idProveedor;
-        this.http.get<ListadoMateriales>(`${this.url}api/entrega/obtenerlistados/${this.mes}/${this.anio}/${this.idProveedor}/${this.idEstado}/${this.tipo}/${this.model.pagina}/${this.idStatus}`).subscribe(response => {
+        this.http.get<ListadoMateriales>(`${this.url}api/entrega/obtenerlistados/${this.mes}/${this.anio}/${this.idProveedor}/${this.idEstado}/${this.tipo}/${this.model.pagina}/${this.idStatus}/${this.tieneAcuse}`).subscribe(response => {
             setTimeout(() => {
                 this.model = response;
                 this.isLoading = false;

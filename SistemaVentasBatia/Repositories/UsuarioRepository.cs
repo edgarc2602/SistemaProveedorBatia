@@ -109,23 +109,23 @@ id_proveedor <> 0
                 using var connection = _ctx.CreateConnection();
                 var listadosanio = await connection.QueryAsync<GraficaListadoAnio>(query, new { anio, idProveedor });
 
-                GraficaListadoAnio[] arreglo = new GraficaListadoAnio[12];
-                for (int i = 0; i < 12; i++)
-                {
-                    arreglo[i] = new GraficaListadoAnio
-                    {
-                        Mes = i + 1,
-                        TotalListadosPorMes = 0
-                    };
-                }
+                //GraficaListadoAnio[] arreglo = new GraficaListadoAnio[12];
+                //for (int i = 0; i < 12; i++)
+                //{
+                //    arreglo[i] = new GraficaListadoAnio
+                //    {
+                //        Mes = i + 1,
+                //        TotalListadosPorMes = 0
+                //    };
+                //}
 
-                // Rellenar el arreglo con los valores de la consulta
-                foreach (var item in listadosanio)
-                {
-                    arreglo[item.Mes - 1] = item;
-                }
+                //// Rellenar el arreglo con los valores de la consulta
+                //foreach (var item in listadosanio)
+                //{
+                //    arreglo[item.Mes - 1] = item;
+                //}
 
-                return arreglo;
+                return listadosanio.ToArray();
             }
             catch (Exception ex)
             {
@@ -192,33 +192,18 @@ id_proveedor <> 0
         public async Task<List<GraficaOrden>> ObtenerOrdenesAnio(int anio, int idProveedor)
         {
             string query = @"
-WITH Meses AS (
-    SELECT 1 AS numero_mes, 'Ene' AS nombre_mes
-    UNION ALL SELECT 2, 'Feb'
-    UNION ALL SELECT 3, 'Mar'
-    UNION ALL SELECT 4, 'Abr'
-    UNION ALL SELECT 5, 'May'
-    UNION ALL SELECT 6, 'Jun'
-    UNION ALL SELECT 7, 'Jul'
-    UNION ALL SELECT 8, 'Ago'
-    UNION ALL SELECT 9, 'Sep'
-    UNION ALL SELECT 10, 'Oct'
-    UNION ALL SELECT 11, 'Nov'
-    UNION ALL SELECT 12, 'Dic'
-)
-
 SELECT 
-    Meses.numero_mes AS Mes,
+    MONTH(oc.falta) AS Mes,
     COUNT(oc.id_orden) AS TotalOrdenesPorMes,
-    ISNULL(SUM(oc.total), 0) AS Total
-FROM 
-    Meses
-LEFT JOIN 
-    tb_ordencompra oc ON MONTH(oc.falta) = Meses.numero_mes AND YEAR(oc.falta) = @anio AND oc.id_proveedor = @idProveedor
+    SUM(oc.total) AS Total
+FROM tb_ordencompra oc
+WHERE 
+    YEAR(oc.falta) = @anio
+    AND oc.id_proveedor = @idProveedor
 GROUP BY 
-    Meses.numero_mes
+    MONTH(oc.falta)
 ORDER BY 
-    Meses.numero_mes;
+    Mes;
 ";
             var ordenesanio = new List<GraficaOrden>();
             try
@@ -365,7 +350,7 @@ SELECT
         {
             string query = @"
                 SELECT 
-                COUNT(*) AS AcusesCargados
+                COUNT(DISTINCT a.id_listado) AS AcusesCargados
                 FROM tb_listadomaterial a
                 INNER JOIN tb_listadomateriala b ON b.id_listado = a.id_listado
                 inner join tb_proveedorinmueble e ON e.id_inmueble = a.id_inmueble

@@ -485,53 +485,53 @@ export class RequisicionOrdenCompraDetalleFacturaWidget {
     //    return true;
     //}
 
-    //validaDocumentos(): boolean {
-    //    if (this.selectedPdf == null) {
-    //        Swal.fire({
-    //            title: 'Advertencia',
-    //            text: 'Debe subir el archivo PDF de la factura CFDI',
-    //            icon: 'warning',
-    //            showConfirmButton: false,
-    //        });
-    //        return false;
-    //    }
+    validaDocumentos(): boolean {
+        if (this.selectedPdf == null) {
+            Swal.fire({
+                title: 'Advertencia',
+                text: 'Debe subir el archivo PDF de la factura CFDI',
+                icon: 'warning',
+                showConfirmButton: false,
+            });
+            return false;
+        }
 
-    //    if (this.selectedXml == null) {
-    //        Swal.fire({
-    //            title: 'Advertencia',
-    //            text: 'Debe subir el archivo XML de la factura CFDI',
-    //            icon: 'warning',
-    //            showConfirmButton: false,
-    //        });
-    //        return false;
-    //    }
+        if (this.selectedXml == null) {
+            Swal.fire({
+                title: 'Advertencia',
+                text: 'Debe subir el archivo XML de la factura CFDI',
+                icon: 'warning',
+                showConfirmButton: false,
+            });
+            return false;
+        }
 
-    //    if (!this.selectedPdf.name.toLowerCase().endsWith(".pdf")) {
-    //        Swal.fire({
-    //            title: 'Advertencia',
-    //            text: 'El archivo PDF de la factura CFDI no tiene la extencion correcta.',
-    //            icon: 'warning',
-    //            showConfirmButton: false,
-    //        });
-    //        return false;
-    //    }
+        if (!this.selectedPdf.name.toLowerCase().endsWith(".pdf")) {
+            Swal.fire({
+                title: 'Advertencia',
+                text: 'El archivo PDF de la factura CFDI no tiene la extencion correcta.',
+                icon: 'warning',
+                showConfirmButton: false,
+            });
+            return false;
+        }
 
-    //    if (!this.selectedXml.name.toLowerCase().endsWith(".xml")) {
-    //        Swal.fire({
-    //            title: 'Advertencia',
-    //            text: 'El archivo XML de la factura CFDI no tiene la extencion correcta.',
-    //            icon: 'warning',
-    //            showConfirmButton: false,
-    //        });
-    //        return false;
-    //    }
+        if (!this.selectedXml.name.toLowerCase().endsWith(".xml")) {
+            Swal.fire({
+                title: 'Advertencia',
+                text: 'El archivo XML de la factura CFDI no tiene la extencion correcta.',
+                icon: 'warning',
+                showConfirmButton: false,
+            });
+            return false;
+        }
 
-    //    if (!this.validaFacturaCFDI(this.modelFacturaCFDI)) {
-    //        return false;
-    //    }
+        //if (!this.validaFacturaCFDI(this.modelFacturaCFDI)) {
+        //    return false;
+        //}
 
-    //    return true;
-    //}
+        return true;
+    }
 
     // ******** Funciones para limpiar modelos
     limpiaModelo() {
@@ -679,7 +679,7 @@ export class RequisicionOrdenCompraDetalleFacturaWidget {
 
     // ******** Funciones para guardar
     guardarFactura(): void {
-       // if (this.validaDocumentos()) {
+        if (this.validaDocumentos()) {
             let xml: string;
             let xml1: string;
             let fFac: string = this.modelFacturaCFDI.fecha.split("T")[0];
@@ -748,6 +748,6 @@ export class RequisicionOrdenCompraDetalleFacturaWidget {
                     } else { Swal.fire({ title: 'Error', text: 'Ocurri\u00F3 un error al cargar los documentos', icon: 'error', timer: 3000, showConfirmButton: false, }); }
                 }, err => { var error = err.error; Swal.fire({ title: 'Error', text: 'Ocurrió un error al cargar los documentos:' + error, icon: 'error', timer: 3000, showConfirmButton: false, }); }); console.log(xml); console.log(xml1);
             } else { Swal.fire({ title: 'warning', text: 'La factura CFDI no se puede subir porque el comprador', icon: 'error', showConfirmButton: false, }); }
-        //}
+        }
     }
 }

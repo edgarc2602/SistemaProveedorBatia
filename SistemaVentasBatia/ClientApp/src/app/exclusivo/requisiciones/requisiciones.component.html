@@ -2,23 +2,48 @@
     <br />
     <div class="row pt-1 mb-3">
         <div>
-            <h1 class="h2">Requisiones</h1>
+            <h1 class="h2">Requisiciones</h1>
         </div>
 
         <div>
             <div class="row">
-                <div class="col-md-3 col-4 mb-3">
+                <div class="col-md-2 col-4 mb-3">
                     <div class="form-floating box-shadow">
-                        <input type="number" class="form-control" id="IdRequision" placeholder="Escriba el numero de requisición">
-                        <label asp-for="IdRequisicion">No. Requisición</label>
+                        <input type="number" class="form-control" [(ngModel)]="fltAnio" id="Anio" placeholder="Escriba un año" (input)="cargaRequisiciones(1)">
+                        <label asp-for="anio">Año</label>
                     </div>
                 </div>
-                <div class="col-md-3 col-4 mb-3">
+                <div class="col-md-3 col-4">
                     <div class="form-floating box-shadow">
-                        <select id="ddlmes" class="form-select">
+                        <select id="ddlmes" class="form-select" [(ngModel)]="fltMes" (change)="cargaRequisiciones(1)">
                             <option value="0">Seleccione...</option>
+                            <option value="1">Enero</option>
+                            <option value="2">Febrero</option>
+                            <option value="3">Marzo</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Mayo</option>
+                            <option value="6">Junio</option>
+                            <option value="7">Julio</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Septiembre</option>
+                            <option value="10">Octubre</option>
+                            <option value="11">Novimebre</option>
+                            <option value="12">Diciembre</option>
+
                         </select>
                         <label asp-for="ddlmes">Mes</label>
+                    </div>
+                </div>
+                <div class="col-md-3 col-4">
+                    <div class="form-floating box-shadow">
+                        <select class="form-select" [(ngModel)]="fltEstatus" (change)="cargaRequisiciones(1)">
+                            <option [ngValue]="0">Seleccione..</option>
+                            <option [ngValue]="1">Alta</option>
+                            <option [ngValue]="2">Autorizada</option>
+                            <option [ngValue]="4">Completa</option>
+                            <option [ngValue]="3">Rechazada</option>
+                        </select>
+                        <label asp-for="ddlacuse">Estatus</label>
                     </div>
                 </div>
             </div>
@@ -40,7 +65,7 @@
                     <td>
                         <div class="row mt-2 mb-2">
                             <div class="col-md-2 col-sm-6 col-3 mb-2">
-                                <span class="badge">No. Requisión:</span>
+                                <span class="badge">Id:</span>
                                 <div class="ms-2">{{ requisicion.idRequisicion }}</div>
                             </div>
                             <div class="col-md-2 col-sm-6 col-3 mb-2">
@@ -120,7 +145,7 @@
         <table class="table table-borderless table-striped table-responsive text-start">
             <thead class="sticky-top">
                 <tr class="text-white">
-                    <th>No. Requisión</th>
+                    <th>Id</th>
                     <th>Comprador</th>
                     <th>Comentarios</th>
                     <th>Fecha de alta</th>

@@ -14,7 +14,7 @@ namespace SistemaVentasBatia.Repositories
 {
     public interface IRequisicionRepository
     {
-        Task<ListaRequisiciones> GetRequisiciones(int idProveedor, int pagina);
+        Task<ListaRequisiciones> GetRequisiciones(int idProveedor, int pagina, int fltMes, int fltEstatus, int fltAnio);
         Task<RequisicionDetalle> GetRequisicionDetalle(int idRequisicion);
         Task<Resultado> PutActualizaRequisicionNuevoPrecio(RequisicionDetalle requisicion, float ivaNuevo, float subTotalNuevo, float totalNuevo);
         Task<int> NuevaRequisicion(string requisicion);
@@ -29,7 +29,7 @@ namespace SistemaVentasBatia.Repositories
             _ctx = context;
         }
 
-        public async Task<ListaRequisiciones> GetRequisiciones(int idProveedor, int pagina) {
+        public async Task<ListaRequisiciones> GetRequisiciones(int idProveedor, int pagina, int fltMes, int fltEstatus, int fltAnio) {
             ListaRequisiciones requisiciones = new ListaRequisiciones();
             requisiciones.Requisiciones = new List<Requisicion>();
 
@@ -52,6 +52,10 @@ namespace SistemaVentasBatia.Repositories
 	                    from tb_requisicion as a
 	                    left join tb_empleado as b on a.id_comprador = b.id_empleado
 	                    where a.id_status <> 3
+                            --FILTROS
+				            AND ISNULL(NULLIF(@fltEstatus,0), a.id_status) = a.id_status
+				            AND ISNULL(NULLIF(@fltMes,0), a.mes) = a.mes
+				            AND ISNULL(NULLIF(@fltAnio,0), a.anio) = a.anio
                         -- Solo trae los de la linea de negocio de limpieza
                         and a.id_lineanegocio = 2
 	                    and a.id_proveedor = @idProveedor
@@ -105,6 +109,10 @@ namespace SistemaVentasBatia.Repositories
 							left join tb_empleado as b on a.id_comprador = b.id_empleado
                             left join tb_ordencompra as c on a.id_requisicion = c.id_requisicion
 							where a.id_status <> 3
+                            --FILTROS
+				            AND ISNULL(NULLIF(@fltEstatus,0), a.id_status) = a.id_status
+				            AND ISNULL(NULLIF(@fltMes,0), a.mes) = a.mes
+				            AND ISNULL(NULLIF(@fltAnio,0), a.anio) = a.anio
                             -- Solo trae los de la linea de negocio de limpieza
                             and a.id_lineanegocio = 2
 							and a.id_proveedor = @idProveedor
@@ -113,9 +121,9 @@ namespace SistemaVentasBatia.Repositories
 
             try {
                 using(var connection = _ctx.CreateConnection()) {
-                    requisiciones = (await connection.QueryFirstAsync<ListaRequisiciones>(query, new { idProveedor }));
+                    requisiciones = (await connection.QueryFirstAsync<ListaRequisiciones>(query, new { idProveedor, fltEstatus, fltAnio, fltMes }));
 
-                    requisiciones.Requisiciones = (await connection.QueryAsync<Requisicion>(query1, new { idProveedor, paginacion, pagina })).ToList();
+                    requisiciones.Requisiciones = (await connection.QueryAsync<Requisicion>(query1, new { idProveedor, paginacion, pagina,fltEstatus,fltAnio,fltMes })).ToList();
                 }
             } catch(Exception ex) {
                 throw ex;

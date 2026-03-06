@@ -145,7 +145,7 @@ export class DashboardComponent implements OnInit {
                 type: 'column'
             },
             title: {
-                text: 'Anual'
+                text: ''
             },
             subtitle: {
                 text: totalSubtitle,
@@ -156,7 +156,7 @@ export class DashboardComponent implements OnInit {
             },
             plotOptions: {
                 column: {
-                    color: '#5094fc',
+                    color: '#1b6ec2',
                 }
             },
             xAxis: {
@@ -167,7 +167,7 @@ export class DashboardComponent implements OnInit {
                 allowDecimals: false,
                 min: 0,
                 title: {
-                    text: 'Listados'
+                    text: ''
                 }
             },
             tooltip: {
@@ -214,7 +214,7 @@ export class DashboardComponent implements OnInit {
                 type: 'column'
             },
             title: {
-                text: 'Anual'
+                text: ''
             },
             subtitle: {
                 text: totalSubtitle,
@@ -225,7 +225,7 @@ export class DashboardComponent implements OnInit {
             },
             plotOptions: {
                 column: {
-                    color: '#5094fc',
+                    color: '#1b6ec2',
                 }
             },
             xAxis: {
@@ -236,7 +236,7 @@ export class DashboardComponent implements OnInit {
                 allowDecimals: false,
                 min: 0,
                 title: {
-                    text: 'Ordenes'
+                    text: ''
                 }
             },
             tooltip: {

@@ -15,7 +15,7 @@ namespace SistemaVentasBatia.Services
 {
     public interface IEntregaService
     {
-        Task<ListadoMaterialDTO> ObtenerListados(ListadoMaterialDTO listados, int mes, int anio, int idProveedor, int idEstado, int tipo, int idStatus);
+        Task<ListadoMaterialDTO> ObtenerListados(ListadoMaterialDTO listados, int mes, int anio, int idProveedor, int idEstado, int tipo, int idStatus, int tieneAcuse);
         Task<List<DetalleMaterialDTO>> ObtenerMaterialesListado(int idListado);
         Task<ListadoAcuseEntregaDTO> ObtenerAcusesListado(int idListado);
         Task<bool> InsertaAcuse(int idListado, string carpeta, string archivo);
@@ -34,9 +34,9 @@ namespace SistemaVentasBatia.Services
             this._entregaRepo = entregaRepo;
             this._mapper = mapper;
         }
-        public async Task<ListadoMaterialDTO> ObtenerListados(ListadoMaterialDTO listados, int mes, int anio, int idProveedor, int idEstado, int tipo, int idStatus)
+        public async Task<ListadoMaterialDTO> ObtenerListados(ListadoMaterialDTO listados, int mes, int anio, int idProveedor, int idEstado, int tipo, int idStatus, int tieneAcuse)
         {
-            listados.Rows = await _entregaRepo.ContarListados(mes, anio, idProveedor, idEstado, tipo,idStatus);
+            listados.Rows = await _entregaRepo.ContarListados(mes, anio, idProveedor, idEstado, tipo,idStatus, tieneAcuse);
             if (listados.Rows > 0)
             {
                 listados.NumPaginas = (listados.Rows / 40);
@@ -45,7 +45,7 @@ namespace SistemaVentasBatia.Services
                 {
                     listados.NumPaginas++;
                 }
-                listados.Listas = _mapper.Map<List<ListadosDTO>>(await _entregaRepo.ObtenerListados(mes, anio, idProveedor, idEstado, tipo, listados.Pagina, idStatus));
+                listados.Listas = _mapper.Map<List<ListadosDTO>>(await _entregaRepo.ObtenerListados(mes, anio, idProveedor, idEstado, tipo, listados.Pagina, idStatus, tieneAcuse));
             }
             else
             {

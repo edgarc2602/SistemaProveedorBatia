@@ -17,8 +17,8 @@ namespace SistemaVentasBatia.Repositories
 {
     public interface IEntregaRepository
     {
-        Task<int> ContarListados(int mes, int anio, int idProveedor, int idEstado, int tipo, int idStatus);
-        Task<List<Listados>> ObtenerListados(int mes, int anio, int idProveedor, int idEstado, int tipo, int pagina,int idStatus);
+        Task<int> ContarListados(int mes, int anio, int idProveedor, int idEstado, int tipo, int idStatus, int tieneAcuse);
+        Task<List<Listados>> ObtenerListados(int mes, int anio, int idProveedor, int idEstado, int tipo, int pagina,int idStatus, int tieneAcuse);
         Task<List<DetalleMaterial>> ObtenerMaterialesListado(int idListado);
         Task<List<AcuseEntrega>> ObtieneAcusesListado(int idListado);
         Task<bool> InsertaAcuse(int idListado, string carpeta, string archivo);
@@ -35,7 +35,7 @@ namespace SistemaVentasBatia.Repositories
         {
             _ctx = context;
         }
-        public async Task<int> ContarListados(int mes, int anio, int idProveedor, int idEstado, int tipo, int idStatus)
+        public async Task<int> ContarListados(int mes, int anio, int idProveedor, int idEstado, int tipo, int idStatus, int tieneAcuse)
         {
             var query = @"
 SELECT COUNT(*) AS TotalRows
@@ -70,6 +70,24 @@ ISNULL(NULLIF(@tipo,0), d.id_tipo) = d.id_tipo AND
 ISNULL(NULLIF(@mes,0), b.mes) = b.mes AND
 ISNULL(NULLIF(@anio,0), b.anio) = b.anio AND
 ISNULL(NULLIF(@idStatus,0), b.id_status) = b.id_status
+AND (
+    @tieneAcuse = 0
+    OR (
+        @tieneAcuse = 2 AND EXISTS (
+            SELECT 1
+            FROM tb_listadomateriala ma
+            WHERE ma.id_listado = b.id_listado
+        )
+    )
+    OR (
+        @tieneAcuse = 1 AND NOT EXISTS (
+            SELECT 1
+            FROM tb_listadomateriala ma
+            WHERE ma.id_listado = b.id_listado
+        )
+    )
+)
+
 group by 
 a.id_inmueble, 
 a.nombre, b.falta, 
@@ -83,7 +101,7 @@ fentrega
             try
             {
                 using var connection = _ctx.CreateConnection();
-                rows = await connection.QuerySingleAsync<int>(query, new { mes, anio, idProveedor, idEstado, tipo, idStatus });
+                rows = await connection.QuerySingleAsync<int>(query, new { mes, anio, idProveedor, idEstado, tipo, idStatus, tieneAcuse });
             }
             catch (Exception ex)
             {
@@ -92,7 +110,7 @@ fentrega
             return rows;
         }
 
-        public async Task<List<Listados>> ObtenerListados(int mes, int anio, int idProveedor, int idEstado, int tipo, int pagina, int idStatus)
+        public async Task<List<Listados>> ObtenerListados(int mes, int anio, int idProveedor, int idEstado, int tipo, int pagina, int idStatus, int tieneAcuse)
         {
             string query = @"
 SELECT * FROM (
@@ -128,6 +146,24 @@ ISNULL(NULLIF(@tipo,0), d.id_tipo) = d.id_tipo AND
 ISNULL(NULLIF(@mes,0), b.mes) = b.mes AND
 ISNULL(NULLIF(@anio,0), b.anio) = b.anio AND
 ISNULL(NULLIF(@idStatus,0), b.id_status) = b.id_status
+AND (
+    @tieneAcuse = 0
+    OR (
+        @tieneAcuse = 2 AND EXISTS (
+            SELECT 1
+            FROM tb_listadomateriala ma
+            WHERE ma.id_listado = b.id_listado
+        )
+    )
+    OR (
+        @tieneAcuse = 1 AND NOT EXISTS (
+            SELECT 1
+            FROM tb_listadomateriala ma
+            WHERE ma.id_listado = b.id_listado
+        )
+    )
+)
+
 group by 
 a.id_inmueble, 
 a.nombre, b.falta, 
@@ -147,7 +183,7 @@ ORDER BY RowNum
             try
             {
                 using var connection = _ctx.CreateConnection();
-                listado = (await connection.QueryAsync<Listados>(query, new { mes, anio, idProveedor, idEstado, tipo, pagina, idStatus })).ToList();
+                listado = (await connection.QueryAsync<Listados>(query, new { mes, anio, idProveedor, idEstado, tipo, pagina, idStatus, tieneAcuse })).ToList();
             }
             catch (Exception ex)
             {

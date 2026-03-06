@@ -9,7 +9,7 @@
                     <h4 class="modal-title">Requisicion No. {{idRequisicion}}</h4>
                 </div>
                 <div class="col-2 col-sm-2 col-md-2 col-xl-2 col-lg-2 text-end">
-                    <button type="button" class="btn btn-outline-secondary" (click)="cancela()" data-bs-dismiss="modal"><i class="fa fa-close text-center"></i></button>
+                    <button type="button" class="btn btn-outline-secondary" (click)="cancela()" data-bs-dismiss="modal"><i class="fa fa-close text-center fa-2x"></i></button>
                 </div>
             </div>
             <!-- Modal body -->
@@ -24,9 +24,9 @@
                     <div class="col-md-2">
                         <h6 class="modal-title">Total: </h6><span>${{modelRequisicion.total}}</span>
                     </div>
-                    <div class="col-md-6 text-end">
+                    <!--<div class="col-md-6 text-end">
                         <a class="btn btn-primary" *ngIf="idRequisicionEstatus == 1" (click)="guardaPreciosNuevos()">Guardar y enviar notificación</a>
-                    </div>
+                    </div>-->
                 </div>
                 <hr />
 
@@ -36,7 +36,7 @@
                 <div *ngIf="isLoading" class="text-center ">
                     <i class="fas fa-spinner fa-spin fa-3x"></i>
                 </div>
-                <div class="row box-shadow table-container">
+                <div class="row box-shadow table-container" style="height:400px">
                     <table class="table table-borderless table-striped table-responsive text-center">
                         <thead class="sticky-top text-white" style=" border-radius: 10px;">
                             <tr>
@@ -117,6 +117,14 @@
             </div>
             <!-- Modal footer -->
             <div class="modal-footer justify-content-start">
+                <div class="row col-md-12">
+                    
+                    <div class="col-md-9">
+                    </div>
+                    <div class="col-md-3 text-end">
+                        <a class="btn btn-primary" *ngIf="idRequisicionEstatus == 1" (click)="guardaPreciosNuevos()">Guardar y enviar notificación</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

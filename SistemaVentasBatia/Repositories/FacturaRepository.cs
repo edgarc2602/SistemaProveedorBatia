@@ -220,6 +220,16 @@ FROM tb_recepcion_factura WHERE id_orden = @idOrden
                             string fechaFormateada = fecha.ToString("yyyy-MM-dd");
                             XMLData.FechaFactura = fechaFormateada;
                         }
+                        XElement receptor = comprobante.Element(cfdiNamespace + "Receptor");
+                        if(receptor != null) {
+                            string receptorRfc = receptor.Attribute("Rfc")?.Value;
+                            if(receptorRfc == null || receptorRfc == "") {
+                                throw new CustomException("Error: esta factura no cuenta con RFC receptor");
+                            }
+                            XMLData.ReceptorRfc = receptorRfc;
+                            string receptorNombre = receptor.Attribute("Nombre")?.Value;
+                            XMLData.ReceptorNombre = receptorNombre;
+                        }
                     }
                     else
                     {

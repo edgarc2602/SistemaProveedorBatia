@@ -52,8 +52,8 @@
                         </div>
                         <div class="display-6">
                             0%-->
-                            <!--%{{ graficaListadoMes.aprobado }}-->
-                        <!--</div>
+        <!--%{{ graficaListadoMes.aprobado }}-->
+        <!--</div>
                     </div>
                 </div>
             </div>
@@ -82,53 +82,53 @@
                             <i class="fa-solid fa-upload fa-3x" style="color: aqua;"></i>
                         </div>
                         <div class="display-6">
-                            {{ porcentajeCargaAcuses | number: '1.2' }}%
+                            {{ porcentajeCargaAcuses }}%
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <br />
-    <h5>Historial de evaluaciones</h5>
-    <hr />
-    <div  *ngIf="listaEvaluaciones && listaEvaluaciones.length > 0" id="accordion" class="box-shadow">
-        <div *ngFor="let eva of listaEvaluaciones" class="btn col-md-12 col-12 text-start" data-bs-toggle="collapse" [attr.href]="'#dvDetalleEvaluacion' + eva.idEvaluacionProveedor" style="cursor: pointer;">
-            <div class="row card-header">
-                <div class="col-md-12">
-                    <h6 style="margin-bottom: 7px; margin-top: 7px;">
-                        {{ eva.fechaEvaluacion }}
-                        <span class="badge ms-3">Promedio: {{ eva.promedio }}</span>
-                    </h6>
-                </div>
+
+    <div class="card box-shadow">
+        <div class="card-header" style="background-color: #4a92fe">
+            <div class="d-flex justify-content-center align-items-center align-content-center mt-1">
+                <h5 style="color:white">Listados de materiales</h5>
             </div>
-            <div class="row" style="border-radius: 10px; overflow-x: hidden;">
-                <div style="max-height: 300px; overflow-y: auto;">
-                    <div [id]="'dvDetalleEvaluacion' + eva.idEvaluacionProveedor" class="collapse" data-bs-parent="#accordion">
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-12 col-md-6">
+                    <div id="gla"></div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card box-shadow">
                         <div class="card-body">
-                            <div style="border-radius: 10px; overflow-x: hidden;">
-                                <table class="table table-borderless table-responsive table-striped" id="tbOperarios">
-                                    <tbody>
-                                        <tr *ngFor="let det of filtroPlan(eva.idEvaluacionProveedor)" id="tr{{ det.idEvaluacionProveedor }}">
-                                            <td>
-                                                <div class="row">
-                                                    <div class="col-8 col-sm-3 col-md-2">
-                                                        <span class="badge">Descripcion:</span>
-                                                        <div class="ms-1" style="font-size: smaller;">{{ det.descripcion }}</div>
-                                                    </div>
-                                                    <div class="col-4 col-sm-2 col-md-1 text-center">
-                                                        <span class="badge">Calificacion:</span>
-                                                        <div class="ms-4" style="font-size: smaller;">{{ det.calificacion }}</div>
-                                                    </div>
-                                                    <div class="col-12 col-sm-7 col-md-9">
-                                                        <span class="badge">Criterios:</span>
-                                                        <div class="ms-1" style="font-size: smaller;">{{ det.criterios }}</div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <h5 class="card-title mb-4">Aprobado</h5>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <i class="fa-solid fa-check fa-3x" style="color: yellowgreen"></i>
+                                </div>
+                                <div class="display-6">
+                                    {{ graficaListadoMes.aprobado }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card box-shadow">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4">Entregado</h5>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <i class="fa-solid fa-truck-front fa-3x" style="color: brown;"></i>
+                                </div>
+                                <div class="display-6">
+                                    {{ graficaListadoMes.entregado }}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -136,9 +136,89 @@
             </div>
         </div>
     </div>
-<br />
-    <div class="container">
-        <br />
+    <br />
+    <div class="card box-shadow">
+        <div class="card-header" style="background-color: #4a92fe">
+            <div class="d-flex justify-content-center align-items-center align-content-center mt-1">
+                <h5 style="color:white">Ordenes de compra</h5>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-12 col-md-6">
+                    <div id="goa"></div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="row">
+                        <div class="col-6 col-md-6">
+                            <div class="card box-shadow">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-4">Alta</h5>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div>
+                                            <i class="fa-solid fa-rectangle-list fa-3x"></i>
+                                        </div>
+                                        <div class="display-6">
+                                            {{ graficaOrdenMes.alta }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-6">
+                            <div class="card box-shadow">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-4">Completa</h5>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div>
+                                            <i class="fa-solid fa-truck-front fa-3x" style="color: brown;"></i>
+                                        </div>
+                                        <div class="display-6">
+                                            {{ graficaOrdenMes.completa }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-6 col-md-6">
+                            <div class="card box-shadow">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-4">Total</h5>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div>
+                                            <i class="fa-solid fa-money-bills fa-3x" style="color: green"></i>
+                                        </div>
+                                        <div style="font-size: x-large;">
+                                            ${{ dashOrdenMes.total | number: '1.2' }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-6">
+                            <div class="card box-shadow">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-4">Facturado</h5>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div>
+                                            <i class="fa-solid fa-file-invoice-dollar fa-3x" style="color: purple;"></i>
+                                        </div>
+                                        <div style="font-size: x-large;">
+                                            ${{ dashOrdenMes.facturado | number: '1.2' }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="container">-->
+        <!--<br />
         <h5>Listados de materiales</h5>
         <hr />
         <div class="row mb-3">
@@ -175,9 +255,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
 
-        <br />
+        <!--<br />
         <h5>Ordenes de compra</h5>
         <hr />
         <div class="row mb-3">
@@ -245,6 +325,54 @@
                                         ${{ dashOrdenMes.facturado | number: '1.2' }}
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />-->
+    <h5>Historial de evaluaciones</h5>
+    <hr />
+
+    <div *ngIf="listaEvaluaciones && listaEvaluaciones.length > 0" id="accordion" class="box-shadow">
+        <div *ngFor="let eva of listaEvaluaciones" class="btn col-md-12 col-12 text-start" data-bs-toggle="collapse" [attr.href]="'#dvDetalleEvaluacion' + eva.idEvaluacionProveedor" style="cursor: pointer;">
+            <div class="row card-header">
+                <div class="col-md-12">
+                    <h6 style="margin-bottom: 7px; margin-top: 7px;">
+                        {{ eva.fechaEvaluacion }}
+                        <span class="badge ms-3">Promedio: {{ eva.promedio }}</span>
+                    </h6>
+                </div>
+            </div>
+            <div class="row" style="border-radius: 10px; overflow-x: hidden;">
+                <div style="max-height: 300px; overflow-y: auto;">
+                    <div [id]="'dvDetalleEvaluacion' + eva.idEvaluacionProveedor" class="collapse" data-bs-parent="#accordion">
+                        <div class="card-body">
+                            <div style="border-radius: 10px; overflow-x: hidden;">
+                                <table class="table table-borderless table-responsive table-striped" id="tbOperarios">
+                                    <tbody>
+                                        <tr *ngFor="let det of filtroPlan(eva.idEvaluacionProveedor)" id="tr{{ det.idEvaluacionProveedor }}">
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-8 col-sm-3 col-md-2">
+                                                        <span class="badge">Descripcion:</span>
+                                                        <div class="ms-1" style="font-size: smaller;">{{ det.descripcion }}</div>
+                                                    </div>
+                                                    <div class="col-4 col-sm-2 col-md-1 text-center">
+                                                        <span class="badge">Calificacion:</span>
+                                                        <div class="ms-4" style="font-size: smaller;">{{ det.calificacion }}</div>
+                                                    </div>
+                                                    <div class="col-12 col-sm-7 col-md-9">
+                                                        <span class="badge">Criterios:</span>
+                                                        <div class="ms-1" style="font-size: smaller;">{{ det.criterios }}</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

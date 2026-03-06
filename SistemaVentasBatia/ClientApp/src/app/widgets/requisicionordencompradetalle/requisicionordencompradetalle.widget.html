@@ -9,13 +9,13 @@
                     <h4 class="modal-title">Orden Compra No. {{idOrdenCompra}} - ({{modelOrdenCompra.estatus}})</h4>
                 </div>
                 <div class="col-2 col-sm-2 col-md-2 col-xl-2 col-lg-2 text-end">
-                    <button type="button" class="btn btn-outline-secondary" (click)="cancela()" data-bs-dismiss="modal"><i class="fa fa-close text-center"></i></button>
+                    <button type="button" class="btn btn-outline-secondary" (click)="cancela()" data-bs-dismiss="modal"><i class="fa fa-close text-center fa-2x"></i></button>
                 </div>
             </div>
             <!-- Modal body -->
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-2 mb-3">
                         <h6 class="modal-title">Iva: </h6><span>${{modelOrdenCompra.iva}}</span>
                     </div>
                     <div class="col-md-2">
@@ -24,9 +24,9 @@
                     <div class="col-md-2">
                         <h6 class="modal-title">Total: </h6><span>${{modelOrdenCompra.total}}</span>
                     </div>
-                    <div class="col-md-6 text-end" *ngIf="modelOrdenCompra.estatus != 'Completa'">
+                    <!--<div class="col-md-6 text-end" *ngIf="modelOrdenCompra.estatus != 'Completa'">
                         <a class="btn btn-success" (click)="openModalFacutura(idOrdenCompra, modelOrdenCompra.inventario)">Subir factura</a>
-                    </div>
+                    </div>-->
                 </div>
 
 
@@ -36,7 +36,7 @@
                 <div *ngIf="isLoading" class="text-center ">
                     <i class="fas fa-spinner fa-spin fa-3x"></i>
                 </div>
-                <div class="row box-shadow table-container">
+                <div class="row box-shadow table-container" style="height:400px">
                     <table class="table table-borderless table-striped table-responsive text-center">
                         <thead class="sticky-top text-white" style=" border-radius: 10px;">
                             <tr>
@@ -103,6 +103,15 @@
             </div>
             <!-- Modal footer -->
             <div class="modal-footer justify-content-start">
+                <div class="row col-md-12">
+                    <div class="col-md-10 mb-3">
+                        <!--<h6 class="modal-title">Iva: </h6><span>${{modelOrdenCompra.iva}}</span>-->
+                    </div>
+
+                    <div class="col-md-2 text-end" *ngIf="modelOrdenCompra.estatus != 'Completa'">
+                        <a class="btn btn-success" (click)="openModalFacutura(idOrdenCompra, modelOrdenCompra.inventario)">Subir factura</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

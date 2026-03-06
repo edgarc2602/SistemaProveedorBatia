@@ -97,7 +97,7 @@ namespace SistemaVentasBatia.Controllers
             salidaElement.SetAttribute("iva", xml.Iva.ToString());
             salidaElement.SetAttribute("total", xml.Total.ToString());
             salidaElement.SetAttribute("uuid", xml.Uuid);
-            salidaElement.SetAttribute("rfc", xml.ReceptorNombre);
+            salidaElement.SetAttribute("rfc", xml.ReceptorRfc);
             movimientoElement.AppendChild(salidaElement);
             foreach (var fileName in documentos)
             {

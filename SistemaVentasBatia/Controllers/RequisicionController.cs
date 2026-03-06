@@ -20,10 +20,10 @@ namespace SistemaVentasBatia.Controllers
             _logic = logic;
         }
 
-        [HttpGet("[action]/{idProveedor}/{pagina}")]
-        public Task<ListaRequisicionesDTO> GetRequisiciones(int idProveedor, int pagina)
+        [HttpGet("[action]/{idProveedor}/{pagina}/{fltMes}/{fltEstatus}/{fltAnio}")]
+        public Task<ListaRequisicionesDTO> GetRequisiciones(int idProveedor, int pagina, int fltMes, int fltEstatus, int fltAnio)
         {
-            return _logic.GetRequisiciones(idProveedor, pagina);
+            return _logic.GetRequisiciones(idProveedor, pagina,fltMes, fltEstatus, fltAnio);
         }
 
         [HttpGet("[action]/{idRequisicion}")]

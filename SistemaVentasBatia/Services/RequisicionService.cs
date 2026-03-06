@@ -20,7 +20,7 @@ namespace SistemaVentasBatia.Services
 {
     public interface IRequisicionService
     {
-        Task<ListaRequisicionesDTO> GetRequisiciones(int idProveedor, int pagina);
+        Task<ListaRequisicionesDTO> GetRequisiciones(int idProveedor, int pagina, int fltMes, int fltEstatus, int fltAnio);
         Task<RequisicionDetalleDTO> GetRequisicionDetalle(int idRequisicion);
         Task<ResultadoDTO> PutActualizaRequisicionNuevoPrecio(RequisicionDetalleDTO requisicion, float ivaNuevo, float subTotalNuevo, float totalNuevo, int idProveedor);
         Task<bool> NuevaRequisicion(
@@ -48,9 +48,9 @@ namespace SistemaVentasBatia.Services
             _ctx = context;
         }
 
-        public async Task<ListaRequisicionesDTO> GetRequisiciones(int idProveedor, int pagina)
+        public async Task<ListaRequisicionesDTO> GetRequisiciones(int idProveedor, int pagina, int fltMes, int fltEstatus, int fltAnio)
         {
-            return _mapper.Map<ListaRequisicionesDTO>(await _repo.GetRequisiciones(idProveedor, pagina));
+            return _mapper.Map<ListaRequisicionesDTO>(await _repo.GetRequisiciones(idProveedor, pagina, fltMes, fltEstatus,fltAnio));
         }
 
         public async Task<RequisicionDetalleDTO> GetRequisicionDetalle(int idRequisicion)
